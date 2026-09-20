@@ -17,3 +17,9 @@
 - The well-known copy at `public_html/.well-known/skills/` is generated. After changing a skill, run:
   `node scripts/sync.mjs /path/to/DS_Website/public_html/.well-known/skills`
 - Never edit the generated copy by hand.
+
+## Commit messages
+
+- Use 2 to 4 words, alphabetic letters only (no digits or punctuation).
+- Use lowercase letters only.
+- Never commit or stage changes. Only the user commits or stages, unless the user gives an explicit order.
