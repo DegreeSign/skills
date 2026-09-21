@@ -7,6 +7,20 @@
 - Put supporting files beside `SKILL.md` and reference them with relative paths.
 - Keep each skill self-contained. A skill must not read files from another skill.
 
+## Writing a skill
+
+- Write skills generically. Never mention the projects, repos or packages that inspired a skill; use neutral example names such as `mylib`.
+- Research the real source material first, then generalise. Do not invent behaviour or APIs.
+- Keep the frontmatter `description` focused on the skill's most important aspects. Do not use colons.
+- When the scope is unclear, ask the user with concrete options before writing.
+
+## Changing a skill
+
+- Adding a skill is a minor version bump.
+- After changing a skill, refresh the `README.md` skills table and `ChangeLog.md`.
+- Keep the `skills` badge count in `README.md` equal to the number of folders under `skills/`.
+- Verify the change with `node scripts/sync.mjs <temp-dir>` and check the generated `index.json`.
+
 ## Version and changelog
 
 - Bump `VERSION` and add a `ChangeLog.md` entry for every release.
@@ -23,3 +37,4 @@
 - Use 2 to 4 words, alphabetic letters only (no digits or punctuation).
 - Use lowercase letters only.
 - Never commit or stage changes. Only the user commits or stages, unless the user gives an explicit order.
+- Never unstage changes either. Do not run `git reset`, `git restore --staged`, `git rm --cached`, or any other command that alters the index. The user alone controls the index.

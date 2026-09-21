@@ -1,0 +1,54 @@
+{
+	"name": "@degreesign/skills",
+	"version": "1.1.0",
+	"description": "MIT-licensed Agent Skills that give AI coding agents reusable workflows for Material Symbols icons and npm package releases, with no runtime or lock-in.",
+	"keywords": [
+		"agent-skills",
+		"skills",
+		"ai",
+		"ai-agents",
+		"coding-agent",
+		"claude-code",
+		"cursor",
+		"opencode",
+		"gemini-cli",
+		"github-copilot",
+		"material-symbols",
+		"material-design-icons",
+		"icons",
+		"svg",
+		"png",
+		"rasterize",
+		"npm",
+		"package",
+		"release",
+		"semantic-versioning",
+		"changelog",
+		"publishing",
+		"webpack",
+		"typescript",
+		"readme",
+		"seo"
+	],
+	"license": "MIT",
+	"engines": {
+		"node": ">=20.6.0"
+	},
+	"files": [
+		"skills",
+		"scripts",
+		"VERSION",
+		"ChangeLog.md"
+	],
+	"publishConfig": {
+		"access": "public"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/degreesign/skills.git"
+	},
+	"homepage": "https://degreesign.com",
+	"bugs": {
+		"url": "https://github.com/degreesign/skills/issues"
+	}
+}
