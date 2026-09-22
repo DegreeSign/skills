@@ -1,12 +1,12 @@
 # DegreeSign Skills
 
-MIT-licensed [Agent Skills](https://agentskills.io) that give AI coding agents reusable workflows for Material Symbols icons, npm package releases and house coding conventions — no runtime, no lock-in.
+MIT-licensed [Agent Skills](https://agentskills.io) that give AI coding agents reusable workflows for Material Symbols icons, npm package releases, house coding conventions and high-performance, discoverable web apps — no runtime, no lock-in.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-6E56CF.svg)](https://agentskills.io)
-[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](ChangeLog.md)
+[![Version](https://img.shields.io/badge/version-1.3.0-blue.svg)](ChangeLog.md)
 [![Node](https://img.shields.io/badge/node-%3E%3D20.6-339933.svg)](https://nodejs.org)
-[![Skills](https://img.shields.io/badge/skills-3-2ea44f.svg)](#skills)
+[![Skills](https://img.shields.io/badge/skills-4-2ea44f.svg)](#skills)
 
 ## Table of Contents
 
@@ -18,6 +18,7 @@ MIT-licensed [Agent Skills](https://agentskills.io) that give AI coding agents r
   - [`icons`](#icons)
   - [`npm`](#npm)
   - [`coding`](#coding)
+  - [`webapp`](#webapp)
 - [FAQ](#faq)
 - [Layout](#layout)
 - [Adding a Skill](#adding-a-skill)
@@ -99,7 +100,7 @@ npx openskills sync
 ### Pin a version
 
 ```bash
-git clone --branch v1.2.0 --depth 1 https://github.com/degreesign/skills
+git clone --branch v1.3.0 --depth 1 https://github.com/degreesign/skills
 npx openskills install ./skills -g -u
 npx openskills sync
 ```
@@ -148,6 +149,7 @@ The `npm` skill walks the agent through versioning, the matching changelog heade
 | [`icons`](#icons) | Add, find, audit and rasterize Material Symbols Rounded icons. | A page, component or asset needs an icon; you need an icon name; referenced icons are missing; or a PNG-only project needs a raster. |
 | [`npm`](#npm) | Release and maintain an npm package. | Creating, naming, versioning, publishing or tagging a package, or rewriting its README. |
 | [`coding`](#coding) | Apply house coding conventions when editing a repository. | Writing or changing code, styles, copy or tickets in a project that follows these conventions. |
+| [`webapp`](#webapp) | Structure or restructure a TypeScript web app for performance and discoverability. | Setting up a layout, adding or moving pages, wiring the build, or improving SEO, PWA and caching. |
 
 ### `icons`
 
@@ -216,6 +218,30 @@ Capabilities:
 | Workflow | Guards release, deploy, translate and the git index. |
 | Tickets | Maintains one-line tickets and linked detail docs. |
 
+### `webapp`
+
+Structure or restructure a TypeScript web app so it builds fast, ships small and is easy for search engines, social crawlers and AI agents to discover. The build is a single `build()` call from `@degreesign/webapp`; this skill defines the source layout and the config that drive it.
+
+| Export | Type | Description |
+| ------ | ---- | ----------- |
+| `SKILL.md` | Instructions | Entry point: when to use, core principles, the layout and config at a glance, workflow and checklist. |
+| `structure.md` | Reference | The folder contract, the page triad, shared partials, assets, shared code and generated output. |
+| `config.md` | Reference | Every `build()` field, `Page` fields, generated files, scripts and tsconfig. |
+| `performance.md` | Reference | Hashing, splitting, CSS, minification, obfuscation, service worker, images and caching. |
+| `discoverability.md` | Reference | Meta tags, Open Graph, canonical URLs, manifest, sitemap, robots, i18n and LLM files. |
+| `restructure.md` | Guide | Migrating an existing app onto the layout and build, step by step. |
+
+Capabilities:
+
+| Capability | What it does |
+| ---------- | ------------ |
+| Layout | Applies the one-folder-per-page contract and the shared-partial, assets and code directories. |
+| Config | Wires `webpack.web.ts` and `webpack.server.ts` from typed options. |
+| Performance | Enables content hashing, per-page splitting, inlined CSS, on-demand libraries and asset caching. |
+| Discoverability | Generates per-page meta, Open Graph, canonical, manifest, sitemap and robots. |
+| PWA | Configures the manifest, shortcuts, service worker and icons. |
+| Restructure | Moves an existing app onto the layout without changing behaviour. |
+
 ## FAQ
 
 **What is DegreeSign Skills?**
@@ -240,7 +266,7 @@ Any agent that reads `AGENTS.md` — Claude Code, Cursor, OpenCode, Gemini CLI, 
 Yes. Clone the repo and generate it with `scripts/sync.mjs`, or install the public npm package. See [Publishing](#publishing).
 
 **How do I pin a version?**
-Clone the tag and install from the local path: `git clone --branch v1.2.0 --depth 1 https://github.com/degreesign/skills && npx openskills install ./skills -g -u`.
+Clone the tag and install from the local path: `git clone --branch v1.3.0 --depth 1 https://github.com/degreesign/skills && npx openskills install ./skills -g -u`.
 
 ## Layout
 
@@ -263,10 +289,17 @@ skills/
 │   └── scripts/
 │       ├── svg_to_png.mjs
 │       └── svg_to_png.sh
-└── npm/
+├── npm/
+│   ├── SKILL.md
+│   ├── readme-seo.md
+│   └── webpack.md
+└── webapp/
     ├── SKILL.md
-    ├── readme-seo.md
-    └── webpack.md
+    ├── structure.md
+    ├── config.md
+    ├── performance.md
+    ├── discoverability.md
+    └── restructure.md
 ```
 
 ## Adding a Skill
@@ -277,7 +310,7 @@ skills/
 
 ## Versioning
 
-`VERSION` holds the current release. Tag the release (`v1.2.0`) so consumers can pin it by cloning the tag and installing locally. See [ChangeLog.md](ChangeLog.md) for release notes.
+`VERSION` holds the current release. Tag the release (`v1.3.0`) so consumers can pin it by cloning the tag and installing locally. See [ChangeLog.md](ChangeLog.md) for release notes.
 
 ## Publishing
 
@@ -291,7 +324,7 @@ Never edit the generated copy by hand. The output is a directory of skill folder
 
 ## Keywords
 
-agent skills, ai coding agent, claude code skills, cursor skills, opencode skills, gemini cli skills, github copilot skills, agent skills collection, material symbols rounded, material design icons, icon finder, icon audit, svg to png, png icons, image rasterization, npm package release, npm publish, semantic versioning, changelog, git tag, webpack build, typescript package, readme seo, ai discoverability, coding conventions, code style, typescript style, css conventions, dom helpers, i18n, translation keys
+agent skills, ai coding agent, claude code skills, cursor skills, opencode skills, gemini cli skills, github copilot skills, agent skills collection, material symbols rounded, material design icons, icon finder, icon audit, svg to png, png icons, image rasterization, npm package release, npm publish, semantic versioning, changelog, git tag, webpack build, typescript package, readme seo, ai discoverability, coding conventions, code style, typescript style, css conventions, dom helpers, i18n, translation keys, web app structure, webapp performance, progressive web app, pwa, seo, open graph, web manifest, sitemap, robots txt, service worker, code splitting, asset caching
 
 ## Contributing
 

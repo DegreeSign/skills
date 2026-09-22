@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 1.3.0
+
+- Add the `webapp` skill.
+
 ## 1.2.0
 
 - Add the `coding` skill.

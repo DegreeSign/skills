@@ -1,7 +1,7 @@
 {
 	"name": "@degreesign/skills",
-	"version": "1.2.0",
-	"description": "MIT-licensed Agent Skills that give AI coding agents reusable workflows for Material Symbols icons, npm package releases and house coding conventions, with no runtime or lock-in.",
+	"version": "1.3.0",
+	"description": "MIT-licensed Agent Skills that give AI coding agents reusable workflows for Material Symbols icons, npm package releases, house coding conventions and high-performance, discoverable web apps, with no runtime or lock-in.",
 	"keywords": [
 		"agent-skills",
 		"skills",
@@ -33,7 +33,14 @@
 		"conventions",
 		"typescript",
 		"css",
-		"i18n"
+		"i18n",
+		"webapp",
+		"pwa",
+		"seo",
+		"performance",
+		"open-graph",
+		"sitemap",
+		"service-worker"
 	],
 	"license": "MIT",
 	"engines": {
