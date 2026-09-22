@@ -30,18 +30,11 @@
 - Adding a skill is a minor version bump.
 - After changing a skill, refresh the `README.md` skills table and `ChangeLog.md`.
 - Keep the `skills` badge count in `README.md` equal to the number of folders under `skills/`.
-- Verify the change with `node scripts/sync.mjs <temp-dir>` and check the generated `index.json`.
 
 ## Version and changelog
 
 - Bump `VERSION` and add a `ChangeLog.md` entry for every release.
 - Keep `ChangeLog.md` to public changes only, one line per change.
-
-## Publishing
-
-- The well-known copy at `public_html/.well-known/skills/` is generated. After changing a skill, run:
-  `node scripts/sync.mjs /path/to/DS_Website/public_html/.well-known/skills`
-- Never edit the generated copy by hand.
 
 ## Commit messages
 

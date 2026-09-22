@@ -4,7 +4,7 @@ MIT-licensed [Agent Skills](https://agentskills.io) that give AI coding agents r
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-6E56CF.svg)](https://agentskills.io)
-[![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)](ChangeLog.md)
+[![Version](https://img.shields.io/badge/version-1.5.0-blue.svg)](ChangeLog.md)
 [![Node](https://img.shields.io/badge/node-%3E%3D20.6-339933.svg)](https://nodejs.org)
 [![Skills](https://img.shields.io/badge/skills-5-2ea44f.svg)](#skills)
 
@@ -24,7 +24,6 @@ MIT-licensed [Agent Skills](https://agentskills.io) that give AI coding agents r
 - [Layout](#layout)
 - [Adding a Skill](#adding-a-skill)
 - [Versioning](#versioning)
-- [Publishing](#publishing)
 - [Keywords](#keywords)
 - [Contributing](#contributing)
 - [License](#license)
@@ -35,7 +34,7 @@ DegreeSign Skills is a curated collection of [Agent Skills](https://agentskills.
 
 Agent Skills use **progressive disclosure**: an agent reads only each skill's name and description until a task matches, then loads the full instructions. That keeps context small while making complex, multi-step work repeatable and auditable.
 
-This repository is the source of truth. Each skill lives in its own folder with a `SKILL.md` plus any scripts, indexes or reference docs it needs. The generated copy that powers the hosted well-known endpoint is produced by `scripts/sync.mjs`.
+This repository is the source of truth. Each skill lives in its own folder with a `SKILL.md` plus any scripts, indexes or reference docs it needs.
 
 ## Why DegreeSign Skills
 
@@ -101,7 +100,7 @@ npx openskills sync
 ### Pin a version
 
 ```bash
-git clone --branch v1.4.0 --depth 1 https://github.com/degreesign/skills
+git clone --branch v1.5.0 --depth 1 https://github.com/degreesign/skills
 npx openskills install ./skills -g -u
 npx openskills sync
 ```
@@ -278,7 +277,7 @@ A collection of [Agent Skills](https://agentskills.io): folders containing a `SK
 Yes. It is open source under the [MIT license](LICENSE). No account, subscription, or telemetry.
 
 **Does it work in Node and the browser?**
-The skills themselves are Markdown and JSON with no runtime, so they work anywhere. The bundled helpers (`scripts/svg_to_png.mjs`, `scripts/sync.mjs`) need Node 18+, while the OpenSkills CLI and this package's `engines` require Node 20.6+ and Git. Nothing runs in the browser, and no browser build is shipped.
+The skills themselves are Markdown and JSON with no runtime, so they work anywhere. The bundled helper (`scripts/svg_to_png.mjs`) needs Node 18+, while the OpenSkills CLI and this package's `engines` require Node 20.6+ and Git. Nothing runs in the browser, and no browser build is shipped.
 
 **Are there dependencies?**
 No required dependencies. The `icons` rasterizer opportunistically uses a project's existing `sharp`, then a native tool such as `rsvg-convert`, Inkscape or ImageMagick, and falls back to `npx sharp-cli`.
@@ -289,11 +288,8 @@ Yes. Skills are language-agnostic, and the skill set covers TypeScript-friendly 
 **Which frameworks and agents are supported?**
 Any agent that reads `AGENTS.md` — Claude Code, Cursor, OpenCode, Gemini CLI, GitHub Copilot, VS Code, Codex, Windsurf, Aider and more — because [OpenSkills](https://github.com/numman-ali/openskills) writes the same `<available_skills>` block they already understand. The skills are framework-agnostic, so they apply to any web or Node project.
 
-**Can I publish the well-known copy?**
-Yes. Clone the repo and generate it with `scripts/sync.mjs`, or install the public npm package. See [Publishing](#publishing).
-
 **How do I pin a version?**
-Clone the tag and install from the local path: `git clone --branch v1.4.0 --depth 1 https://github.com/degreesign/skills && npx openskills install ./skills -g -u`.
+Clone the tag and install from the local path: `git clone --branch v1.5.0 --depth 1 https://github.com/degreesign/skills && npx openskills install ./skills -g -u`.
 
 ## Layout
 
@@ -341,21 +337,10 @@ skills/
 
 1. Create `skills/<name>/SKILL.md` with `name` and `description` frontmatter.
 2. Add any supporting files beside it.
-3. Refresh the published copy with `node scripts/sync.mjs <target-dir>`.
 
 ## Versioning
 
-`VERSION` holds the current release. Tag the release (`v1.4.0`) so consumers can pin it by cloning the tag and installing locally. See [ChangeLog.md](ChangeLog.md) for release notes.
-
-## Publishing
-
-The well-known copy at `public_html/.well-known/skills/` on degreesign.com is generated from this repo:
-
-```bash
-node scripts/sync.mjs /path/to/DS_Website/public_html/.well-known/skills
-```
-
-Never edit the generated copy by hand. The output is a directory of skill folders plus an `index.json` manifest.
+`VERSION` holds the current release. Tag the release (`v1.5.0`) so consumers can pin it by cloning the tag and installing locally. See [ChangeLog.md](ChangeLog.md) for release notes.
 
 ## Keywords
 

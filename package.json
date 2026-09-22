@@ -1,6 +1,6 @@
 {
 	"name": "@degreesign/skills",
-	"version": "1.4.0",
+	"version": "1.5.0",
 	"description": "MIT-licensed Agent Skills that give AI coding agents reusable workflows for Material Symbols icons, npm package releases, house coding conventions, high-performance discoverable web apps and maintainable Node backends, with no runtime or lock-in.",
 	"keywords": [
 		"agent-skills",
@@ -65,7 +65,6 @@
 	},
 	"files": [
 		"skills",
-		"scripts",
 		"VERSION",
 		"ChangeLog.md"
 	],
