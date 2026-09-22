@@ -1,12 +1,12 @@
 # DegreeSign Skills
 
-MIT-licensed [Agent Skills](https://agentskills.io) that give AI coding agents reusable workflows for Material Symbols icons and npm package releases — no runtime, no lock-in.
+MIT-licensed [Agent Skills](https://agentskills.io) that give AI coding agents reusable workflows for Material Symbols icons, npm package releases and house coding conventions — no runtime, no lock-in.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-6E56CF.svg)](https://agentskills.io)
-[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](ChangeLog.md)
+[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](ChangeLog.md)
 [![Node](https://img.shields.io/badge/node-%3E%3D20.6-339933.svg)](https://nodejs.org)
-[![Skills](https://img.shields.io/badge/skills-2-2ea44f.svg)](#skills)
+[![Skills](https://img.shields.io/badge/skills-3-2ea44f.svg)](#skills)
 
 ## Table of Contents
 
@@ -17,6 +17,7 @@ MIT-licensed [Agent Skills](https://agentskills.io) that give AI coding agents r
 - [Skills](#skills)
   - [`icons`](#icons)
   - [`npm`](#npm)
+  - [`coding`](#coding)
 - [FAQ](#faq)
 - [Layout](#layout)
 - [Adding a Skill](#adding-a-skill)
@@ -98,7 +99,7 @@ npx openskills sync
 ### Pin a version
 
 ```bash
-git clone --branch v1.1.0 --depth 1 https://github.com/degreesign/skills
+git clone --branch v1.2.0 --depth 1 https://github.com/degreesign/skills
 npx openskills install ./skills -g -u
 npx openskills sync
 ```
@@ -146,6 +147,7 @@ The `npm` skill walks the agent through versioning, the matching changelog heade
 | ----- | ----------- | -------- |
 | [`icons`](#icons) | Add, find, audit and rasterize Material Symbols Rounded icons. | A page, component or asset needs an icon; you need an icon name; referenced icons are missing; or a PNG-only project needs a raster. |
 | [`npm`](#npm) | Release and maintain an npm package. | Creating, naming, versioning, publishing or tagging a package, or rewriting its README. |
+| [`coding`](#coding) | Apply house coding conventions when editing a repository. | Writing or changing code, styles, copy or tickets in a project that follows these conventions. |
 
 ### `icons`
 
@@ -188,6 +190,32 @@ Capabilities:
 | Release | Runs the checklist from version bump through `npm pack --dry-run`, publish and `git tag`. |
 | README SEO | Rewrites documentation for search engines and AI agents. |
 
+### `coding`
+
+Apply the house coding conventions when editing a repository: TypeScript, CSS, DOM access, i18n, tickets and the release workflow. These rules sit on top of a project's own `AGENTS.md` and stay repo-agnostic, naming only the `@degreesign/ui` helper package they rely on.
+
+| Export | Type | Description |
+| ------ | ---- | ----------- |
+| `SKILL.md` | Instructions | Entry point: when to use, core principles and the topic index. |
+| `typescript.md` | Reference | Types, functions, strings, exports, constants and imports. |
+| `css.md` | Reference | Selectors, naming, placement and values. |
+| `dom.md` | Reference | Element access through `@degreesign/ui`, null safety and events. |
+| `i18n.md` | Reference | Translation source file, key naming, placeholders and hardcoded strings. |
+| `workflow.md` | Reference | Build, deploy, translate and git index rules. |
+| `tickets.md` | Reference | The ticket file format, shorthand and detail docs. |
+| `ui-patterns.md` | Reference | Tooltips, the `icons` skill and vendored browser libraries. |
+
+Capabilities:
+
+| Capability | What it does |
+| ---------- | ------------ |
+| TypeScript | Keeps types, functions, strings and exports in the shared style. |
+| CSS | Enforces class-only selectors, naming, placement and token values. |
+| DOM access | Routes all element access through the `@degreesign/ui` helpers. |
+| i18n | Keeps copy in the translation source file with consistent keys. |
+| Workflow | Guards release, deploy, translate and the git index. |
+| Tickets | Maintains one-line tickets and linked detail docs. |
+
 ## FAQ
 
 **What is DegreeSign Skills?**
@@ -212,7 +240,7 @@ Any agent that reads `AGENTS.md` — Claude Code, Cursor, OpenCode, Gemini CLI, 
 Yes. Clone the repo and generate it with `scripts/sync.mjs`, or install the public npm package. See [Publishing](#publishing).
 
 **How do I pin a version?**
-Clone the tag and install from the local path: `git clone --branch v1.1.0 --depth 1 https://github.com/degreesign/skills && npx openskills install ./skills -g -u`.
+Clone the tag and install from the local path: `git clone --branch v1.2.0 --depth 1 https://github.com/degreesign/skills && npx openskills install ./skills -g -u`.
 
 ## Layout
 
@@ -220,6 +248,15 @@ Each skill lives in `skills/<name>/` and contains a `SKILL.md` with `name` and `
 
 ```text
 skills/
+├── coding/
+│   ├── SKILL.md
+│   ├── typescript.md
+│   ├── css.md
+│   ├── dom.md
+│   ├── i18n.md
+│   ├── workflow.md
+│   ├── tickets.md
+│   └── ui-patterns.md
 ├── icons/
 │   ├── SKILL.md
 │   ├── icons.json
@@ -240,7 +277,7 @@ skills/
 
 ## Versioning
 
-`VERSION` holds the current release. Tag the release (`v1.1.0`) so consumers can pin it by cloning the tag and installing locally. See [ChangeLog.md](ChangeLog.md) for release notes.
+`VERSION` holds the current release. Tag the release (`v1.2.0`) so consumers can pin it by cloning the tag and installing locally. See [ChangeLog.md](ChangeLog.md) for release notes.
 
 ## Publishing
 
@@ -254,7 +291,7 @@ Never edit the generated copy by hand. The output is a directory of skill folder
 
 ## Keywords
 
-agent skills, ai coding agent, claude code skills, cursor skills, opencode skills, gemini cli skills, github copilot skills, agent skills collection, material symbols rounded, material design icons, icon finder, icon audit, svg to png, png icons, image rasterization, npm package release, npm publish, semantic versioning, changelog, git tag, webpack build, typescript package, readme seo, ai discoverability
+agent skills, ai coding agent, claude code skills, cursor skills, opencode skills, gemini cli skills, github copilot skills, agent skills collection, material symbols rounded, material design icons, icon finder, icon audit, svg to png, png icons, image rasterization, npm package release, npm publish, semantic versioning, changelog, git tag, webpack build, typescript package, readme seo, ai discoverability, coding conventions, code style, typescript style, css conventions, dom helpers, i18n, translation keys
 
 ## Contributing
 
