@@ -1,5 +1,16 @@
 # AGENTS.md
 
+## General
+
+- Apply these rules to every skill in this repository.
+- Use neutral placeholders for paths, hosts, environment variable names, service names and deploy commands.
+- Always use a fresh generic name; never reuse a specific one, and generalise the whole flow, not just the names.
+
+## Adding a rule
+
+- Every rule must be generic, state a required behaviour and never a preference.
+- Never put specific values or examples in a rule.
+
 ## Adding a skill
 
 - Create one folder per skill at `skills/<name>/`.

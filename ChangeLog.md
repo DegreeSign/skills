@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 1.4.0
+
+- Add the `server` skill.
+
 ## 1.3.0
 
 - Add the `webapp` skill.
