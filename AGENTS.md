@@ -13,10 +13,12 @@
 
 ## Adding a skill
 
-- Create one folder per skill at `skills/<name>/`.
-- Every skill must have `SKILL.md` with `name` and `description` frontmatter. `name` must match the folder and use lowercase hyphen-separated words.
+- The root `SKILL.md` is the entry skill. It indexes the sub-skills and is the only skill that references them.
+- Create one folder per sub-skill at `skills/<name>/`.
+- Every sub-skill must have `SKILL.md` with `name` and `description` frontmatter. `name` must match the folder and use lowercase hyphen-separated words.
 - Put supporting files beside `SKILL.md` and reference them with relative paths.
-- Keep each skill self-contained. A skill must not read files from another skill.
+- Keep each sub-skill self-contained. A sub-skill must not read files from another sub-skill.
+- Add the new sub-skill to the index in the root `SKILL.md`.
 
 ## Writing a skill
 
@@ -30,6 +32,17 @@
 - Adding a skill is a minor version bump.
 - After changing a skill, refresh the `README.md` skills table and `ChangeLog.md`.
 - Keep the `skills` badge count in `README.md` equal to the number of folders under `skills/`.
+
+## Installer
+
+- The installer is `bin/install.mjs`; the user runs it, never the agent.
+- Verify installer changes with `node bin/install.mjs --list` and `node bin/install.mjs --dry-run`.
+- Never publish, tag, stage or commit the package.
+
+## Updates
+
+- The root `SKILL.md` documents a daily update check. Run `check.mjs` at most once per machine per day; it caches the timestamp in the XDG cache directory.
+- Ask the user before applying an update. Never update on your own.
 
 ## Version and changelog
 

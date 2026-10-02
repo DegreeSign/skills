@@ -1,5 +1,11 @@
 # ChangeLog
 
+## 1.6.0
+
+- Ship the whole collection as one `degreesign` skill with sub-skills.
+- Add the `degreesign-skills` installer, which copies the skill into an agent skills directory and supports `--link`.
+- Add a once-a-day update check that asks before updating.
+
 ## 1.4.0
 
 - Add the `server` skill.

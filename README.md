@@ -1,10 +1,10 @@
 # DegreeSign Skills
 
-MIT-licensed [Agent Skills](https://agentskills.io) that give AI coding agents reusable workflows for Material Symbols icons, npm package releases, house coding conventions, high-performance discoverable web apps and maintainable Node backends — no runtime, no lock-in.
+MIT-licensed [Agent Skill](https://agentskills.io) that gives AI coding agents one entry point and five reusable sub-skills for Material Symbols icons, npm package releases, house coding conventions, high-performance discoverable web apps and maintainable Node backends, with no runtime or lock-in.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-6E56CF.svg)](https://agentskills.io)
-[![Version](https://img.shields.io/badge/version-1.5.0-blue.svg)](ChangeLog.md)
+[![Version](https://img.shields.io/badge/version-1.6.0-blue.svg)](ChangeLog.md)
 [![Node](https://img.shields.io/badge/node-%3E%3D20.6-339933.svg)](https://nodejs.org)
 [![Skills](https://img.shields.io/badge/skills-5-2ea44f.svg)](#skills)
 
@@ -30,54 +30,47 @@ MIT-licensed [Agent Skills](https://agentskills.io) that give AI coding agents r
 
 ## Intro
 
-DegreeSign Skills is a curated collection of [Agent Skills](https://agentskills.io) — folder-based instructions and resources that AI coding agents load on demand. You bring the agent (Claude Code, Cursor, OpenCode, Gemini CLI, GitHub Copilot, Codex, and any other skills-compatible client); these skills bring the procedure.
+DegreeSign Skills is a curated collection of [Agent Skills](https://agentskills.io): folder-based instructions and resources that AI coding agents load on demand. You bring the agent (Claude Code, Cursor, OpenCode, Gemini CLI, GitHub Copilot, Codex, and any other skills-compatible client); these skills bring the procedure.
 
-Agent Skills use **progressive disclosure**: an agent reads only each skill's name and description until a task matches, then loads the full instructions. That keeps context small while making complex, multi-step work repeatable and auditable.
+Agent Skills use **progressive disclosure**: an agent reads only each skill's name and description until a task matches, then loads the full instructions. Here the root `degreesign` skill is the entry point; it routes a task to one of five sub-skills, which the agent reads only when needed. That keeps context small while making complex, multi-step work repeatable and auditable.
 
-This repository is the source of truth. Each skill lives in its own folder with a `SKILL.md` plus any scripts, indexes or reference docs it needs.
+This repository is the source of truth. The root `SKILL.md` is the entry skill and the `skills/<name>/` folders are its sub-skills, each with a `SKILL.md` plus any scripts, indexes or reference docs it needs.
 
 ## Why DegreeSign Skills
 
-- **Repeatable workflows** — turn multi-step tasks (fetch and rasterize an icon, cut a release) into a consistent, auditable procedure.
-- **Tiny context footprint** — progressive disclosure loads a skill only when a task matches it.
-- **Framework-agnostic** — plain Markdown and a `SKILL.md`; works with any skills-compatible agent, in any project language.
-- **Zero runtime dependencies** — the skills are instructions and optional Node helpers; nothing is installed into your app.
-- **Version-pinned** — clone a stable tag and install it locally, then upgrade on your schedule.
-- **Open and auditable** — MIT licensed, no account, no telemetry, no network calls beyond the public sources a skill documents.
+- **Repeatable workflows**: turn multi-step tasks (fetch and rasterize an icon, cut a release) into a consistent, auditable procedure.
+- **Tiny context footprint**: progressive disclosure loads a sub-skill only when a task matches it.
+- **Framework-agnostic**: plain Markdown and a `SKILL.md`; works with any skills-compatible agent, in any project language.
+- **Zero runtime dependencies**: the skills are instructions and optional Node helpers; nothing is installed into your app.
+- **Version-pinned**: clone a stable tag and install it locally, then upgrade on your schedule.
+- **Open and auditable**: MIT licensed, no account, no telemetry, and no network calls beyond the public sources a skill documents and the optional once-a-day update check.
 
 ## Install
 
-The recommended way is the [OpenSkills](https://github.com/numman-ali/openskills) CLI — a universal skills loader that installs [Agent Skills](https://agentskills.io) and writes an `<available_skills>` block into your `AGENTS.md`. Run it with your package manager of choice:
+Use the bundled installer. It copies the `degreesign` skill into an agent skills directory so any skills-compatible agent can load it. The default target is `~/.agents/skills`, which is a global agent-compatible location for skills-aware agents such as OpenCode.
 
 ```bash
-# npm
-npx openskills install degreesign/skills -g -u
+# from the published package
+npx @degreesign/skills
 
-# yarn
-yarn dlx openskills install degreesign/skills -g -u
-
-# pnpm
-pnpm dlx openskills install degreesign/skills -g -u
+# from a clone of this repository
+node bin/install.mjs
 ```
 
-Then sync the skills into your agent's `AGENTS.md`:
+Point it somewhere else or symlink instead of copying:
 
 ```bash
-npx openskills sync
+node bin/install.mjs --project          # install into ./.agents/skills
+node bin/install.mjs --target /path     # install into a custom directory
+node bin/install.mjs --link             # symlink the repo instead of copying
+node bin/install.mjs --list             # list the bundled sub-skills
 ```
 
-The trailing `-g -u` installs globally (`--global`) into the universal `.agent/skills/` folder (`--universal`) for multi-agent setups. Use `-g` alone for a global `~/.claude/skills` install, or `-u` alone for a project-local `.agent/skills/` install.
-
-Update or remove installed skills at any time:
-
-```bash
-npx openskills update
-npx openskills remove icons
-```
+The default install lands in `~/.agents/skills/degreesign/`. Re-running replaces the folder the installer owns. A folder it does not own needs `--force`. Every install writes a marker at `<target>/.degreesign-skills.json` recording the version, source and sub-skills; the update check reads it.
 
 ### As a package
 
-The same skill folders ship as a public npm package if you prefer to vendor them:
+The skill also ships as a public npm package:
 
 ```bash
 # npm
@@ -90,36 +83,43 @@ yarn add @degreesign/skills
 pnpm add @degreesign/skills
 ```
 
-Then point OpenSkills at the installed folder so your agent can load them:
+Then run the installed binary, which uses the same targets as the clone:
 
 ```bash
-npx openskills install ./node_modules/@degreesign/skills/skills -g -u
-npx openskills sync
+npx degreesign-skills
 ```
 
 ### Pin a version
 
 ```bash
-git clone --branch v1.5.0 --depth 1 https://github.com/degreesign/skills
-npx openskills install ./skills -g -u
-npx openskills sync
+git clone --branch v1.6.0 --depth 1 https://github.com/degreesign/skills
+node bin/install.mjs
 ```
+
+### Staying up to date
+
+The root skill documents a daily update check. Run it directly with:
+
+```bash
+node ~/.agents/skills/degreesign/check.mjs
+```
+
+It queries the npm registry at most once every 24 hours, caches the timestamp under the XDG cache directory so every session on the machine shares one timestamp, and prints an update command when a newer version exists. The skill asks before it updates.
 
 ## Quick Start
 
-Install the skills, sync them, and confirm what landed:
+Install the skill, then confirm what landed:
 
 ```bash
-npx openskills install degreesign/skills -y -g -u
-npx openskills sync
-npx openskills list
+npx @degreesign/skills
+node ~/.agents/skills/degreesign/check.mjs
 ```
 
-Your agent now sees the skills in `AGENTS.md` and loads one on demand with `npx openskills read <skill-name>`. Ask for the task in plain language:
+Your agent now sees the `degreesign` entry skill and loads it on demand. It routes a task to a sub-skill, so ask for the task in plain language:
 
 > Add a `search` icon to the toolbar and make sure it matches the other icons.
 
-The `icons` skill tells the agent to look up the real name in `icons.json`, fetch the official SVG, and save it where the project keeps icons. From a clone of this repo, that is equivalent to running:
+The `icons` sub-skill tells the agent to look up the real name in `icons.json`, fetch the official SVG, and save it where the project keeps icons. From a clone of this repo, that is equivalent to running:
 
 ```bash
 # 1. Find the right icon name
@@ -140,9 +140,11 @@ Trigger the release workflow the same way:
 
 > Cut a minor release, update the changelog and rewrite the README for discoverability.
 
-The `npm` skill walks the agent through versioning, the matching changelog header, build artifacts, `npm pack --dry-run`, publish, and tag.
+The `npm` sub-skill walks the agent through versioning, the matching changelog header, build artifacts, `npm pack --dry-run`, publish, and tag.
 
 ## Skills
+
+The `degreesign` entry skill routes to these five sub-skills. Each sub-skill is self-contained and lists its own supporting files.
 
 | Skill | Description | Use when |
 | ----- | ----------- | -------- |
@@ -271,13 +273,13 @@ Capabilities:
 ## FAQ
 
 **What is DegreeSign Skills?**
-A collection of [Agent Skills](https://agentskills.io): folders containing a `SKILL.md` and supporting files that AI coding agents load on demand to perform specific workflows.
+A collection of [Agent Skills](https://agentskills.io): folder-based instructions that AI coding agents load on demand. The repository ships one entry skill, `degreesign`, that routes a task to five self-contained sub-skills.
 
 **Is it free?**
 Yes. It is open source under the [MIT license](LICENSE). No account, subscription, or telemetry.
 
 **Does it work in Node and the browser?**
-The skills themselves are Markdown and JSON with no runtime, so they work anywhere. The bundled helper (`scripts/svg_to_png.mjs`) needs Node 18+, while the OpenSkills CLI and this package's `engines` require Node 20.6+ and Git. Nothing runs in the browser, and no browser build is shipped.
+The skills themselves are Markdown and JSON with no runtime, so they work anywhere. The icons helper (`skills/icons/scripts/svg_to_png.mjs`) needs Node 18+, and the installer, the update check and this package's `engines` require Node 20.6+. Cloning a pinned tag needs Git. Nothing runs in the browser, and no browser build is shipped.
 
 **Are there dependencies?**
 No required dependencies. The `icons` rasterizer opportunistically uses a project's existing `sharp`, then a native tool such as `rsvg-convert`, Inkscape or ImageMagick, and falls back to `npx sharp-cli`.
@@ -286,69 +288,75 @@ No required dependencies. The `icons` rasterizer opportunistically uses a projec
 Yes. Skills are language-agnostic, and the skill set covers TypeScript-friendly tasks such as npm packaging, `tsconfig.json` targets and `ts-loader` webpack builds. No type definitions are needed or shipped.
 
 **Which frameworks and agents are supported?**
-Any agent that reads `AGENTS.md` — Claude Code, Cursor, OpenCode, Gemini CLI, GitHub Copilot, VS Code, Codex, Windsurf, Aider and more — because [OpenSkills](https://github.com/numman-ali/openskills) writes the same `<available_skills>` block they already understand. The skills are framework-agnostic, so they apply to any web or Node project.
+Any agent that discovers skills from a skills directory such as `.agents/skills/`, `.claude/skills/` or `.opencode/skills/`, project or global. The installer writes to the location you choose and defaults to the global `~/.agents/skills`. The skills are framework-agnostic, so they apply to any web or Node project.
 
 **How do I pin a version?**
-Clone the tag and install from the local path: `git clone --branch v1.5.0 --depth 1 https://github.com/degreesign/skills && npx openskills install ./skills -g -u`.
+Clone the tag and install from the local path: `git clone --branch v1.6.0 --depth 1 https://github.com/degreesign/skills && node bin/install.mjs`.
 
 ## Layout
 
-Each skill lives in `skills/<name>/` and contains a `SKILL.md` with `name` and `description` frontmatter. Supporting files live beside it.
+The root `SKILL.md` is the entry skill; each sub-skill lives in `skills/<name>/` with its own `SKILL.md` and supporting files beside it.
 
 ```text
-skills/
-├── coding/
-│   ├── SKILL.md
-│   ├── typescript.md
-│   ├── css.md
-│   ├── dom.md
-│   ├── i18n.md
-│   ├── workflow.md
-│   ├── tickets.md
-│   └── ui-patterns.md
-├── icons/
-│   ├── SKILL.md
-│   ├── icons.json
-│   └── scripts/
-│       ├── svg_to_png.mjs
-│       └── svg_to_png.sh
-├── npm/
-│   ├── SKILL.md
-│   ├── readme-seo.md
-│   └── webpack.md
-├── server/
-│   ├── SKILL.md
-│   ├── structure.md
-│   ├── services.md
-│   ├── security.md
-│   ├── state.md
-│   ├── build.md
-│   └── deploy.md
-└── webapp/
-    ├── SKILL.md
-    ├── structure.md
-    ├── config.md
-    ├── performance.md
-    ├── discoverability.md
-    └── restructure.md
+.
+├── SKILL.md                 # entry skill and sub-skill index
+├── check.mjs                # once-a-day update check
+├── bin/
+│   └── install.mjs          # installer
+└── skills/
+    ├── coding/
+    │   ├── SKILL.md
+    │   ├── typescript.md
+    │   ├── css.md
+    │   ├── dom.md
+    │   ├── i18n.md
+    │   ├── workflow.md
+    │   ├── tickets.md
+    │   └── ui-patterns.md
+    ├── icons/
+    │   ├── SKILL.md
+    │   ├── icons.json
+    │   └── scripts/
+    │       ├── svg_to_png.mjs
+    │       └── svg_to_png.sh
+    ├── npm/
+    │   ├── SKILL.md
+    │   ├── readme-seo.md
+    │   └── webpack.md
+    ├── server/
+    │   ├── SKILL.md
+    │   ├── structure.md
+    │   ├── services.md
+    │   ├── security.md
+    │   ├── state.md
+    │   ├── build.md
+    │   └── deploy.md
+    └── webapp/
+        ├── SKILL.md
+        ├── structure.md
+        ├── config.md
+        ├── performance.md
+        ├── discoverability.md
+        └── restructure.md
 ```
 
 ## Adding a Skill
 
 1. Create `skills/<name>/SKILL.md` with `name` and `description` frontmatter.
 2. Add any supporting files beside it.
+3. Add the sub-skill to the index in the root `SKILL.md`.
 
 ## Versioning
 
-`VERSION` holds the current release. Tag the release (`v1.5.0`) so consumers can pin it by cloning the tag and installing locally. See [ChangeLog.md](ChangeLog.md) for release notes.
+`VERSION` holds the current release. Tag the release (`v1.6.0`) so consumers can pin it by cloning the tag and installing locally. See [ChangeLog.md](ChangeLog.md) for release notes.
 
 ## Keywords
 
-agent skills, ai coding agent, claude code skills, cursor skills, opencode skills, gemini cli skills, github copilot skills, agent skills collection, material symbols rounded, material design icons, icon finder, icon audit, svg to png, png icons, image rasterization, npm package release, npm publish, semantic versioning, changelog, git tag, webpack build, typescript package, readme seo, ai discoverability, coding conventions, code style, typescript style, css conventions, dom helpers, i18n, translation keys, web app structure, webapp performance, progressive web app, pwa, seo, open graph, web manifest, sitemap, robots txt, service worker, code splitting, asset caching, server structure, node backend, rest api, api server, http server, request listeners, request validation, state persistence, caching, rate limiting, node deployment, process supervision, reverse proxy, tls termination, pm2, apache
+agent skills, ai coding agent, claude code skills, cursor skills, opencode skills, gemini cli skills, github copilot skills, agent skills collection, agent skill installer, skills installer, skills cli, material symbols rounded, material design icons, icon finder, icon audit, svg to png, png icons, image rasterization, npm package release, npm publish, semantic versioning, changelog, git tag, webpack build, typescript package, readme seo, ai discoverability, coding conventions, code style, typescript style, css conventions, dom helpers, i18n, translation keys, web app structure, webapp performance, progressive web app, pwa, seo, open graph, web manifest, sitemap, robots txt, service worker, code splitting, asset caching, server structure, node backend, rest api, api server, http server, request listeners, request validation, state persistence, caching, rate limiting, node deployment, process supervision, reverse proxy, tls termination, pm2, apache
 
 ## Contributing
 
-Issues and pull requests are welcome. Keep each skill self-contained — a skill must not read files from another skill. Bump `VERSION`, update [ChangeLog.md](ChangeLog.md), and refresh the README table when adding a skill.
+Issues and pull requests are welcome. Keep each sub-skill self-contained: a sub-skill must not read files from another sub-skill, and only the root `SKILL.md` references the sub-skills. Bump `VERSION`, update [ChangeLog.md](ChangeLog.md), and refresh the README table when adding a sub-skill.
 
 ## License
 
