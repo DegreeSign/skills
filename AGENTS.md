@@ -23,6 +23,7 @@
 ## Writing a skill
 
 - Write skills generically. Never mention the projects, repos or packages that inspired a skill; use neutral example names such as `mylib`.
+- Keep every skill project-agnostic. A skill must apply to any project and must not assume a particular layout, language, tool, path or domain.
 - Research the real source material first, then generalise. Do not invent behaviour or APIs.
 - Keep the frontmatter `description` focused on the skill's most important aspects. Do not use colons.
 - When the scope is unclear, ask the user with concrete options before writing.

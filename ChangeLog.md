@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 1.7.0
+
+- Add the `todo` skill and move ticket rules into it from `coding`.
+
 ## 1.6.0
 
 - Ship the whole collection as one `degreesign` skill with sub-skills.

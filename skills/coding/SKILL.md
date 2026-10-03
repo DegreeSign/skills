@@ -1,6 +1,6 @@
 ---
 name: coding
-description: Apply house coding conventions when editing a repository, covering TypeScript, CSS, DOM access, i18n, tickets and release workflow. Use when writing or changing code, styles, copy or tickets in a project that follows these conventions.
+description: Apply house coding conventions when editing a repository, covering TypeScript, CSS, DOM access, i18n and release workflow. Use when writing or changing code, styles or copy in a project that follows these conventions.
 ---
 
 # Coding
@@ -12,7 +12,6 @@ House conventions for editing a repository. These rules apply on top of a projec
 - Writing or changing any TypeScript or JavaScript.
 - Adding or editing CSS or markup.
 - Touching user-facing copy or translation keys.
-- Adding, editing or closing a ticket.
 - Running a build, dev server, translate or publish command.
 
 ## Core principles
@@ -32,7 +31,6 @@ House conventions for editing a repository. These rules apply on top of a projec
 - `dom.md`: DOM access via `@degreesign/ui` and event handlers.
 - `i18n.md`: translation files, keys and auto-population.
 - `workflow.md`: build, deploy, translate and git index rules.
-- `tickets.md`: the ticket file format and shorthand.
 - `ui-patterns.md`: tooltips, icons via the `icons` skill, and vendored browser libraries.
 
 ## Workflow
