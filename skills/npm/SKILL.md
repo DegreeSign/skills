@@ -33,7 +33,8 @@ Release and maintain an npm package: versioning, changelog, committed build outp
 
 - Keep a changelog file (`ChangeLog.md` or `changes.md`) updated.
 - The changelog version header must always match the `version` in `package.json` exactly. Never use `Unreleased` or any placeholder.
-- Record external / public API changes only: new exports, changed types, breaking changes. Ignore internal refactors and renames.
+- The changelog documents exports only. Record external / public API changes: new exports, changed types, breaking changes.
+- Never add internal changes: refactors, renames, tests, tooling, dependencies or other non-export work.
 - One sentence per change, absolute need-to-know only. Never mention a type or symbol that is not publicly exported.
 
 ## Build artifacts
