@@ -1,6 +1,6 @@
 {
 	"name": "@degreesign/skills",
-	"version": "1.7.1",
+	"version": "1.7.2",
 	"description": "MIT-licensed Agent Skill that gives AI coding agents reusable workflows for Material Symbols icons, npm package releases, house coding conventions, high-performance discoverable web apps, maintainable Node backends and task backlog management, plus a daily update check, with no runtime or lock-in.",
 	"keywords": [
 		"agent-skills",
@@ -73,6 +73,10 @@
 	"bin": {
 		"degreesign-skills": "./bin/install.mjs"
 	},
+	"scripts": {
+		"build": "webpack && chmod +x bin/install.mjs",
+		"prepack": "yarn build"
+	},
 	"files": [
 		"SKILL.md",
 		"check.mjs",
@@ -91,5 +95,14 @@
 	"homepage": "https://degreesign.com",
 	"bugs": {
 		"url": "https://github.com/degreesign/skills/issues"
+	},
+	"devDependencies": {
+		"@types/node": "^26.6.4",
+		"terser-webpack-plugin": "^5.3.11",
+		"ts-loader": "^9.5.1",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.7.2",
+		"webpack": "^5.97.1",
+		"webpack-cli": "^6.0.1"
 	}
 }

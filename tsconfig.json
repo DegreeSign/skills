@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"target": "es2022",
+		"module": "nodenext",
+		"moduleResolution": "nodenext",
+		"rootDir": "src",
+		"outDir": "bin",
+		"strict": true,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"declaration": false,
+		"sourceMap": false,
+		"forceConsistentCasingInFileNames": true,
+		"types": ["node"]
+	},
+	"include": ["src/**/*.mts"]
+}
