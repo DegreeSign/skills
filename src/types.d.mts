@@ -14,6 +14,21 @@ export interface Options {
 	dryRun: boolean;
 	project: boolean;
 	target: string | null;
+	agents: boolean;
+	skip: string[];
+}
+
+export interface AgentContext {
+	target: string;
+	dryRun: boolean;
+}
+
+export interface Agent {
+	name: string;
+	label: string;
+	detect: () => boolean;
+	apply: (context: AgentContext) => string;
+	noop?: boolean;
 }
 
 export interface PackageManifest {

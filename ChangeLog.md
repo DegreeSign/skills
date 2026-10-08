@@ -1,5 +1,17 @@
 # ChangeLog
 
+## 1.8.0
+
+- The installer now offers to set up the agents it finds so they can read the skill.
+- OpenCode and Claude Code get a small settings update; all other agents already work.
+- Add `--no-agents` to skip setting up agents.
+- Add `--no-opencode` to skip OpenCode.
+- Add `--no-claude` to skip Claude Code.
+- Add `--no-codex` to skip Codex.
+- Add `--no-cursor` to skip Cursor.
+- Add `--no-copilot` to skip GitHub Copilot.
+- Add `--no-gemini` to skip Gemini CLI.
+
 ## 1.7.0
 
 - Add the `todo` skill and move ticket rules into it from `coding`.

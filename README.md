@@ -6,7 +6,7 @@ MIT-licensed [Agent Skill](https://agentskills.io) that gives AI coding agents o
 [![npm downloads](https://img.shields.io/npm/dm/@degreesign/skills.svg)](https://www.npmjs.com/package/@degreesign/skills)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-6E56CF.svg)](https://agentskills.io)
-[![Version](https://img.shields.io/badge/version-1.7.2-blue.svg)](ChangeLog.md)
+[![Version](https://img.shields.io/badge/version-1.8.0-blue.svg)](ChangeLog.md)
 [![Node](https://img.shields.io/badge/node-%3E%3D20.6-339933.svg)](https://nodejs.org)
 [![Skills](https://img.shields.io/badge/skills-6-2ea44f.svg)](#skills)
 
@@ -71,6 +71,19 @@ node bin/install.mjs --list             # list the bundled sub-skills
 
 The default install lands in `~/.agents/skills/degreesign/`. Re-running replaces the folder the installer owns. A folder it does not own needs `--force`. Every install writes a marker at `<target>/.degreesign-skills.json` recording the version, source and sub-skills; the update check reads it.
 
+### Configure agents
+
+After installing, the installer can set up the coding agents it finds on your machine so they can read the skill. It shows a checklist of the agents it found with everything ticked; press enter to accept. With no terminal to draw a list, it asks `Update agent configs? [y/n]` and defaults to yes.
+
+Most agents already read `~/.agents/skills` and need no change. Only OpenCode and Claude Code need a small settings update, which the installer applies for you and leaves your other settings alone. If a settings file cannot be read, it changes nothing and prints what to add by hand.
+
+Skip the setup entirely or skip a single agent:
+
+```bash
+node bin/install.mjs --no-agents     # skip all agents
+node bin/install.mjs --no-opencode   # skip one agent
+```
+
 ### As a package
 
 The skill also ships as a public npm package:
@@ -95,7 +108,7 @@ npx degreesign-skills
 ### Pin a version
 
 ```bash
-git clone --branch v1.7.2 --depth 1 https://github.com/degreesign/skills
+git clone --branch v1.8.0 --depth 1 https://github.com/degreesign/skills
 node bin/install.mjs
 ```
 
@@ -312,7 +325,7 @@ Yes. Skills are language-agnostic, and the skill set covers TypeScript-friendly 
 Any agent that discovers skills from a skills directory such as `.agents/skills/`, `.claude/skills/` or `.opencode/skills/`, project or global. The installer writes to the location you choose and defaults to the global `~/.agents/skills`. The skills are framework-agnostic, so they apply to any web or Node project.
 
 **How do I pin a version?**
-Clone the tag and install from the local path: `git clone --branch v1.7.2 --depth 1 https://github.com/degreesign/skills && node bin/install.mjs`.
+Clone the tag and install from the local path: `git clone --branch v1.8.0 --depth 1 https://github.com/degreesign/skills && node bin/install.mjs`.
 
 ## Layout
 
@@ -375,7 +388,7 @@ The root `SKILL.md` is the entry skill; each sub-skill lives in `skills/<name>/`
 
 ## Versioning
 
-`VERSION` holds the current release. Tag the release (`v1.7.2`) so consumers can pin it by cloning the tag and installing locally. See [ChangeLog.md](ChangeLog.md) for release notes.
+`VERSION` holds the current release. Tag the release (`v1.8.0`) so consumers can pin it by cloning the tag and installing locally. See [ChangeLog.md](ChangeLog.md) for release notes.
 
 ## Keywords
 
