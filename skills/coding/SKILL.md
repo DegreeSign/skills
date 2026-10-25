@@ -26,7 +26,7 @@ House conventions for editing a repository. These rules apply on top of a projec
 
 ## Topics
 
-- `typescript.md`: types, functions, strings, exports and naming.
+- `typescript.md`: types, functions, optimisation, strings, exports and naming.
 - `css.md`: selectors, properties, naming, sizing and colour.
 - `dom.md`: DOM access via `@degreesign/ui` and event handlers.
 - `i18n.md`: translation files, keys and auto-population.

@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 2.0.0
+
+- Add optimisation rules to the `coding` skill for collapsing pass-through helpers and consolidating duplicated logic.
+
 ## 1.9.0
 
 - The `npm` skill now requires every package to keep `docs/architecture.html` current with the source.

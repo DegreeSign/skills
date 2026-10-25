@@ -6,7 +6,7 @@ MIT-licensed [Agent Skill](https://agentskills.io) that gives AI coding agents o
 [![npm downloads](https://img.shields.io/npm/dm/@degreesign/skills.svg)](https://www.npmjs.com/package/@degreesign/skills)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-6E56CF.svg)](https://agentskills.io)
-[![Version](https://img.shields.io/badge/version-1.9.0-blue.svg)](ChangeLog.md)
+[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](ChangeLog.md)
 [![Node](https://img.shields.io/badge/node-%3E%3D20.6-339933.svg)](https://nodejs.org)
 [![Skills](https://img.shields.io/badge/skills-6-2ea44f.svg)](#skills)
 
@@ -109,7 +109,7 @@ npx degreesign-skills
 ### Pin a version
 
 ```bash
-git clone --branch v1.9.0 --depth 1 https://github.com/degreesign/skills
+git clone --branch v2.0.0 --depth 1 https://github.com/degreesign/skills
 node bin/install.mjs
 ```
 
@@ -225,7 +225,7 @@ Apply the house coding conventions when editing a repository: TypeScript, CSS, D
 | Export | Type | Description |
 | ------ | ---- | ----------- |
 | `SKILL.md` | Instructions | Entry point: when to use, core principles and the topic index. |
-| `typescript.md` | Reference | Types, functions, strings, exports, constants and imports. |
+| `typescript.md` | Reference | Types, functions, optimisation, strings, exports, constants and imports. |
 | `css.md` | Reference | Selectors, naming, placement and values. |
 | `dom.md` | Reference | Element access through `@degreesign/ui`, null safety and events. |
 | `i18n.md` | Reference | Translation source file, key naming, placeholders and hardcoded strings. |
@@ -236,7 +236,7 @@ Capabilities:
 
 | Capability | What it does |
 | ---------- | ------------ |
-| TypeScript | Keeps types, functions, strings and exports in the shared style. |
+| TypeScript | Keeps types, functions, strings and exports in the shared style, and removes pass-through helpers and duplicated logic. |
 | CSS | Enforces class-only selectors, naming, placement and token values. |
 | DOM access | Routes all element access through the `@degreesign/ui` helpers. |
 | i18n | Keeps copy in the translation source file with consistent keys. |
@@ -331,7 +331,7 @@ Yes. Skills are language-agnostic, and the skill set covers TypeScript-friendly 
 Any agent that discovers skills from a skills directory such as `.agents/skills/`, `.claude/skills/` or `.opencode/skills/`, project or global. The installer writes to the location you choose and defaults to the global `~/.agents/skills`. The skills are framework-agnostic, so they apply to any web or Node project.
 
 **How do I pin a version?**
-Clone the tag and install from the local path: `git clone --branch v1.9.0 --depth 1 https://github.com/degreesign/skills && node bin/install.mjs`.
+Clone the tag and install from the local path: `git clone --branch v2.0.0 --depth 1 https://github.com/degreesign/skills && node bin/install.mjs`.
 
 ## Layout
 
@@ -410,7 +410,7 @@ node skills/npm/scripts/check_architecture.mjs .
 
 ## Versioning
 
-`VERSION` holds the current release. Tag the release (`v1.9.0`) so consumers can pin it by cloning the tag and installing locally. See [ChangeLog.md](ChangeLog.md) for release notes.
+`VERSION` holds the current release. Tag the release (`v2.0.0`) so consumers can pin it by cloning the tag and installing locally. See [ChangeLog.md](ChangeLog.md) for release notes.
 
 ## Keywords
 

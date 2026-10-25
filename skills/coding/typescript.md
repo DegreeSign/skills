@@ -15,10 +15,16 @@
 ## Functions
 
 - Always use an object parameter when a function takes more than one input parameter.
-- Never extract a helper for logic that has a single call site. Inline it at that call site.
 - Only add a parameter that actually varies across call sites. Never parameterise a value that is always the same.
 - Never use `forEach`. Use a `for` loop.
 - Use early returns (`if (!x) return;`) instead of nested braces.
+
+## Optimisation
+
+- Keep no pass-through middle function. A helper with one caller that only forwards a call, reshapes a few fields or renames a parameter belongs inline in that caller.
+- Collapse a two-hop chain so `a -> wrapper -> b` becomes `a -> b`.
+- Keep a helper only when it is shared by two or more callers, exported, a real processing stage, or a required API method.
+- Audit the code for duplicated logic and consolidate it.
 
 ## Strings
 
