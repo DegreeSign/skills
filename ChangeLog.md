@@ -1,5 +1,10 @@
 # ChangeLog
 
+## 1.9.0
+
+- The `npm` skill now requires every package to keep `docs/architecture.html` current with the source.
+- Add the architecture map guide, an offline template and a Node checker for lines, relations, flows and self-containment.
+
 ## 1.8.0
 
 - The installer now offers to set up the agents it finds so they can read the skill.

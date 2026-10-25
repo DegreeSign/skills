@@ -1,6 +1,6 @@
 ---
 name: degreesign
-description: Route a task to the right DegreeSign sub-skill and keep the installed collection current. Use when a task needs Material Symbols icons, an npm package release, the house coding conventions, a TypeScript web app structure, a Node backend structure or task backlog management, or when asked to check for updates to the installed skills.
+description: Route a task to the right DegreeSign sub-skill and keep the installed collection current. Use when a task needs Material Symbols icons, an npm package release or architecture map, the house coding conventions, a TypeScript web app structure, a Node backend structure or task backlog management, or when asked to check for updates to the installed skills.
 ---
 
 # DegreeSign
@@ -18,7 +18,7 @@ One entry skill for the DegreeSign collection. It routes a task to the matching 
 Read the matching file before acting. Resolve each path relative to this `SKILL.md`.
 
 - `skills/icons/SKILL.md`: add, find, audit and rasterize Material Symbols Rounded icons.
-- `skills/npm/SKILL.md`: release and maintain an npm package.
+- `skills/npm/SKILL.md`: release and maintain an npm package, including its architecture map.
 - `skills/coding/SKILL.md`: apply the house coding conventions when editing a repository.
 - `skills/webapp/SKILL.md`: structure or restructure a TypeScript web app.
 - `skills/server/SKILL.md`: structure or restructure a Node backend.

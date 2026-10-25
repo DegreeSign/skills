@@ -1,12 +1,12 @@
 # DegreeSign Skills
 
-MIT-licensed [Agent Skill](https://agentskills.io) that gives AI coding agents one entry point and six reusable sub-skills for Material Symbols icons, npm package releases, house coding conventions, high-performance discoverable web apps, maintainable Node backends and task backlog management, with no runtime or lock-in.
+MIT-licensed [Agent Skill](https://agentskills.io) that gives AI coding agents one entry point and six reusable sub-skills for Material Symbols icons, npm package releases and architecture maps, house coding conventions, high-performance discoverable web apps, maintainable Node backends and task backlog management, with no runtime or lock-in.
 
 [![npm version](https://img.shields.io/npm/v/@degreesign/skills.svg)](https://www.npmjs.com/package/@degreesign/skills)
 [![npm downloads](https://img.shields.io/npm/dm/@degreesign/skills.svg)](https://www.npmjs.com/package/@degreesign/skills)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-6E56CF.svg)](https://agentskills.io)
-[![Version](https://img.shields.io/badge/version-1.8.0-blue.svg)](ChangeLog.md)
+[![Version](https://img.shields.io/badge/version-1.9.0-blue.svg)](ChangeLog.md)
 [![Node](https://img.shields.io/badge/node-%3E%3D20.6-339933.svg)](https://nodejs.org)
 [![Skills](https://img.shields.io/badge/skills-6-2ea44f.svg)](#skills)
 
@@ -25,6 +25,7 @@ MIT-licensed [Agent Skill](https://agentskills.io) that gives AI coding agents o
   - [`todo`](#todo)
 - [FAQ](#faq)
 - [Layout](#layout)
+- [Architecture](#architecture)
 - [Adding a Skill](#adding-a-skill)
 - [Versioning](#versioning)
 - [Keywords](#keywords)
@@ -108,7 +109,7 @@ npx degreesign-skills
 ### Pin a version
 
 ```bash
-git clone --branch v1.8.0 --depth 1 https://github.com/degreesign/skills
+git clone --branch v1.9.0 --depth 1 https://github.com/degreesign/skills
 node bin/install.mjs
 ```
 
@@ -165,7 +166,7 @@ The `degreesign` entry skill routes to these six sub-skills. Each sub-skill is s
 | Skill | Description | Use when |
 | ----- | ----------- | -------- |
 | [`icons`](#icons) | Add, find, audit and rasterize Material Symbols Rounded icons. | A page, component or asset needs an icon; you need an icon name; referenced icons are missing; or a PNG-only project needs a raster. |
-| [`npm`](#npm) | Release and maintain an npm package. | Creating, naming, versioning, publishing or tagging a package, or rewriting its README. |
+| [`npm`](#npm) | Release and maintain an npm package and its architecture map. | Creating, naming, versioning, publishing or tagging a package, rewriting its README, or mapping its architecture. |
 | [`coding`](#coding) | Apply house coding conventions when editing a repository. | Writing or changing code, styles or copy in a project that follows these conventions. |
 | [`webapp`](#webapp) | Structure or restructure a TypeScript web app for performance and discoverability. | Setting up a layout, adding or moving pages, wiring the build, or improving SEO, PWA and caching. |
 | [`server`](#server) | Structure or restructure a Node backend for performance and maintainability. | Creating or splitting a service, adding listeners, validating requests, persisting state, or building and deploying a backend. |
@@ -194,11 +195,14 @@ Capabilities:
 
 ### `npm`
 
-Release and maintain an npm package: naming, semantic versioning, changelog, committed build output, publishing, tagging, and README discoverability.
+Release and maintain an npm package: naming, semantic versioning, changelog, committed build output, publishing, tagging, README discoverability and the required architecture map.
 
 | Export | Type | Description |
 | ------ | ---- | ----------- |
-| `SKILL.md` | Instructions | Entry point: naming, versioning, changelog rules, build-artifact policy, minimal-diff guidance and the release checklist. |
+| `SKILL.md` | Instructions | Entry point: naming, versioning, changelog rules, build-artifact policy, the architecture requirement, minimal-diff guidance and the release checklist. |
+| `architecture.md` | Guide | The data model, build procedure, worked example, verification and update checklist for `docs/architecture.html`. |
+| `architecture.template.html` | Template | A self-contained interactive map with an empty data block, ready to copy into `docs/`. |
+| `scripts/check_architecture.mjs` | Node CLI | Validates file paths, line counts, node and edge ids, the root, flows and self-containment. |
 | `readme-seo.md` | Prompt | A ready-to-use prompt to rewrite a package README for SEO and AI discoverability. |
 | `webpack.md` | Guide | Choosing browser, Node or dual targets, folder layout, `package.json` entry fields, `tsconfig.json`, and webpack configuration. |
 
@@ -211,6 +215,8 @@ Capabilities:
 | Build artifacts | Protects committed `dist/` output and never builds on a whim. |
 | Release | Runs the checklist from version bump through `npm pack --dry-run`, publish and `git tag`. |
 | README SEO | Rewrites documentation for search engines and AI agents. |
+| Architecture map | Requires `docs/architecture.html` in every package and keeps it current with the source. |
+| Map check | Validates counts, lines, relations, flows and offline use. |
 
 ### `coding`
 
@@ -325,7 +331,7 @@ Yes. Skills are language-agnostic, and the skill set covers TypeScript-friendly 
 Any agent that discovers skills from a skills directory such as `.agents/skills/`, `.claude/skills/` or `.opencode/skills/`, project or global. The installer writes to the location you choose and defaults to the global `~/.agents/skills`. The skills are framework-agnostic, so they apply to any web or Node project.
 
 **How do I pin a version?**
-Clone the tag and install from the local path: `git clone --branch v1.8.0 --depth 1 https://github.com/degreesign/skills && node bin/install.mjs`.
+Clone the tag and install from the local path: `git clone --branch v1.9.0 --depth 1 https://github.com/degreesign/skills && node bin/install.mjs`.
 
 ## Layout
 
@@ -335,6 +341,8 @@ The root `SKILL.md` is the entry skill; each sub-skill lives in `skills/<name>/`
 .
 ├── SKILL.md                 # entry skill and sub-skill index
 ├── check.mjs                # once-a-day update check
+├── docs/
+│   └── architecture.html    # dependency map of this package
 ├── src/
 │   ├── install.mts          # installer source
 │   └── types.d.mts          # installer types
@@ -359,8 +367,12 @@ The root `SKILL.md` is the entry skill; each sub-skill lives in `skills/<name>/`
     │       └── svg_to_png.sh
     ├── npm/
     │   ├── SKILL.md
+    │   ├── architecture.md
+    │   ├── architecture.template.html
     │   ├── readme-seo.md
-    │   └── webpack.md
+    │   ├── webpack.md
+    │   └── scripts/
+    │       └── check_architecture.mjs
     ├── server/
     │   ├── SKILL.md
     │   ├── structure.md
@@ -380,6 +392,16 @@ The root `SKILL.md` is the entry skill; each sub-skill lives in `skills/<name>/`
         └── restructure.md
 ```
 
+## Architecture
+
+[`docs/architecture.html`](docs/architecture.html) maps the package as bands of files and functions with the typed relations between them, the install flow, the update-check flow and the target folder lifecycle. It is one self-contained file: inline CSS and JavaScript, no network request and no build step, so it opens straight from disk.
+
+The two public entries are the installer (`bin/install.mjs`, built from `src/install.mts`) and the once-a-day update check (`check.mjs`). Hover a node to brighten its neighbours, click to pin it, press `flow` to number a path, and run the checker after any change:
+
+```bash
+node skills/npm/scripts/check_architecture.mjs .
+```
+
 ## Adding a Skill
 
 1. Create `skills/<name>/SKILL.md` with `name` and `description` frontmatter.
@@ -388,15 +410,15 @@ The root `SKILL.md` is the entry skill; each sub-skill lives in `skills/<name>/`
 
 ## Versioning
 
-`VERSION` holds the current release. Tag the release (`v1.8.0`) so consumers can pin it by cloning the tag and installing locally. See [ChangeLog.md](ChangeLog.md) for release notes.
+`VERSION` holds the current release. Tag the release (`v1.9.0`) so consumers can pin it by cloning the tag and installing locally. See [ChangeLog.md](ChangeLog.md) for release notes.
 
 ## Keywords
 
-agent skills, ai coding agent, claude code skills, cursor skills, opencode skills, gemini cli skills, github copilot skills, agent skills collection, agent skill installer, skills installer, skills cli, material symbols rounded, material design icons, icon finder, icon audit, svg to png, png icons, image rasterization, npm package release, npm publish, semantic versioning, changelog, git tag, webpack build, typescript package, readme seo, ai discoverability, coding conventions, code style, typescript style, css conventions, dom helpers, i18n, translation keys, web app structure, webapp performance, progressive web app, pwa, seo, open graph, web manifest, sitemap, robots txt, service worker, code splitting, asset caching, server structure, node backend, rest api, api server, http server, request listeners, request validation, state persistence, caching, rate limiting, node deployment, process supervision, reverse proxy, tls termination, pm2, apache, task backlog, tickets, todo, issue tracking
+agent skills, ai coding agent, claude code skills, cursor skills, opencode skills, gemini cli skills, github copilot skills, agent skills collection, agent skill installer, skills installer, skills cli, material symbols rounded, material design icons, icon finder, icon audit, svg to png, png icons, image rasterization, npm package release, npm publish, semantic versioning, changelog, git tag, webpack build, typescript package, architecture map, architecture diagram, code map, dependency map, code structure, technical documentation, readme seo, ai discoverability, coding conventions, code style, typescript style, css conventions, dom helpers, i18n, translation keys, web app structure, webapp performance, progressive web app, pwa, seo, open graph, web manifest, sitemap, robots txt, service worker, code splitting, asset caching, server structure, node backend, rest api, api server, http server, request listeners, request validation, state persistence, caching, rate limiting, node deployment, process supervision, reverse proxy, tls termination, pm2, apache, task backlog, tickets, todo, issue tracking
 
 ## Contributing
 
-Issues and pull requests are welcome. Keep each sub-skill self-contained: a sub-skill must not read files from another sub-skill, and only the root `SKILL.md` references the sub-skills. Bump `VERSION`, update [ChangeLog.md](ChangeLog.md), and refresh the README table when adding a sub-skill. The installer is written in TypeScript; run `yarn build` (webpack bundles and minifies it) to regenerate `bin/install.mjs` after editing `src/install.mts`.
+Issues and pull requests are welcome. Keep each sub-skill self-contained: a sub-skill must not read files from another sub-skill, and only the root `SKILL.md` references the sub-skills. Bump `VERSION`, update [ChangeLog.md](ChangeLog.md), and refresh the README table when adding a sub-skill. Keep [`docs/architecture.html`](docs/architecture.html) in step with the source. The installer is written in TypeScript; run `yarn build` (webpack bundles and minifies it) to regenerate `bin/install.mjs` after editing `src/install.mts`.
 
 ## License
 

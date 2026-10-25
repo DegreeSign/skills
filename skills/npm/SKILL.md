@@ -1,6 +1,6 @@
 ---
 name: npm
-description: Release and maintain an npm package. Covers naming, versioning, changelog, building and publishing. Use when creating, versioning, publishing or tagging a package, or rewriting its README.
+description: Release and maintain an npm package. Covers naming, versioning, changelog, building, publishing and the architecture map. Use when creating, versioning, publishing or tagging a package, rewriting its README, or mapping its architecture.
 ---
 
 # npm
@@ -15,6 +15,7 @@ Release and maintain an npm package: versioning, changelog, committed build outp
 - Building or handling `dist/` artifacts.
 - Publishing to npm or tagging a release.
 - Rewriting a README for SEO and AI discoverability.
+- Creating or updating the package architecture map.
 
 ## Package name
 
@@ -48,6 +49,20 @@ Release and maintain an npm package: versioning, changelog, committed build outp
 
 See `webpack.md` for how to pick the browser, Node or both targets from the package's code, the folder layout, `package.json` entry fields (`main`, `module`, `browser`, `types`), `tsconfig.json`, and a dual browser + Node webpack config (plus the Node-only variant) built on `ts-loader`, `TerserPlugin` and `BannerPlugin`.
 
+## Architecture map
+
+Every package keeps a committed `docs/architecture.html`: one self-contained page that maps the package as bands of files and functions, the typed relations between them, the primary flow and any state machine.
+
+- Create the map when the package is created, not after the first release. Keep it at `docs/architecture.html`.
+- Build it from `architecture.template.html`. See `architecture.md` for the data model, the worked example, the build procedure and the update checklist.
+- Keep it a single offline HTML file: inline CSS and JavaScript, no CDN, no framework, no network request and no build step.
+- Map the public entry, every source module and every meaningful function with its real definition line and signature. Group files into bands in dependency order.
+- Record real relations only: build, call, event, store, type and inner. Add the primary flow and any enum-driven state machine.
+- Update the map in the same change as the code. A drifted line, line count or edge is a defect.
+- Verify with `node <skill>/scripts/check_architecture.mjs <package-root>` and open the file in a browser before a release.
+- Link the map from the README Architecture section. Keep it out of the `files` array unless the docs site is served from the tarball.
+- Never put secrets, tokens, private URLs or machine-specific paths in the file.
+
 ## Minimal diff
 
 - Keep the diff absolutely minimal. Touch only what the task requires.
@@ -64,11 +79,12 @@ See `webpack.md` for how to pick the browser, Node or both targets from the pack
 1. Bump `version` in `package.json` (only when requested).
 2. Update the changelog with a matching version header.
 3. Bump versioned CDN links in the README when the package also targets the web.
-4. Build and test.
-5. Inspect the publish contents with `npm pack --dry-run`.
-6. Publish: `npm publish` (add `--access public` for scoped packages).
-7. Tag the release: `git tag vX.Y.Z`.
-8. Push the commit and tag.
+4. Confirm `docs/architecture.html` matches the source: run the checker and recheck every changed line.
+5. Build and test.
+6. Inspect the publish contents with `npm pack --dry-run`.
+7. Publish: `npm publish` (add `--access public` for scoped packages).
+8. Tag the release: `git tag vX.Y.Z`.
+9. Push the commit and tag.
 
 ## README for SEO and AI discoverability
 
