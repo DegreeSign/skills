@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 2.1.0
+
+- Add the `llms` skill for publishing, auditing and fixing `llms.txt` and Markdown page versions.
+
 ## 2.0.0
 
 - Add optimisation rules to the `coding` skill for collapsing pass-through helpers and consolidating duplicated logic.

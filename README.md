@@ -1,14 +1,14 @@
 # DegreeSign Skills
 
-MIT-licensed [Agent Skill](https://agentskills.io) that gives AI coding agents one entry point and six reusable sub-skills for Material Symbols icons, npm package releases and architecture maps, house coding conventions, high-performance discoverable web apps, maintainable Node backends and task backlog management, with no runtime or lock-in.
+MIT-licensed [Agent Skill](https://agentskills.io) that gives AI coding agents one entry point and seven reusable sub-skills for Material Symbols icons, npm package releases and architecture maps, house coding conventions, high-performance discoverable web apps, maintainable Node backends, task backlog management and LLM discovery files, with no runtime or lock-in.
 
 [![npm version](https://img.shields.io/npm/v/@degreesign/skills.svg)](https://www.npmjs.com/package/@degreesign/skills)
 [![npm downloads](https://img.shields.io/npm/dm/@degreesign/skills.svg)](https://www.npmjs.com/package/@degreesign/skills)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-6E56CF.svg)](https://agentskills.io)
-[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](ChangeLog.md)
+[![Version](https://img.shields.io/badge/version-2.1.0-blue.svg)](ChangeLog.md)
 [![Node](https://img.shields.io/badge/node-%3E%3D20.6-339933.svg)](https://nodejs.org)
-[![Skills](https://img.shields.io/badge/skills-6-2ea44f.svg)](#skills)
+[![Skills](https://img.shields.io/badge/skills-7-2ea44f.svg)](#skills)
 
 ## Table of Contents
 
@@ -23,6 +23,7 @@ MIT-licensed [Agent Skill](https://agentskills.io) that gives AI coding agents o
   - [`webapp`](#webapp)
   - [`server`](#server)
   - [`todo`](#todo)
+  - [`llms`](#llms)
 - [FAQ](#faq)
 - [Layout](#layout)
 - [Architecture](#architecture)
@@ -36,7 +37,7 @@ MIT-licensed [Agent Skill](https://agentskills.io) that gives AI coding agents o
 
 DegreeSign Skills is a curated collection of [Agent Skills](https://agentskills.io): folder-based instructions and resources that AI coding agents load on demand. You bring the agent (Claude Code, Cursor, OpenCode, Gemini CLI, GitHub Copilot, Codex, and any other skills-compatible client); these skills bring the procedure.
 
-Agent Skills use **progressive disclosure**: an agent reads only each skill's name and description until a task matches, then loads the full instructions. Here the root `degreesign` skill is the entry point; it routes a task to one of six sub-skills, which the agent reads only when needed. That keeps context small while making complex, multi-step work repeatable and auditable.
+Agent Skills use **progressive disclosure**: an agent reads only each skill's name and description until a task matches, then loads the full instructions. Here the root `degreesign` skill is the entry point; it routes a task to one of seven sub-skills, which the agent reads only when needed. That keeps context small while making complex, multi-step work repeatable and auditable.
 
 This repository is the source of truth. The root `SKILL.md` is the entry skill and the `skills/<name>/` folders are its sub-skills, each with a `SKILL.md` plus any scripts, indexes or reference docs it needs.
 
@@ -109,7 +110,7 @@ npx degreesign-skills
 ### Pin a version
 
 ```bash
-git clone --branch v2.0.0 --depth 1 https://github.com/degreesign/skills
+git clone --branch v2.1.0 --depth 1 https://github.com/degreesign/skills
 node bin/install.mjs
 ```
 
@@ -161,7 +162,7 @@ The `npm` sub-skill walks the agent through versioning, the matching changelog h
 
 ## Skills
 
-The `degreesign` entry skill routes to these six sub-skills. Each sub-skill is self-contained and lists its own supporting files.
+The `degreesign` entry skill routes to these seven sub-skills. Each sub-skill is self-contained and lists its own supporting files.
 
 | Skill | Description | Use when |
 | ----- | ----------- | -------- |
@@ -171,6 +172,7 @@ The `degreesign` entry skill routes to these six sub-skills. Each sub-skill is s
 | [`webapp`](#webapp) | Structure or restructure a TypeScript web app for performance and discoverability. | Setting up a layout, adding or moving pages, wiring the build, or improving SEO, PWA and caching. |
 | [`server`](#server) | Structure or restructure a Node backend for performance and maintainability. | Creating or splitting a service, adding listeners, validating requests, persisting state, or building and deploying a backend. |
 | [`todo`](#todo) | Manage a project's task backlog and ticket file. | Listing, adding, ordering or closing tasks, updating tickets or reporting what is done. |
+| [`llms`](#llms) | Publish and audit `llms.txt` and Markdown page versions for AI agents. | Adding, auditing or repairing `llms.txt`, exposing Markdown versions, or fixing the Lighthouse agentic browsing audit. |
 
 ### `icons`
 
@@ -310,10 +312,33 @@ Capabilities:
 | Detail docs | Links a ticket to one implementation reference per feature. |
 | Done work | Derives done entries from commit history and merges repeats. |
 
+### `llms`
+
+Make a site easy for AI agents to discover and read with `llms.txt` and clean Markdown page versions. The skill follows the [llms.txt v2 proposal](https://llmstxt.org/) and the Lighthouse agentic browsing audit.
+
+| Export | Type | Description |
+| ------ | ---- | ----------- |
+| `SKILL.md` | Instructions | Entry point: principles, workflow, file shape, placement, delivery, verification and common failures. |
+| `format.md` | Reference | The v2 format, path scopes, relationships to other files and valid and invalid examples. |
+| `markdown.md` | Reference | Markdown URL forms, content rules, link relations and HTTP `Link` headers. |
+| `audit.md` | Guide | Lighthouse semantics, delivery, structure, coverage, link checks, agent testing and repair order. |
+| `scripts/check_llms.mjs` | Node CLI | Validates structure, size, placeholders and links with no dependencies. |
+
+Capabilities:
+
+| Capability | What it does |
+| ---------- | ------------ |
+| Author | Writes a curated `llms.txt` in the v2 order with an H1, summary, detail and file lists. |
+| Scope | Places root and path files and applies the most specific file. |
+| Markdown | Publishes clean page versions in either `.md` URL form. |
+| Discovery | Adds `alternate` and `describedby` links and HTTP `Link` headers. |
+| Audit | Checks delivery, structure, coverage and the Lighthouse audit. |
+| Validate | Runs the checker on a file or deployed URL with optional link probes. |
+
 ## FAQ
 
 **What is DegreeSign Skills?**
-A collection of [Agent Skills](https://agentskills.io): folder-based instructions that AI coding agents load on demand. The repository ships one entry skill, `degreesign`, that routes a task to six self-contained sub-skills.
+A collection of [Agent Skills](https://agentskills.io): folder-based instructions that AI coding agents load on demand. The repository ships one entry skill, `degreesign`, that routes a task to seven self-contained sub-skills.
 
 **Is it free?**
 Yes. It is open source under the [MIT license](LICENSE). No account, subscription, or telemetry.
@@ -331,7 +356,7 @@ Yes. Skills are language-agnostic, and the skill set covers TypeScript-friendly 
 Any agent that discovers skills from a skills directory such as `.agents/skills/`, `.claude/skills/` or `.opencode/skills/`, project or global. The installer writes to the location you choose and defaults to the global `~/.agents/skills`. The skills are framework-agnostic, so they apply to any web or Node project.
 
 **How do I pin a version?**
-Clone the tag and install from the local path: `git clone --branch v2.0.0 --depth 1 https://github.com/degreesign/skills && node bin/install.mjs`.
+Clone the tag and install from the local path: `git clone --branch v2.1.0 --depth 1 https://github.com/degreesign/skills && node bin/install.mjs`.
 
 ## Layout
 
@@ -365,6 +390,13 @@ The root `SKILL.md` is the entry skill; each sub-skill lives in `skills/<name>/`
     │   └── scripts/
     │       ├── svg_to_png.mjs
     │       └── svg_to_png.sh
+    ├── llms/
+    │   ├── SKILL.md
+    │   ├── audit.md
+    │   ├── format.md
+    │   ├── markdown.md
+    │   └── scripts/
+    │       └── check_llms.mjs
     ├── npm/
     │   ├── SKILL.md
     │   ├── architecture.md
@@ -410,11 +442,11 @@ node skills/npm/scripts/check_architecture.mjs .
 
 ## Versioning
 
-`VERSION` holds the current release. Tag the release (`v2.0.0`) so consumers can pin it by cloning the tag and installing locally. See [ChangeLog.md](ChangeLog.md) for release notes.
+`VERSION` holds the current release. Tag the release (`v2.1.0`) so consumers can pin it by cloning the tag and installing locally. See [ChangeLog.md](ChangeLog.md) for release notes.
 
 ## Keywords
 
-agent skills, ai coding agent, claude code skills, cursor skills, opencode skills, gemini cli skills, github copilot skills, agent skills collection, agent skill installer, skills installer, skills cli, material symbols rounded, material design icons, icon finder, icon audit, svg to png, png icons, image rasterization, npm package release, npm publish, semantic versioning, changelog, git tag, webpack build, typescript package, architecture map, architecture diagram, code map, dependency map, code structure, technical documentation, readme seo, ai discoverability, coding conventions, code style, typescript style, css conventions, dom helpers, i18n, translation keys, web app structure, webapp performance, progressive web app, pwa, seo, open graph, web manifest, sitemap, robots txt, service worker, code splitting, asset caching, server structure, node backend, rest api, api server, http server, request listeners, request validation, state persistence, caching, rate limiting, node deployment, process supervision, reverse proxy, tls termination, pm2, apache, task backlog, tickets, todo, issue tracking
+agent skills, ai coding agent, claude code skills, cursor skills, opencode skills, gemini cli skills, github copilot skills, agent skills collection, agent skill installer, skills installer, skills cli, material symbols rounded, material design icons, icon finder, icon audit, svg to png, png icons, image rasterization, npm package release, npm publish, semantic versioning, changelog, git tag, webpack build, typescript package, architecture map, architecture diagram, code map, dependency map, code structure, technical documentation, readme seo, ai discoverability, coding conventions, code style, typescript style, css conventions, dom helpers, i18n, translation keys, web app structure, webapp performance, progressive web app, pwa, seo, open graph, web manifest, sitemap, robots txt, service worker, code splitting, asset caching, server structure, node backend, rest api, api server, http server, request listeners, request validation, state persistence, caching, rate limiting, node deployment, process supervision, reverse proxy, tls termination, pm2, apache, task backlog, tickets, todo, issue tracking, llms.txt, llm discovery, llm friendly markdown, markdown page versions, link relations, describedby, agentic browsing, lighthouse audit
 
 ## Contributing
 

@@ -1,6 +1,6 @@
 ---
 name: degreesign
-description: Route a task to the right DegreeSign sub-skill and keep the installed collection current. Use when a task needs Material Symbols icons, an npm package release or architecture map, the house coding conventions, a TypeScript web app structure, a Node backend structure or task backlog management, or when asked to check for updates to the installed skills.
+description: Route a task to the right DegreeSign sub-skill and keep the installed collection current. Use when a task needs Material Symbols icons, an npm package release or architecture map, the house coding conventions, a TypeScript web app structure, a Node backend structure, task backlog management or LLM discovery files, or when asked to check for updates to the installed skills.
 ---
 
 # DegreeSign
@@ -23,6 +23,7 @@ Read the matching file before acting. Resolve each path relative to this `SKILL.
 - `skills/webapp/SKILL.md`: structure or restructure a TypeScript web app.
 - `skills/server/SKILL.md`: structure or restructure a Node backend.
 - `skills/todo/SKILL.md`: manage a project's task backlog and ticket file.
+- `skills/llms/SKILL.md`: publish, audit and fix `llms.txt` and Markdown page versions.
 
 Load only the sub-skill a task needs; do not read every sub-skill up front.
 

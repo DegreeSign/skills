@@ -53,7 +53,7 @@
 
 ## Commit messages
 
-- Use 2 to 4 words, alphabetic letters only (no digits or punctuation).
-- Use lowercase letters only.
+- Format a release commit as `version` followed by the release version, with no other words.
+- Name every other commit with 2 to 4 lowercase words, letters only.
 - Never commit or stage changes. Only the user commits or stages, unless the user gives an explicit order.
 - Never unstage changes either. Do not run `git reset`, `git restore --staged`, `git rm --cached`, or any other command that alters the index. The user alone controls the index.
