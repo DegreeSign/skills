@@ -7,6 +7,7 @@
  *
  * Options:
  *   --check-links      Request every absolute http(s) link
+ *   --check-headers    Assert content type and Link relations on Markdown URLs
  *   --strict           Exit non-zero on warnings too
  *   --max-bytes=<n>    Size warning threshold (default 102400)
  *   --timeout=<ms>     Per-link timeout in milliseconds (default 10000)
@@ -21,6 +22,12 @@ const USER_AGENT = 'llms-txt-check/1.0 (+https://llmstxt.org/)';
 const DEFAULT_MAX_BYTES = 102400;
 const DEFAULT_TIMEOUT = 10000;
 const CONCURRENCY = 8;
+const MARKDOWN_URL = /\.md(?:[?#]|$)/i;
+const TEXT_TYPE = /^text\/(?:plain|markdown)\b/i;
+const MARKDOWN_TYPE = /^text\/markdown\b/i;
+const UTF8_CHARSET = /charset\s*=\s*"?utf-8"?/i;
+const ESCAPED_REL = /rel\s*=\s*\\"/i;
+const DESCRIBEDBY_REL = /rel\s*=\s*"?describedby"?(?=[\s;,]|$)/i;
 
 const HELP = `Check an llms.txt file against the v2 proposal.
 
@@ -28,14 +35,18 @@ Usage: node check_llms.mjs <path-or-url> [options]
 
 Options:
   --check-links      Request every absolute http(s) link
+  --check-headers    Assert content type and Link relations on Markdown URLs
   --strict           Exit non-zero on warnings too
   --max-bytes=<n>    Size warning threshold (default ${DEFAULT_MAX_BYTES})
   --timeout=<ms>     Per-link timeout in milliseconds (default ${DEFAULT_TIMEOUT})
-  -h, --help         Show this help`;
+  -h, --help         Show this help
+
+--check-headers needs a URL and also requests every Markdown link.`;
 
 function parseArgs(argv) {
 	const options = {
 		checkLinks: false,
+		checkHeaders: false,
 		strict: false,
 		maxBytes: DEFAULT_MAX_BYTES,
 		timeout: DEFAULT_TIMEOUT,
@@ -48,6 +59,8 @@ function parseArgs(argv) {
 			process.exit(0);
 		} else if (arg === '--check-links') {
 			options.checkLinks = true;
+		} else if (arg === '--check-headers') {
+			options.checkHeaders = true;
 		} else if (arg === '--strict') {
 			options.strict = true;
 		} else if (arg.startsWith('--max-bytes=')) {
@@ -64,6 +77,9 @@ function parseArgs(argv) {
 	}
 
 	if (!options.source) fail('Pass a file or URL.');
+	if (options.checkHeaders && !isUrl(options.source)) {
+		fail('--check-headers needs a URL, not a file path.');
+	}
 	if (!Number.isFinite(options.maxBytes) || options.maxBytes <= 0) {
 		fail('--max-bytes must be a positive number.');
 	}
@@ -106,6 +122,59 @@ async function load(source) {
 
 function record(issues, level, line, message) {
 	issues.push({ level, line, message });
+}
+
+/** Content type checks for the file and its Markdown versions */
+function checkContentType({ line, url, contentType, markdown }) {
+	if (!TEXT_TYPE.test(contentType)) {
+		return [{
+			line,
+			level: 'error',
+			message: `served as ${contentType || 'no content type'}: ${url}`,
+		}];
+	}
+	const issues = [];
+	if (markdown && !MARKDOWN_TYPE.test(contentType)) {
+		issues.push({
+			line,
+			level: 'warn',
+			message: `Markdown URL served as ${contentType}: ${url}`,
+		});
+	}
+	if (!UTF8_CHARSET.test(contentType)) {
+		issues.push({
+			line,
+			level: 'warn',
+			message: `content type has no UTF-8 charset: ${url}`,
+		});
+	}
+	return issues;
+}
+
+/** Link relation checks on a Markdown version */
+function checkLinkRelations({ line, url, link }) {
+	if (!link) {
+		return [{
+			line,
+			level: 'warn',
+			message: `no Link header with describedby: ${url}`,
+		}];
+	}
+	if (ESCAPED_REL.test(link)) {
+		return [{
+			line,
+			level: 'error',
+			message: `Link header has escaped quotes: ${url}`,
+		}];
+	}
+	if (!DESCRIBEDBY_REL.test(link)) {
+		return [{
+			line,
+			level: 'warn',
+			message: `Link header has no describedby relation: ${url}`,
+		}];
+	}
+	return [];
 }
 
 function analyse(text, options) {
@@ -243,13 +312,16 @@ async function probe(entry, timeout) {
 				accept: 'text/markdown, text/plain;q=0.9, */*;q=0.1',
 			},
 		});
-		await response.body?.cancel();
 	} catch {
 		return { entry, level: 'error', message: 'request failed' };
 	}
 
+	const contentType = response.headers.get('content-type') || '';
+	const link = response.headers.get('link') || '';
+	await response.body?.cancel();
+
 	if (response.status >= 200 && response.status < 300) {
-		return { entry, level: 'ok' };
+		return { entry, level: 'ok', contentType, link };
 	}
 	const level = [401, 403, 429].includes(response.status) ? 'warn' : 'error';
 	const moved = response.url && response.url !== entry.url ? ` -> ${response.url}` : '';
@@ -288,7 +360,7 @@ async function main() {
 		`Shape   ${analysis.sections.length} H2 section(s), ${analysis.links.length} link(s)`,
 	);
 
-	if (result.contentType && /text\/html/i.test(result.contentType)) {
+	if (result.contentType && /text\/html/i.test(result.contentType) && !options.checkHeaders) {
 		analysis.issues.push({
 			level: 'warn',
 			line: 1,
@@ -301,9 +373,12 @@ async function main() {
 	}
 
 	let linkResults = [];
-	if (options.checkLinks && analysis.links.length) {
+	if (options.checkLinks || options.checkHeaders) {
 		const reachable = analysis.links.filter((entry) => /^https?:\/\//i.test(entry.url));
-		linkResults = await checkLinks(reachable, options.timeout);
+		const targets = options.checkLinks
+			? reachable
+			: reachable.filter((entry) => MARKDOWN_URL.test(entry.url));
+		linkResults = await checkLinks(targets, options.timeout);
 		for (const link of linkResults) {
 			if (link.level !== 'ok') {
 				printIssue({
@@ -313,15 +388,47 @@ async function main() {
 				});
 			}
 		}
-		console.log(`Links   ${linkResults.filter((link) => link.level === 'ok').length} reachable`);
+		if (options.checkLinks) {
+			console.log(`Links   ${linkResults.filter((link) => link.level === 'ok').length} reachable`);
+		}
+	}
+
+	const headerIssues = [];
+	if (options.checkHeaders) {
+		headerIssues.push(...checkContentType({
+			line: 1,
+			url: options.source,
+			contentType: result.contentType,
+			markdown: false,
+		}));
+		const markdownLinks = linkResults.filter(
+			(link) => link.level === 'ok' && MARKDOWN_URL.test(link.entry.url),
+		);
+		for (const link of markdownLinks) {
+			headerIssues.push(...checkContentType({
+				line: link.entry.line,
+				url: link.entry.url,
+				contentType: link.contentType,
+				markdown: true,
+			}));
+			headerIssues.push(...checkLinkRelations({
+				line: link.entry.line,
+				url: link.entry.url,
+				link: link.link,
+			}));
+		}
+		for (const issue of headerIssues) printIssue(issue);
+		console.log(`Headers ${markdownLinks.length} Markdown URL(s) checked`);
 	}
 
 	const errors =
 		analysis.issues.filter((issue) => issue.level === 'error').length +
-		linkResults.filter((link) => link.level === 'error').length;
+		linkResults.filter((link) => link.level === 'error').length +
+		headerIssues.filter((issue) => issue.level === 'error').length;
 	const warnings =
 		analysis.issues.filter((issue) => issue.level === 'warn').length +
-		linkResults.filter((link) => link.level === 'warn').length;
+		linkResults.filter((link) => link.level === 'warn').length +
+		headerIssues.filter((issue) => issue.level === 'warn').length;
 
 	console.log(`\n${errors} error(s), ${warnings} warning(s)`);
 	process.exit(errors > 0 || (options.strict && warnings > 0) ? 1 : 0);

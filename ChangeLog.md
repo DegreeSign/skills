@@ -1,5 +1,10 @@
 # ChangeLog
 
+## 2.1.1
+
+- The `llms` checker verifies media types, charsets and `Link` relations with `--check-headers`.
+- The `llms` skill documents server directives that keep `Link` header values free of escape characters.
+
 ## 2.1.0
 
 - Add the `llms` skill for publishing, auditing and fixing `llms.txt` and Markdown page versions.

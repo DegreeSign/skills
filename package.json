@@ -1,6 +1,6 @@
 {
 	"name": "@degreesign/skills",
-	"version": "2.1.0",
+	"version": "2.1.1",
 	"description": "MIT-licensed Agent Skill that gives AI coding agents reusable workflows for Material Symbols icons, npm package releases and architecture maps, house coding conventions, high-performance discoverable web apps, maintainable Node backends, task backlog management and LLM discovery files, plus a daily update check, with no runtime or lock-in.",
 	"keywords": [
 		"agent-skills",

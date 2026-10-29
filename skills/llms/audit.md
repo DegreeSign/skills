@@ -46,6 +46,7 @@ Confirm:
 
 - The status is `200`, not a redirect chain or a `404`.
 - The content type is `text/plain` or `text/markdown`, not `text/html`.
+- The content type names the UTF-8 charset.
 - The body starts with `# ` and not `<!doctype html>`.
 - No cookie, login or JavaScript is required.
 - The body is UTF-8 and has no replacement characters.
@@ -54,6 +55,16 @@ Confirm:
 
 A `200` that returns the single-page-app shell is the most common silent
 failure. Check the body, not just the status.
+
+Check a Markdown version as well:
+
+```bash
+curl -sSI https://example.com/guide.md
+```
+
+- The content type is `text/markdown; charset=UTF-8`.
+- Any `Link` header names the relation without escape characters, such as
+  `rel="describedby"`.
 
 ## Structure checks
 
@@ -88,6 +99,20 @@ node <skill>/scripts/check_llms.mjs ./public/llms.txt --check-links
 For a large site, run the full link check on a schedule and the structural
 check on every build. External links change without warning, so do not make a
 release depend on every third party.
+
+## Header checks
+
+```bash
+node <skill>/scripts/check_llms.mjs https://example.com/llms.txt --check-headers
+```
+
+- The file and every Markdown link are requested over the network.
+- Passes when the media type is textual, the charset is UTF-8 and each
+  Markdown URL advertises the `describedby` relation.
+- Fails on a non-text media type or a `Link` value with escaped quotes.
+- Warns when the charset is missing, a Markdown URL is served as `text/plain`,
+  or a Markdown URL sends no `describedby` relation.
+- Needs a URL; a local file has no response headers.
 
 ## Coverage checks
 

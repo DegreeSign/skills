@@ -88,6 +88,8 @@ Link: </guide.html.md>; rel="alternate"; type="text/markdown", </llms.txt>; rel=
 - Send `alternate` only where a distinct Markdown version exists.
 - Use absolute paths or full URLs. Keep the values quoted with `<>`.
 - Check that a proxy does not strip the header.
+- Confirm the relation name arrives without escape characters. A value such as
+  `rel=\"describedby\"` is invalid; the backslashes are sent literally.
 
 ## Placement
 
@@ -109,7 +111,8 @@ routes at request time, and some mount the site under a base path.
 
 - Route the `.md` suffix to the generator or the stored Markdown file, before
   any single-page-app fallback.
-- Map it to `text/markdown; charset=utf-8`.
+- Map it to `text/markdown; charset=utf-8` in the response header, not through
+  extension-to-charset mapping, which hosts may ignore.
 - Do not require a rewrite for every page if a static file can be emitted at
   build time.
 - Exclude `/llms.txt` and the Markdown files from HTML fallbacks, auth middle
@@ -117,6 +120,31 @@ routes at request time, and some mount the site under a base path.
 - Add caching and compression like any other text asset.
 - Keep the header and the HTML links in step; do not advertise a file that
   does not exist.
+- Inspect the deployed response headers with a request that prints them.
+
+Directive syntax is host specific. Set the media type, the charset and the
+header explicitly, and keep backslash escapes out of the header value.
+Apache-style configuration:
+
+```apache
+<FilesMatch "\.md$">
+  Header set Content-Type "text/markdown; charset=UTF-8"
+  Header set Link "</llms.txt>; rel=describedby"
+</FilesMatch>
+```
+
+- A directive that passes `\"` through places the backslashes in the sent
+  header, so the relation no longer parses. Use an unquoted token or quote the
+  whole value with single quotes and keep the double quotes for the relation:
+
+  ```apache
+  Header set Link '</llms.txt>; rel="describedby"'
+  ```
+
+- Set the charset on `Content-Type`. A separate charset directive may be
+  ignored for a custom extension.
+- Confirm the result on a deployed Markdown URL with a request that prints
+  response headers.
 
 ## Verification
 

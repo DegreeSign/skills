@@ -138,6 +138,8 @@ See `markdown.md` for naming, content rules and server configuration.
   with `200` is a failure even though the status looks healthy.
 - Serve `text/plain` or `text/markdown` as UTF-8. Either is acceptable; pick
   one and keep it stable.
+- Set the charset on the content type, send the `Link` relations, and confirm
+  both on the deployed URL.
 - Never require a cookie, a login, JavaScript or a client-side router.
 - Do not block the file with robots rules, bot protection or a WAF.
 - Keep redirects short and permanent. Do not point the file at another host
@@ -151,12 +153,15 @@ Run the bundled checker against the deployed URL or the built file:
 
 ```bash
 node <skill>/scripts/check_llms.mjs https://example.com/llms.txt
+node <skill>/scripts/check_llms.mjs https://example.com/llms.txt --check-headers
 node <skill>/scripts/check_llms.mjs ./public/llms.txt --check-links
 node <skill>/scripts/check_llms.mjs ./public/llms.txt --strict
 ```
 
 It checks the H1, summary, structure, file-list shape, notes, duplicate and
-placeholder URLs, size and, with `--check-links`, every link. It exits
+placeholder URLs, size and, with `--check-links`, every link. With
+`--check-headers` it requests the file and every Markdown link, then asserts
+the media type, the UTF-8 charset and the `Link` relations on each. It exits
 non-zero on errors, or on warnings too with `--strict`.
 
 ## Lighthouse audit
@@ -186,6 +191,8 @@ before changing content: most failures are routing, not Markdown.
 | Many broken links | Content moved without redirects | Update the link or add a permanent redirect |
 | File keeps growing | Every page and heading was added | Keep the root curated and move detail to path files |
 | Markdown links return HTML | `.md` variants were never published | Generate them in the build or at the CDN |
+| `Link` header shows `rel=\"describedby\"` | The server directive escaped the quotes | Remove the escapes or quote the value with single quotes |
+| Markdown served as `text/html` or without a charset | The extension hits the HTML fallback or the charset mapping is ignored | Set `text/markdown; charset=UTF-8` on the response |
 
 ## Anti-patterns
 
@@ -205,4 +212,4 @@ before changing content: most failures are routing, not Markdown.
 | `format.md` | The v2 format, scopes and worked valid and invalid examples. |
 | `markdown.md` | Markdown page versions, link relations and headers. |
 | `audit.md` | Manual audit, Lighthouse, link checks and repair steps. |
-| `scripts/check_llms.mjs` | Dependency-free structural and link checker. |
+| `scripts/check_llms.mjs` | Dependency-free structural, link and header checker. |

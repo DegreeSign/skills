@@ -6,7 +6,7 @@ MIT-licensed [Agent Skill](https://agentskills.io) that gives AI coding agents o
 [![npm downloads](https://img.shields.io/npm/dm/@degreesign/skills.svg)](https://www.npmjs.com/package/@degreesign/skills)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-6E56CF.svg)](https://agentskills.io)
-[![Version](https://img.shields.io/badge/version-2.1.0-blue.svg)](ChangeLog.md)
+[![Version](https://img.shields.io/badge/version-2.1.1-blue.svg)](ChangeLog.md)
 [![Node](https://img.shields.io/badge/node-%3E%3D20.6-339933.svg)](https://nodejs.org)
 [![Skills](https://img.shields.io/badge/skills-7-2ea44f.svg)](#skills)
 
@@ -322,7 +322,7 @@ Make a site easy for AI agents to discover and read with `llms.txt` and clean Ma
 | `format.md` | Reference | The v2 format, path scopes, relationships to other files and valid and invalid examples. |
 | `markdown.md` | Reference | Markdown URL forms, content rules, link relations and HTTP `Link` headers. |
 | `audit.md` | Guide | Lighthouse semantics, delivery, structure, coverage, link checks, agent testing and repair order. |
-| `scripts/check_llms.mjs` | Node CLI | Validates structure, size, placeholders and links with no dependencies. |
+| `scripts/check_llms.mjs` | Node CLI | Validates structure, size, placeholders, links and delivery headers with no dependencies. |
 
 Capabilities:
 
@@ -333,7 +333,7 @@ Capabilities:
 | Markdown | Publishes clean page versions in either `.md` URL form. |
 | Discovery | Adds `alternate` and `describedby` links and HTTP `Link` headers. |
 | Audit | Checks delivery, structure, coverage and the Lighthouse audit. |
-| Validate | Runs the checker on a file or deployed URL with optional link probes. |
+| Validate | Runs the checker on a file or deployed URL with optional link and header probes. |
 
 ## FAQ
 
