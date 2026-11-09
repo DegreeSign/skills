@@ -1,11 +1,11 @@
 ---
 name: npm
-description: Release and maintain an npm package. Covers naming, versioning, changelog, building, publishing and the architecture map. Use when creating, versioning, publishing or tagging a package, rewriting its README, or mapping its architecture.
+description: Release and maintain an npm package. Covers naming, versioning, changelog, building, publishing, the showcase page and the architecture map. Use when creating, versioning, publishing or tagging a package, rewriting its README, building its showcase page, or mapping its architecture.
 ---
 
 # npm
 
-Release and maintain an npm package: versioning, changelog, committed build output, publishing, tagging and README discoverability.
+Release and maintain an npm package: versioning, changelog, committed build output, publishing, tagging, README discoverability, the showcase page and the architecture map.
 
 ## When to use
 
@@ -15,6 +15,7 @@ Release and maintain an npm package: versioning, changelog, committed build outp
 - Building or handling `dist/` artifacts.
 - Publishing to npm or tagging a release.
 - Rewriting a README for SEO and AI discoverability.
+- Creating or updating the package showcase page.
 - Creating or updating the package architecture map.
 
 ## Package name
@@ -60,7 +61,24 @@ Every package keeps a committed `docs/architecture.html`: one self-contained pag
 - Record real relations only: build, call, event, store, type and inner. Add the primary flow and any enum-driven state machine.
 - Update the map in the same change as the code. A drifted line, line count or edge is a defect.
 - Verify with `node <skill>/scripts/check_architecture.mjs <package-root>` and open the file in a browser before a release.
-- Link the map from the README Architecture section. Keep it out of the `files` array unless the docs site is served from the tarball.
+- Link the map from the README Architecture section and from the showcase page. Keep it out of the `files` array unless the docs site is served from the tarball.
+- Never put secrets, tokens, private URLs or machine-specific paths in the file.
+
+## Showcase page
+
+Every package keeps a committed `docs/index.html`: a landing page with the package promise, a tiny demo, install steps, a link to `docs/architecture.html` and, when approved, a production case study.
+
+- Create the page when the package is created, not after the first release. Keep it at `docs/index.html`.
+- Build it from the outline, starter skeleton and checks in `showcase.md`.
+- Keep it one HTML file with inline CSS and JavaScript. External runtime assets such as a CDN bundle, screenshots and a logo are allowed; no build step and no framework.
+- Include a tiny demo that shows the core idea in one screen and uses the public API. If the full flow needs weights, a worker or a microphone, link to a fuller `docs/demo.html` instead of loading it on page load.
+- Link the full architecture map from the page: `href="architecture.html"` with `target="_blank" rel="noreferrer"`.
+- Ask the user whether a production project uses the package and should appear as a case study. Never invent a case study.
+- When approved, use the real product name, logo, URL and actual screenshots. Capture the real flow in a headless browser; never use mockups, fabricated metrics or invented quotes.
+- Keep the page responsive, accessible and calm. Respect `prefers-reduced-motion`.
+- Link the showcase from the README Demo section.
+- Verify at desktop and mobile widths, check every link and confirm the demo fails gracefully when its bundle is unavailable.
+- Keep `docs/` out of the npm `files` array unless the docs site is served from the tarball.
 - Never put secrets, tokens, private URLs or machine-specific paths in the file.
 
 ## Minimal diff
@@ -80,11 +98,12 @@ Every package keeps a committed `docs/architecture.html`: one self-contained pag
 2. Update the changelog with a matching version header.
 3. Bump versioned CDN links in the README when the package also targets the web.
 4. Confirm `docs/architecture.html` matches the source: run the checker and recheck every changed line.
-5. Build and test.
-6. Inspect the publish contents with `npm pack --dry-run`.
-7. Publish: `npm publish` (add `--access public` for scoped packages).
-8. Tag the release: `git tag vX.Y.Z`.
-9. Push the commit and tag.
+5. Confirm `docs/index.html` links to the demo and `docs/architecture.html`, and that any case study still matches the product.
+6. Build and test.
+7. Inspect the publish contents with `npm pack --dry-run`.
+8. Publish: `npm publish` (add `--access public` for scoped packages).
+9. Tag the release: `git tag vX.Y.Z`.
+10. Push the commit and tag.
 
 ## README for SEO and AI discoverability
 

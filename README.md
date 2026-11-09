@@ -1,12 +1,12 @@
 # DegreeSign Skills
 
-MIT-licensed [Agent Skill](https://agentskills.io) that gives AI coding agents one entry point and seven reusable sub-skills for Material Symbols icons, npm package releases and architecture maps, house coding conventions, high-performance discoverable web apps, maintainable Node backends, task backlog management and LLM discovery files, with no runtime or lock-in.
+MIT-licensed [Agent Skill](https://agentskills.io) that gives AI coding agents one entry point and seven reusable sub-skills for Material Symbols icons, npm package releases, showcase pages and architecture maps, house coding conventions, high-performance discoverable web apps, maintainable Node backends, task backlog management and LLM discovery files, with no runtime or lock-in.
 
 [![npm version](https://img.shields.io/npm/v/@degreesign/skills.svg)](https://www.npmjs.com/package/@degreesign/skills)
 [![npm downloads](https://img.shields.io/npm/dm/@degreesign/skills.svg)](https://www.npmjs.com/package/@degreesign/skills)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-6E56CF.svg)](https://agentskills.io)
-[![Version](https://img.shields.io/badge/version-2.1.1-blue.svg)](ChangeLog.md)
+[![Version](https://img.shields.io/badge/version-2.2.0-blue.svg)](ChangeLog.md)
 [![Node](https://img.shields.io/badge/node-%3E%3D20.6-339933.svg)](https://nodejs.org)
 [![Skills](https://img.shields.io/badge/skills-7-2ea44f.svg)](#skills)
 
@@ -110,7 +110,7 @@ npx degreesign-skills
 ### Pin a version
 
 ```bash
-git clone --branch v2.1.0 --depth 1 https://github.com/degreesign/skills
+git clone --branch v2.2.0 --depth 1 https://github.com/degreesign/skills
 node bin/install.mjs
 ```
 
@@ -158,7 +158,7 @@ Trigger the release workflow the same way:
 
 > Cut a minor release, update the changelog and rewrite the README for discoverability.
 
-The `npm` sub-skill walks the agent through versioning, the matching changelog header, build artifacts, `npm pack --dry-run`, publish, and tag.
+The `npm` sub-skill walks the agent through versioning, the matching changelog header, build artifacts, the showcase page, `npm pack --dry-run`, publish, and tag.
 
 ## Skills
 
@@ -167,7 +167,7 @@ The `degreesign` entry skill routes to these seven sub-skills. Each sub-skill is
 | Skill | Description | Use when |
 | ----- | ----------- | -------- |
 | [`icons`](#icons) | Add, find, audit and rasterize Material Symbols Rounded icons. | A page, component or asset needs an icon; you need an icon name; referenced icons are missing; or a PNG-only project needs a raster. |
-| [`npm`](#npm) | Release and maintain an npm package and its architecture map. | Creating, naming, versioning, publishing or tagging a package, rewriting its README, or mapping its architecture. |
+| [`npm`](#npm) | Release and maintain an npm package, its showcase page and its architecture map. | Creating, naming, versioning, publishing or tagging a package, rewriting its README, building its showcase page, or mapping its architecture. |
 | [`coding`](#coding) | Apply house coding conventions when editing a repository. | Writing or changing code, styles or copy in a project that follows these conventions. |
 | [`webapp`](#webapp) | Structure or restructure a TypeScript web app for performance and discoverability. | Setting up a layout, adding or moving pages, wiring the build, or improving SEO, PWA and caching. |
 | [`server`](#server) | Structure or restructure a Node backend for performance and maintainability. | Creating or splitting a service, adding listeners, validating requests, persisting state, or building and deploying a backend. |
@@ -197,16 +197,17 @@ Capabilities:
 
 ### `npm`
 
-Release and maintain an npm package: naming, semantic versioning, changelog, committed build output, publishing, tagging, README discoverability and the required architecture map.
+Release and maintain an npm package: naming, semantic versioning, changelog, committed build output, publishing, tagging, README discoverability, the showcase page and the required architecture map.
 
 | Export | Type | Description |
 | ------ | ---- | ----------- |
-| `SKILL.md` | Instructions | Entry point: naming, versioning, changelog rules, build-artifact policy, the architecture requirement, minimal-diff guidance and the release checklist. |
+| `SKILL.md` | Instructions | Entry point: naming, versioning, changelog rules, build-artifact policy, the architecture and showcase requirements, minimal-diff guidance and the release checklist. |
 | `architecture.md` | Guide | The data model, build procedure, worked example, verification and update checklist for `docs/architecture.html`. |
 | `architecture.template.html` | Template | A self-contained interactive map with an empty data block, ready to copy into `docs/`. |
 | `scripts/check_architecture.mjs` | Node CLI | Validates file paths, line counts, node and edge ids, the root, flows and self-containment. |
 | `readme-seo.md` | Prompt | A ready-to-use prompt to rewrite a package README for SEO and AI discoverability. |
 | `webpack.md` | Guide | Choosing browser, Node or dual targets, folder layout, `package.json` entry fields, `tsconfig.json`, and webpack configuration. |
+| `showcase.md` | Guide | The showcase page outline, tiny demo, optional case study, design notes, starter skeleton and verification checks. |
 
 Capabilities:
 
@@ -218,6 +219,8 @@ Capabilities:
 | Release | Runs the checklist from version bump through `npm pack --dry-run`, publish and `git tag`. |
 | README SEO | Rewrites documentation for search engines and AI agents. |
 | Architecture map | Requires `docs/architecture.html` in every package and keeps it current with the source. |
+| Showcase page | Requires a committed `docs/index.html` with a tiny demo and an optional production case study. |
+| Case study | Asks whether a production project uses the package, then uses its real logo, URL and screenshots. |
 | Map check | Validates counts, lines, relations, flows and offline use. |
 
 ### `coding`
@@ -356,7 +359,7 @@ Yes. Skills are language-agnostic, and the skill set covers TypeScript-friendly 
 Any agent that discovers skills from a skills directory such as `.agents/skills/`, `.claude/skills/` or `.opencode/skills/`, project or global. The installer writes to the location you choose and defaults to the global `~/.agents/skills`. The skills are framework-agnostic, so they apply to any web or Node project.
 
 **How do I pin a version?**
-Clone the tag and install from the local path: `git clone --branch v2.1.0 --depth 1 https://github.com/degreesign/skills && node bin/install.mjs`.
+Clone the tag and install from the local path: `git clone --branch v2.2.0 --depth 1 https://github.com/degreesign/skills && node bin/install.mjs`.
 
 ## Layout
 
@@ -402,6 +405,7 @@ The root `SKILL.md` is the entry skill; each sub-skill lives in `skills/<name>/`
     │   ├── architecture.md
     │   ├── architecture.template.html
     │   ├── readme-seo.md
+    │   ├── showcase.md
     │   ├── webpack.md
     │   └── scripts/
     │       └── check_architecture.mjs
@@ -442,11 +446,11 @@ node skills/npm/scripts/check_architecture.mjs .
 
 ## Versioning
 
-`VERSION` holds the current release. Tag the release (`v2.1.0`) so consumers can pin it by cloning the tag and installing locally. See [ChangeLog.md](ChangeLog.md) for release notes.
+`VERSION` holds the current release. Tag the release (`v2.2.0`) so consumers can pin it by cloning the tag and installing locally. See [ChangeLog.md](ChangeLog.md) for release notes.
 
 ## Keywords
 
-agent skills, ai coding agent, claude code skills, cursor skills, opencode skills, gemini cli skills, github copilot skills, agent skills collection, agent skill installer, skills installer, skills cli, material symbols rounded, material design icons, icon finder, icon audit, svg to png, png icons, image rasterization, npm package release, npm publish, semantic versioning, changelog, git tag, webpack build, typescript package, architecture map, architecture diagram, code map, dependency map, code structure, technical documentation, readme seo, ai discoverability, coding conventions, code style, typescript style, css conventions, dom helpers, i18n, translation keys, web app structure, webapp performance, progressive web app, pwa, seo, open graph, web manifest, sitemap, robots txt, service worker, code splitting, asset caching, server structure, node backend, rest api, api server, http server, request listeners, request validation, state persistence, caching, rate limiting, node deployment, process supervision, reverse proxy, tls termination, pm2, apache, task backlog, tickets, todo, issue tracking, llms.txt, llm discovery, llm friendly markdown, markdown page versions, link relations, describedby, agentic browsing, lighthouse audit
+agent skills, ai coding agent, claude code skills, cursor skills, opencode skills, gemini cli skills, github copilot skills, agent skills collection, agent skill installer, skills installer, skills cli, material symbols rounded, material design icons, icon finder, icon audit, svg to png, png icons, image rasterization, npm package release, npm publish, semantic versioning, changelog, git tag, webpack build, typescript package, architecture map, architecture diagram, code map, dependency map, code structure, technical documentation, readme seo, ai discoverability, showcase page, product showcase, case study, coding conventions, code style, typescript style, css conventions, dom helpers, i18n, translation keys, web app structure, webapp performance, progressive web app, pwa, seo, open graph, web manifest, sitemap, robots txt, service worker, code splitting, asset caching, server structure, node backend, rest api, api server, http server, request listeners, request validation, state persistence, caching, rate limiting, node deployment, process supervision, reverse proxy, tls termination, pm2, apache, task backlog, tickets, todo, issue tracking, llms.txt, llm discovery, llm friendly markdown, markdown page versions, link relations, describedby, agentic browsing, lighthouse audit
 
 ## Contributing
 

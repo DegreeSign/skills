@@ -1,5 +1,10 @@
 # ChangeLog
 
+## 2.2.0
+
+- Add showcase page guidance to the `npm` skill for a committed `docs/index.html` with a tiny demo and an optional production case study.
+- Add the `showcase.md` guide with the page outline, demo rules, case study flow, design notes, starter skeleton and verification checks.
+
 ## 2.1.1
 
 - The `llms` checker verifies media types, charsets and `Link` relations with `--check-headers`.
