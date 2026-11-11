@@ -66,18 +66,22 @@ Every package keeps a committed `docs/architecture.html`: one self-contained pag
 
 ## Showcase page
 
-Every package keeps a committed `docs/index.html`: a landing page with the package promise, a tiny demo, install steps, a link to `docs/architecture.html` and, when approved, a production case study.
+Every package keeps a committed `docs/index.html`: a landing page with the package promise, a live proof, real limits, install steps, a link to `docs/architecture.html` and, when approved, a production case study.
 
 - Create the page when the package is created, not after the first release. Keep it at `docs/index.html`.
-- Build it from the outline, starter skeleton and checks in `showcase.md`.
+- Build it from `showcase.template.html` and the rules, narrative spine, demo contract and checks in `showcase.md`.
+- Follow one argument: hero promise, working preview, facts strip, why, live demo, capabilities, first run, approved proof, real specs, architecture, install, FAQ and closing action. Drop any section the package cannot fill with real content.
 - Keep it one HTML file with inline CSS and JavaScript. External runtime assets such as a CDN bundle, screenshots and a logo are allowed; no build step and no framework.
-- Include a tiny demo that shows the core idea in one screen and uses the public API. If the full flow needs weights, a worker or a microphone, link to a fuller `docs/demo.html` instead of loading it on page load.
+- Style it from the package's own identity. The template is a neutral grayscale scaffold; replace its tokens, type and shape values, and never reuse another package's colours or exact visual style.
+- Include a tiny demo that shows the core idea in one screen and uses the public API. Lazy-load its bundle, show every state, support stop and reset, and fail readably. If the full flow needs weights, a worker or a microphone, keep it behind the demo button or link to a fuller `docs/demo.html`.
 - Link the full architecture map from the page: `href="architecture.html"` with `target="_blank" rel="noreferrer"`.
+- State sizes, limits and performance only when measured or documented. Repeat each fact with the same value everywhere.
 - Ask the user whether a production project uses the package and should appear as a case study. Never invent a case study.
 - When approved, use the real product name, logo, URL and actual screenshots. Capture the real flow in a headless browser; never use mockups, fabricated metrics or invented quotes.
-- Keep the page responsive, accessible and calm. Respect `prefers-reduced-motion`.
+- Keep the page responsive, accessible and calm. Respect `prefers-reduced-motion`; keep a skip link, focus outlines and an accessible demo.
+- Add canonical, Open Graph and Twitter metadata. Add `FAQPage` structured data only when every answer matches a visible FAQ item.
 - Link the showcase from the README Demo section.
-- Verify at desktop and mobile widths, check every link and confirm the demo fails gracefully when its bundle is unavailable.
+- Verify at desktop and mobile widths, check every link, the copy button, keyboard navigation and reduced motion, and confirm the demo fails gracefully when its bundle is unavailable.
 - Keep `docs/` out of the npm `files` array unless the docs site is served from the tarball.
 - Never put secrets, tokens, private URLs or machine-specific paths in the file.
 
@@ -98,7 +102,7 @@ Every package keeps a committed `docs/index.html`: a landing page with the packa
 2. Update the changelog with a matching version header.
 3. Bump versioned CDN links in the README when the package also targets the web.
 4. Confirm `docs/architecture.html` matches the source: run the checker and recheck every changed line.
-5. Confirm `docs/index.html` links to the demo and `docs/architecture.html`, and that any case study still matches the product.
+5. Confirm `docs/index.html` still matches the public API, links to the demo and `docs/architecture.html`, and that every fact and case study is current.
 6. Build and test.
 7. Inspect the publish contents with `npm pack --dry-run`.
 8. Publish: `npm publish` (add `--access public` for scoped packages).

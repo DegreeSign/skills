@@ -30,7 +30,7 @@ House conventions for editing a repository. These rules apply on top of a projec
 - `css.md`: selectors, properties, naming, sizing and colour.
 - `dom.md`: DOM access via `@degreesign/ui` and event handlers.
 - `i18n.md`: translation files, keys and auto-population.
-- `workflow.md`: build, deploy, translate and git index rules.
+- `workflow.md`: build, deploy, translate, git index and changelog rules.
 - `ui-patterns.md`: tooltips, icons via the `icons` skill, and vendored browser libraries.
 
 ## Workflow

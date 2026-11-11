@@ -1,0 +1,3397 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Give your agent the procedure — DegreeSign Skills</title>
+    <meta name="description" content="Eight Agent Skills that turn multi-step agent work into repeatable procedures: icons, npm releases, web apps, backends, backlogs and llms.txt. MIT, no account or telemetry.">
+    <meta name="theme-color" content="#f4efe5">
+    <link rel="canonical" href="https://degreesign.com/skills/">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <meta property="og:title" content="Give your agent the procedure — DegreeSign Skills">
+    <meta property="og:description" content="Eight Agent Skills for icons, npm releases, conventions, web apps, backends, backlogs, llms.txt and architecture maps. MIT, no account or telemetry.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="DegreeSign Skills">
+    <meta property="og:url" content="https://degreesign.com/skills/">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Give your agent the procedure — DegreeSign Skills">
+    <meta name="twitter:description" content="Eight Agent Skills for repeatable agent work. MIT, no account or telemetry.">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": "Which agents can use it?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Any agent that discovers skills from a skills directory such as .agents/skills/, .claude/skills/ or .opencode/skills/, project or global. The installer defaults to ~/.agents/skills and only edits OpenCode and Claude Code settings."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Does it run code or add dependencies?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "No. The skills are Markdown and JSON, and nothing is installed into your app. Optional Node helpers for icon rasterization, the map check and the llms check run only when a skill invokes them."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Does it need an account or a server?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "No account, no server and no telemetry. The only network calls are the sources a skill documents and the optional update check, which asks the npm registry at most once every 24 hours."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "How do I update it?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Re-run npx @degreesign/skills. It replaces the folder it owns. The bundled check compares the installed marker with the registry once a day and prints an update command; the agent asks before updating."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Can I pin a version?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Yes. Clone the v2.2.1 tag and run node bin/install.mjs, or install a pinned npm version."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "What does it not do?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "It does not write your app, run your code or guarantee a result. It gives a compatible agent a procedure; an agent that does not read skills gets nothing."
+                    }
+                }
+            ]
+        }
+    </script>
+    <script>
+        document.documentElement.classList.add("js");
+    </script>
+    <style>
+/*
+    DegreeSign Skills identity.
+    Warm paper, ink and a single rust accent, borrowed from the package's
+    architecture map. Serif display, sans body, mono labels.
+*/
+:root {
+    --bg: #f4efe5;
+    --bg-alt: #ece4d5;
+    --surface: #fffdf7;
+    --text: #2c271f;
+    --text-soft: #5d5446;
+    --text-muted: #6f6657;
+    --line: #d7cbb7;
+    --line-strong: #bfae92;
+    --accent: #8a4b2a;
+    --accent-soft: rgba(138, 75, 42, 0.10);
+    --on-accent: #fffdf7;
+    --danger: #a33226;
+    --syntax-key: #8a3d5c;
+    --syntax-string: #4a6b3a;
+    --syntax-variable: #2f5a7a;
+    --syntax-function: #8a5a1f;
+    --radius: 8px;
+    --radius-sm: 4px;
+    --max: 1120px;
+    --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 24px;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font: 400 17px/1.65 var(--font-body);
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img,
+svg,
+canvas {
+    display: block;
+    max-width: 100%;
+}
+
+button {
+    font: inherit;
+}
+
+code {
+    font-family: var(--font-mono);
+}
+
+:focus-visible {
+    border-radius: 4px;
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.shell {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-inline: auto;
+    max-width: var(--max);
+    width: 90%;
+}
+
+.sr-only {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+.skip {
+    background: var(--text);
+    border-radius: 0 0 var(--radius-sm) 0;
+    color: var(--on-accent);
+    left: 0;
+    padding: 10px 16px;
+    position: absolute;
+    top: -60px;
+    z-index: 80;
+}
+
+.skip:focus {
+    top: 0;
+}
+
+/* Hero */
+.hero {
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    padding: 72px 0 0;
+}
+
+.hero-grid {
+    align-items: center;
+    display: grid;
+    gap: clamp(32px, 5vw, 64px);
+    grid-template-columns: 1.05fr 0.95fr;
+    padding-bottom: 56px;
+}
+
+.brand {
+    align-items: center;
+    color: var(--text);
+    display: flex;
+    flex: none;
+    font: 600 15px/1 var(--font-mono);
+    gap: 10px;
+    letter-spacing: -0.01em;
+}
+
+.brand-mark {
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    display: grid;
+    height: 30px;
+    place-items: center;
+    width: 30px;
+}
+
+.brand-mark svg {
+    height: 17px;
+    width: 17px;
+}
+
+.hero-brand {
+    margin-bottom: 30px;
+    width: fit-content;
+}
+
+.eyebrow {
+    align-items: center;
+    color: var(--text-muted);
+    display: flex;
+    font: 500 12px/1 var(--font-mono);
+    gap: 9px;
+    letter-spacing: 0.14em;
+    margin: 0 0 18px;
+    text-transform: uppercase;
+}
+
+.eyebrow .dot {
+    background: var(--accent);
+    border-radius: 50%;
+    height: 7px;
+    width: 7px;
+}
+
+h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 5.6vw, 4.2rem);
+    font-weight: 600;
+    letter-spacing: -0.045em;
+    line-height: 1;
+    margin: 0;
+    text-wrap: balance;
+}
+
+/* Optional highlight: use the package's own accent or remove it. */
+.grad {
+    color: var(--accent);
+}
+
+.lead {
+    color: var(--text-soft);
+    font-size: clamp(1rem, 1.4vw, 1.12rem);
+    line-height: 1.65;
+    margin: 22px 0 0;
+    max-width: 56ch;
+}
+
+.hero .lead {
+    max-width: 52ch;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.button {
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    font: 600 14px/1 var(--font-body);
+    gap: 10px;
+    padding: 12px 18px;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.button svg {
+    flex: none;
+    height: 16px;
+    width: 16px;
+}
+
+.button.primary {
+    background: var(--accent);
+    color: var(--on-accent);
+}
+
+.button.primary:hover {
+    background: var(--text-soft);
+}
+
+.button.ghost {
+    background: var(--surface);
+    border-color: var(--line-strong);
+    color: var(--text);
+}
+
+.button.ghost:hover {
+    background: var(--bg-alt);
+    border-color: var(--text-muted);
+}
+
+.button.ink {
+    background: var(--accent);
+    color: var(--on-accent);
+}
+
+.button.ink:hover {
+    background: var(--text-soft);
+}
+
+.button:disabled {
+    cursor: not-allowed;
+    opacity: 0.38;
+}
+
+.hero-note {
+    color: var(--text-muted);
+    font: 500 12px/1.5 var(--font-mono);
+    margin: 24px 0 0;
+}
+
+.hero-proof {
+    align-items: center;
+    color: var(--text-soft);
+    display: inline-flex;
+    font: 500 12px/1.5 var(--font-mono);
+    gap: 8px;
+    margin-top: 18px;
+}
+
+.hero-proof img {
+    height: 18px;
+    width: 18px;
+}
+
+.hero-proof:hover {
+    color: var(--text);
+}
+
+/* Hero preview */
+.console {
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 18px;
+}
+
+.console-top {
+    align-items: center;
+    color: var(--text-muted);
+    display: flex;
+    font: 500 11.5px/1 var(--font-mono);
+    gap: 12px;
+    letter-spacing: 0.02em;
+}
+
+.lights {
+    display: flex;
+    gap: 5px;
+}
+
+.lights i {
+    background: var(--line-strong);
+    border-radius: 50%;
+    height: 7px;
+    width: 7px;
+}
+
+.console-title {
+    flex: 1;
+}
+
+.live {
+    align-items: center;
+    color: var(--text-muted);
+    display: inline-flex;
+    gap: 6px;
+}
+
+.live i {
+    animation: pulse 2s infinite;
+    background: var(--accent);
+    border-radius: 50%;
+    height: 6px;
+    width: 6px;
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 var(--accent-soft);
+        opacity: 1;
+    }
+
+    50% {
+        box-shadow: 0 0 0 5px transparent;
+        opacity: 0.55;
+    }
+}
+
+.console-body {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    display: grid;
+    gap: 10px;
+    margin: 16px 0 14px;
+    padding: 16px;
+}
+
+.console-message {
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    line-height: 1.55;
+    margin: 0;
+    max-width: 88%;
+    padding: 10px 14px;
+}
+
+.console-message.user {
+    align-self: flex-end;
+    background: var(--accent);
+    color: var(--on-accent);
+}
+
+.console-message.bot {
+    align-self: flex-start;
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+    color: var(--text);
+}
+
+.caret {
+    animation: blink 1.1s steps(1) infinite;
+    background: var(--accent);
+    display: inline-block;
+    height: 1em;
+    margin-left: 3px;
+    vertical-align: text-bottom;
+    width: 1px;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+.console-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.console-chips span {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    font: 500 11px/1 var(--font-mono);
+    padding: 6px 10px;
+}
+
+/* Stats */
+.stats {
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding-bottom: 26px;
+}
+
+.stats div {
+    border-right: 1px solid var(--line);
+    padding: 22px 0 4px 22px;
+}
+
+.stats div:first-child {
+    padding-left: 0;
+}
+
+.stats div:last-child {
+    border-right: 0;
+}
+
+.stats strong {
+    color: var(--text);
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(1.7rem, 3vw, 2.4rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1;
+}
+
+.stats span {
+    color: var(--text-muted);
+    display: block;
+    font: 500 11.5px/1 var(--font-mono);
+    letter-spacing: 0.08em;
+    margin-top: 6px;
+    text-transform: uppercase;
+}
+
+/* Sections */
+.section {
+    padding: clamp(64px, 8vw, 96px) 0;
+}
+
+.section.band {
+    background: var(--bg-alt);
+    border-block: 1px solid var(--line);
+}
+
+.section-head {
+    margin-bottom: 42px;
+    max-width: 740px;
+}
+
+.section-head .lead {
+    margin-top: 16px;
+}
+
+h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3.1rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin: 0;
+    text-wrap: balance;
+}
+
+h3 {
+    font: 600 18px/1.25 var(--font-body);
+    letter-spacing: -0.01em;
+    margin: 0 0 8px;
+}
+
+.cards {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    min-width: 0;
+    padding: 24px;
+}
+
+.card p {
+    color: var(--text-soft);
+    font-size: 15.5px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.icon {
+    align-items: center;
+    background: var(--accent-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    display: flex;
+    height: 40px;
+    justify-content: center;
+    margin-bottom: 18px;
+    width: 40px;
+}
+
+.icon svg {
+    height: 20px;
+    width: 20px;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 16px;
+}
+
+.tags span {
+    background: var(--accent-soft);
+    border-radius: var(--radius-sm);
+    color: var(--text-soft);
+    font: 600 11px/1 var(--font-mono);
+    padding: 5px 9px;
+}
+
+.fine {
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.55;
+    margin: 16px 0 0;
+}
+
+.fine code,
+td code {
+    background: var(--accent-soft);
+    border-radius: 4px;
+    padding: 1px 5px;
+}
+
+/* Numbered points and steps */
+.why-grid,
+.steps {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.why-item,
+.step {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 24px;
+}
+
+.why-mark,
+.step > span {
+    color: var(--text-muted);
+    font: 600 11px/1 var(--font-mono);
+    letter-spacing: 0.08em;
+}
+
+.step > span {
+    align-items: center;
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    color: var(--text);
+    display: inline-flex;
+    height: 38px;
+    justify-content: center;
+    letter-spacing: 0;
+    width: 38px;
+}
+
+.why-item h3 {
+    margin: 14px 0 8px;
+}
+
+.step h3 {
+    margin: 18px 0 8px;
+}
+
+.why-item p,
+.step p {
+    color: var(--text-soft);
+    font-size: 15.5px;
+    margin: 0;
+}
+
+/* Demo */
+.challenge {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    list-style: none;
+    margin: 0 0 18px;
+    padding: 0;
+}
+
+.challenge li {
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    color: var(--text-soft);
+    display: flex;
+    font-size: 14px;
+    gap: 10px;
+    padding: 12px 14px;
+}
+
+.challenge span {
+    color: var(--text-muted);
+    font: 600 10.5px/1 var(--font-mono);
+}
+
+.demo-option {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    margin: 0 0 18px;
+    padding: 14px 16px;
+}
+
+.demo-option label {
+    color: var(--text-muted);
+    display: block;
+    font: 600 10.5px/1 var(--font-mono);
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.demo-option textarea {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    display: block;
+    font: 14px/1.5 var(--font-body);
+    min-height: 44px;
+    padding: 10px 12px;
+    resize: vertical;
+    width: 100%;
+}
+
+.demo-option textarea:focus {
+    border-color: var(--accent);
+    outline: none;
+}
+
+.demo-option p {
+    color: var(--text-muted);
+    font-size: 12px;
+    margin: 8px 0 0;
+}
+
+.demo-window {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.demo-bar {
+    align-items: center;
+    background: var(--bg-alt);
+    border-bottom: 1px solid var(--line);
+    color: var(--text-muted);
+    display: flex;
+    font: 500 11.5px/1 var(--font-mono);
+    gap: 12px;
+    padding: 13px 18px;
+}
+
+.demo-bar-title {
+    color: var(--text-soft);
+    flex: 1;
+    letter-spacing: 0.02em;
+}
+
+.demo-bar-title span {
+    color: var(--text);
+}
+
+.demo-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 232px;
+    min-height: 300px;
+}
+
+.thread {
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 380px;
+    min-height: 300px;
+    overflow-y: auto;
+    padding: 22px;
+}
+
+.thread-empty {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin: auto;
+    max-width: 38ch;
+    text-align: center;
+}
+
+.thread-empty svg {
+    color: var(--text-muted);
+    height: 26px;
+    margin: 0 auto 12px;
+    opacity: 0.7;
+    width: 26px;
+}
+
+.bubble {
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    line-height: 1.55;
+    max-width: 86%;
+    padding: 10px 14px;
+}
+
+.bubble-body {
+    margin: 0;
+    overflow-wrap: anywhere;
+    white-space: normal;
+}
+
+.bubble.user .bubble-body {
+    white-space: pre-wrap;
+}
+
+.bubble-body p {
+    margin: 0 0 8px;
+}
+
+.bubble-body > :first-child {
+    margin-top: 0;
+}
+
+.bubble-body > :last-child {
+    margin-bottom: 0;
+}
+
+.bubble-body h1,
+.bubble-body h2,
+.bubble-body h3,
+.bubble-body h4,
+.bubble-body h5,
+.bubble-body h6 {
+    font: 600 15px/1.35 var(--font-body);
+    letter-spacing: -0.01em;
+    margin: 12px 0 6px;
+}
+
+.bubble-body ul,
+.bubble-body ol {
+    margin: 6px 0 8px;
+    padding-left: 18px;
+}
+
+.bubble-body li {
+    margin: 3px 0;
+}
+
+.bubble-body strong {
+    font-weight: 600;
+}
+
+.bubble-body code {
+    background: var(--accent-soft);
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    padding: 1px 5px;
+}
+
+.bubble-body pre {
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    margin: 8px 0;
+    overflow-x: auto;
+    padding: 10px;
+}
+
+.bubble-body pre code {
+    background: none;
+    border-radius: 0;
+    padding: 0;
+}
+
+.bubble-body a {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.bubble-body hr {
+    border: 0;
+    border-top: 1px solid var(--line);
+    margin: 10px 0;
+}
+
+.bubble.user {
+    align-self: flex-end;
+    background: var(--accent);
+    color: var(--on-accent);
+}
+
+.bubble.assistant {
+    align-self: flex-start;
+    background: var(--surface);
+    border: 1px solid var(--line);
+}
+
+.bubble.assistant.streaming .bubble-body > :last-child::after,
+.bubble.assistant.streaming .bubble-body > ul:last-child > li:last-child::after,
+.bubble.assistant.streaming .bubble-body > ol:last-child > li:last-child::after,
+.bubble.assistant.streaming .bubble-body > pre:last-child > code::after {
+    animation: blink 1s steps(1) infinite;
+    background: var(--text);
+    content: "";
+    display: inline-block;
+    height: 1em;
+    margin-left: 2px;
+    vertical-align: text-bottom;
+    width: 1px;
+}
+
+.bubble.assistant.streaming .bubble-body > ul:last-child::after,
+.bubble.assistant.streaming .bubble-body > ol:last-child::after,
+.bubble.assistant.streaming .bubble-body > pre:last-child::after {
+    content: none;
+    display: none;
+}
+
+.demo-rail {
+    background: var(--bg-alt);
+    border-left: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    padding: 22px;
+}
+
+.rail-label {
+    color: var(--text-muted);
+    font: 600 10.5px/1 var(--font-mono);
+    letter-spacing: 0.1em;
+    margin: 0 0 12px;
+    text-transform: uppercase;
+}
+
+.rail-label.spaced {
+    margin-top: 20px;
+}
+
+.rail-row {
+    align-items: baseline;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    padding: 7px 0;
+}
+
+.rail-row span {
+    color: var(--text-muted);
+    font-size: 12.5px;
+}
+
+.rail-row strong {
+    color: var(--text);
+    font: 600 11.5px/1.4 var(--font-mono);
+    text-align: right;
+}
+
+.rail-speed {
+    color: var(--text);
+    font: 600 22px/1 var(--font-display);
+    margin: 0 0 20px;
+    min-height: 24px;
+}
+
+.rail-reset {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    color: var(--text-soft);
+    cursor: pointer;
+    font: 600 11.5px/1 var(--font-body);
+    margin-top: auto;
+    padding: 9px 14px;
+}
+
+.rail-reset:hover {
+    border-color: var(--text-muted);
+}
+
+.demo-controls {
+    border-top: 1px solid var(--line);
+    padding: 18px 22px 22px;
+}
+
+.status {
+    color: var(--text-muted);
+    font: 11.5px/1.5 var(--font-mono);
+    margin: 0 0 10px;
+    min-height: 18px;
+}
+
+.status[data-kind="error"] {
+    color: var(--danger);
+}
+
+progress {
+    accent-color: var(--accent);
+    appearance: none;
+    -webkit-appearance: none;
+    background: var(--bg-alt);
+    border: 0;
+    border-radius: var(--radius-sm);
+    display: block;
+    height: 6px;
+    margin: 0 0 14px;
+    overflow: hidden;
+    width: 100%;
+}
+
+progress::-webkit-progress-bar {
+    background: var(--bg-alt);
+    border-radius: var(--radius-sm);
+}
+
+progress::-webkit-progress-value {
+    background: var(--accent);
+    border-radius: var(--radius-sm);
+}
+
+progress::-moz-progress-bar {
+    background: var(--accent);
+    border-radius: var(--radius-sm);
+}
+
+progress:indeterminate {
+    animation: sweep 1.2s linear infinite;
+    background-image: linear-gradient(
+        90deg,
+        transparent 0,
+        var(--accent) 12%,
+        var(--accent) 88%,
+        transparent 100%
+    );
+    background-repeat: no-repeat;
+    background-size: 30% 100%;
+}
+
+progress:indeterminate::-webkit-progress-bar {
+    background: transparent;
+}
+
+@keyframes sweep {
+    from {
+        background-position: 0% 0;
+    }
+
+    to {
+        background-position: 100% 0;
+    }
+}
+
+.demo-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.demo-form input {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    flex: 1;
+    font: 15px var(--font-body);
+    min-height: 46px;
+    min-width: 0;
+    padding: 10px 14px;
+}
+
+.demo-form input::placeholder {
+    color: var(--text-muted);
+}
+
+.demo-form .button {
+    flex: none;
+    font-size: 13px;
+    padding: 12px 18px;
+}
+
+.demo-form .button.ghost {
+    background: var(--surface);
+    border-color: var(--line);
+    color: var(--text);
+}
+
+.demo-form .button.ghost:hover {
+    background: var(--bg-alt);
+    border-color: var(--text-muted);
+}
+
+.warn {
+    align-self: center;
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius-sm);
+    color: var(--text-soft);
+    font-size: 12px;
+    line-height: 1.55;
+    margin: 54px 0 0;
+    padding: 10px 12px;
+}
+
+.warn strong {
+    color: var(--text);
+}
+
+/* Specs */
+.spec-grid {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.spec-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    max-width: 100%;
+    min-width: 0;
+    padding: 24px;
+}
+
+.spec-top {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.spec-top h3 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    margin: 0;
+}
+
+.badge {
+    background: var(--accent-soft);
+    border-radius: var(--radius-sm);
+    color: var(--text-soft);
+    flex: none;
+    font: 600 10.5px/1 var(--font-mono);
+    letter-spacing: 0.06em;
+    padding: 6px 10px;
+    text-transform: uppercase;
+}
+
+.badge.soft {
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+}
+
+.spec-card > p {
+    color: var(--text-soft);
+    font-size: 14.5px;
+    margin: 0 0 18px;
+}
+
+table {
+    border-collapse: collapse;
+    font-size: 14px;
+    width: 100%;
+}
+
+th {
+    border-bottom: 1px solid var(--line);
+    color: var(--text-muted);
+    font: 600 10.5px/1 var(--font-mono);
+    letter-spacing: 0.08em;
+    padding: 9px 0;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+td {
+    border-bottom: 1px solid var(--line);
+    color: var(--text-soft);
+    padding: 11px 0;
+    vertical-align: top;
+}
+
+td:last-child,
+th:last-child {
+    text-align: right;
+}
+
+tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+td .yes {
+    color: var(--text);
+    font-weight: 600;
+}
+
+td .no {
+    color: var(--text-muted);
+}
+
+.spec-card table {
+    min-width: 340px;
+}
+
+.table-wrap {
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+}
+
+.straight {
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius);
+    margin-top: 18px;
+    padding: 22px 24px;
+}
+
+.straight h3 {
+    margin: 0 0 8px;
+}
+
+.straight p {
+    color: var(--text-soft);
+    font-size: 15px;
+    margin: 0;
+}
+
+.specs {
+    margin-top: 18px;
+}
+
+.specs summary {
+    color: var(--text-muted);
+    cursor: pointer;
+    font: 600 11px/1 var(--font-mono);
+    letter-spacing: 0.08em;
+    padding: 8px 0;
+    text-transform: uppercase;
+}
+
+.limits {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 18px;
+}
+
+.limit-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+}
+
+.limit-card h3 {
+    margin: 0 0 12px;
+}
+
+.limit-card ul {
+    color: var(--text-soft);
+    font-size: 13.5px;
+    line-height: 1.55;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.limit-card li {
+    align-items: baseline;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    gap: 14px;
+    justify-content: space-between;
+    padding: 6px 0;
+}
+
+.limit-card li:last-child {
+    border-bottom: 0;
+}
+
+.limit-card li span {
+    color: var(--text-muted);
+}
+
+.limit-card li strong {
+    color: var(--text);
+    font: 600 11.5px/1.4 var(--font-mono);
+    text-align: right;
+}
+
+/* Architecture */
+.arch-grid {
+    align-items: center;
+    display: grid;
+    gap: clamp(32px, 5vw, 64px);
+    grid-template-columns: 1fr 1fr;
+}
+
+.arch-points {
+    display: grid;
+    gap: 10px;
+    list-style: none;
+    margin: 24px 0 0;
+    padding: 0;
+}
+
+.arch-points li {
+    align-items: baseline;
+    color: var(--text-soft);
+    display: flex;
+    font-size: 14.5px;
+    gap: 12px;
+    line-height: 1.5;
+}
+
+.arch-points span {
+    color: var(--text-muted);
+    font: 600 11px/1 var(--font-mono);
+}
+
+.arch-button {
+    margin-top: 28px;
+}
+
+.arch-note {
+    color: var(--text-muted);
+    font: 500 11.5px/1.5 var(--font-mono);
+    margin: 16px 0 0;
+}
+
+.arch-note a {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.arch-preview {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--text);
+    display: block;
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+}
+
+.arch-preview:hover {
+    border-color: var(--text-muted);
+}
+
+.arch-top {
+    align-items: center;
+    background: var(--bg-alt);
+    border-bottom: 1px solid var(--line);
+    color: var(--text-muted);
+    display: flex;
+    font: 500 11px/1 var(--font-mono);
+    gap: 10px;
+    padding: 12px 16px;
+}
+
+.arch-top span:last-child {
+    color: var(--text-muted);
+    margin-left: auto;
+}
+
+.arch-dot {
+    background: var(--accent);
+    border-radius: 50%;
+    height: 7px;
+    width: 7px;
+}
+
+.arch-bands {
+    display: grid;
+    gap: 8px;
+    padding: 18px;
+}
+
+.arch-band {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 12px;
+}
+
+.arch-band span {
+    color: var(--text);
+    font: 600 12px/1.2 var(--font-body);
+}
+
+.arch-band small {
+    color: var(--text-muted);
+    font: 10.5px/1.3 var(--font-mono);
+}
+
+.arch-foot {
+    align-items: center;
+    border-top: 1px solid var(--line);
+    color: var(--text);
+    display: flex;
+    font: 600 12px/1 var(--font-mono);
+    justify-content: space-between;
+    padding: 12px 16px;
+}
+
+/* Install */
+.install-grid {
+    align-items: start;
+    display: grid;
+    gap: clamp(28px, 5vw, 64px);
+    grid-template-columns: 1fr 1fr;
+}
+
+.install-grid > * {
+    min-width: 0;
+}
+
+.cmd {
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    padding: 14px 16px;
+}
+
+.cmd code {
+    color: var(--text);
+    flex: 1;
+    font: 500 13.5px/1.4 var(--font-mono);
+    overflow-x: auto;
+}
+
+.cmd button {
+    background: var(--accent);
+    border: 0;
+    border-radius: var(--radius-sm);
+    color: var(--on-accent);
+    cursor: pointer;
+    flex: none;
+    font: 600 11.5px/1 var(--font-body);
+    padding: 8px 14px;
+    transition: background 0.2s ease;
+}
+
+.cmd button:hover {
+    background: var(--text-soft);
+}
+
+.code {
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--text);
+    font: 13.5px/1.7 var(--font-mono);
+    margin: 0;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    padding: 24px;
+}
+
+.tok-key {
+    color: var(--syntax-key);
+}
+
+.tok-str {
+    color: var(--syntax-string);
+}
+
+.tok-var {
+    color: var(--syntax-variable);
+}
+
+.tok-fn {
+    color: var(--syntax-function);
+}
+
+/* Case study, optional */
+.case-grid {
+    align-items: center;
+    display: grid;
+    gap: clamp(32px, 5vw, 64px);
+    grid-template-columns: 1fr 1fr;
+}
+
+.case-lockup {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    margin: 0 0 14px;
+}
+
+.case-lockup img {
+    height: 38px;
+    width: 38px;
+}
+
+.case-lockup span {
+    font: 600 18px/1 var(--font-display);
+    letter-spacing: -0.02em;
+}
+
+.case-points {
+    display: grid;
+    gap: 12px;
+    list-style: none;
+    margin: 24px 0 0;
+    padding: 0;
+}
+
+.case-points li {
+    color: var(--text-soft);
+    display: grid;
+    font-size: 14.5px;
+    gap: 10px;
+    grid-template-columns: 96px 1fr;
+    line-height: 1.5;
+}
+
+.case-points span {
+    color: var(--text-muted);
+    font: 600 10.5px/1.6 var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.case-actions {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 28px;
+}
+
+.case-meta,
+.case-note {
+    color: var(--text-muted);
+    font: 500 11.5px/1.5 var(--font-mono);
+}
+
+.case-visual {
+    align-items: flex-end;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.case-shot {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    margin: 0;
+    max-width: 430px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.case-shot img {
+    display: block;
+    height: auto;
+    width: 100%;
+}
+
+.case-shot figcaption {
+    color: var(--text-muted);
+    font: 500 11px/1.5 var(--font-mono);
+    padding: 10px 15px 12px;
+}
+
+.case-chip {
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    bottom: 46px;
+    color: var(--text-soft);
+    display: flex;
+    font: 600 10.5px/1 var(--font-mono);
+    gap: 7px;
+    letter-spacing: 0.04em;
+    padding: 9px 13px;
+    position: absolute;
+    right: -8px;
+    text-transform: uppercase;
+}
+
+.case-chip i {
+    background: var(--accent);
+    border-radius: 50%;
+    height: 6px;
+    width: 6px;
+}
+
+.case-note {
+    margin: 14px 0 0;
+    max-width: 430px;
+    text-align: right;
+}
+
+/* Comparison, optional */
+.vs-stats {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-bottom: 18px;
+}
+
+.vs-stat {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+}
+
+.vs-stat > span,
+.vs-table caption {
+    color: var(--text-muted);
+    font: 600 10.5px/1 var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.vs-stat .vs-value {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 10px 0 0;
+}
+
+.vs-value strong {
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+}
+
+.vs-value del {
+    color: var(--text-muted);
+    font: 500 13px/1.4 var(--font-mono);
+    text-decoration-thickness: 1px;
+}
+
+.vs-stat p {
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 8px 0 0;
+}
+
+.vs-panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 24px;
+}
+
+.vs-table caption {
+    caption-side: top;
+    padding-bottom: 10px;
+    text-align: left;
+}
+
+.vs-table th,
+.vs-table td {
+    padding-right: 18px;
+}
+
+.vs-table th:last-child,
+.vs-table td:last-child {
+    text-align: left;
+}
+
+/* FAQ and final call to action */
+.faq-grid {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.faq-item {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+}
+
+.faq-item h3 {
+    font: 600 17px/1.35 var(--font-body);
+    margin: 0 0 8px;
+}
+
+.faq-item p {
+    color: var(--text-soft);
+    font-size: 15px;
+    margin: 0;
+}
+
+.cta {
+    background: var(--bg-alt);
+    border-block: 1px solid var(--line);
+    color: var(--text);
+}
+
+.cta-inner {
+    margin-inline: auto;
+    max-width: 720px;
+    text-align: center;
+}
+
+.cta .eyebrow {
+    justify-content: center;
+}
+
+.cta .lead {
+    margin-inline: auto;
+}
+
+.cta .actions {
+    justify-content: center;
+}
+
+.cta .fine {
+    margin-top: 22px;
+}
+
+/* Footer */
+.footer {
+    background: var(--bg-alt);
+    border-top: 1px solid var(--line);
+    color: var(--text-soft);
+    padding: 48px 0 120px;
+}
+
+.footer-inner {
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    gap: 32px;
+    justify-content: space-between;
+    padding-bottom: 28px;
+}
+
+.footer .brand {
+    color: var(--text);
+}
+
+.footer p {
+    font-size: 14px;
+    margin: 10px 0 0;
+    max-width: 38ch;
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    font: 500 13px/1.6 var(--font-mono);
+    gap: 18px;
+}
+
+.footer-links a:hover {
+    color: var(--text);
+}
+
+.footer-base {
+    color: var(--text-muted);
+    display: flex;
+    font: 500 11.5px/1.5 var(--font-mono);
+    gap: 16px;
+    justify-content: space-between;
+    padding-top: 20px;
+}
+
+/* Floating section menu */
+.floating-menu {
+    align-items: flex-end;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    justify-content: safe center;
+    left: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    position: fixed;
+    right: 0;
+    scrollbar-width: none;
+    z-index: 71;
+}
+
+.floating-menu::-webkit-scrollbar {
+    display: none;
+}
+
+.floating-track {
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    display: flex;
+    gap: 2px;
+    height: 54px;
+    margin: 16px 24px 24px;
+    max-width: 860px;
+    min-width: max-content;
+    padding: 0 4px;
+}
+
+.float-button {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    border-radius: var(--radius-sm);
+    color: var(--text-soft);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    font: 500 10px/10px var(--font-body);
+    gap: 3px;
+    height: 46px;
+    justify-content: center;
+    min-width: 62px;
+    padding: 0 6px;
+    text-align: center;
+    transition: background 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+}
+
+.float-button:hover {
+    background: var(--bg-alt);
+    color: var(--text);
+}
+
+.float-button svg {
+    height: 20px;
+    width: 20px;
+}
+
+.float-button.is-selected {
+    background: var(--accent-soft);
+    color: var(--text);
+    flex-direction: row;
+    font-size: 13px;
+    font-weight: 600;
+    gap: 8px;
+    line-height: 1;
+    padding: 0 14px;
+}
+
+.float-button.is-selected:hover {
+    background: var(--accent-soft);
+}
+
+.float-button.is-selected svg {
+    height: 18px;
+    width: 18px;
+}
+
+/* Motion */
+.js .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.js .reveal.in {
+    opacity: 1;
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .js .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .live i,
+    .caret,
+    .bubble.assistant.streaming .bubble-body > :last-child::after,
+    .bubble.assistant.streaming .bubble-body > ul:last-child > li:last-child::after,
+    .bubble.assistant.streaming .bubble-body > ol:last-child > li:last-child::after,
+    .bubble.assistant.streaming .bubble-body > pre:last-child > code::after {
+        animation: none;
+    }
+
+    .button,
+    .arch-preview,
+    .float-button {
+        transition: none;
+    }
+}
+
+/* Responsive */
+@media (max-width: 980px) {
+    .hero-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .console {
+        max-width: 620px;
+    }
+
+    .cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .arch-grid,
+    .case-grid,
+    .install-grid,
+    .spec-grid,
+    .vs-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .case-visual {
+        align-items: flex-start;
+    }
+
+    .case-note {
+        text-align: left;
+    }
+
+    .steps,
+    .why-grid,
+    .faq-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .demo-body {
+        grid-template-columns: 1fr;
+    }
+
+    .demo-rail {
+        border-left: 0;
+        border-top: 1px solid var(--line);
+    }
+}
+
+@media (max-width: 720px) {
+    .floating-track {
+        height: 50px;
+        margin: 12px 14px 16px;
+    }
+
+    .float-button {
+        height: 42px;
+        min-width: 54px;
+    }
+
+    .float-button.is-selected {
+        padding: 0 11px;
+    }
+
+    .hero {
+        padding-top: 56px;
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stats div {
+        border-bottom: 1px solid var(--line);
+        padding: 18px 16px;
+    }
+
+    .stats div:nth-child(2n) {
+        border-right: 0;
+    }
+
+    .stats div:nth-child(n + 3) {
+        border-bottom: 0;
+    }
+
+    .cards,
+    .spec-grid,
+    .limits,
+    .challenge {
+        grid-template-columns: 1fr;
+    }
+
+    .spec-card table,
+    .spec-card tbody {
+        display: block;
+        min-width: 0;
+    }
+
+    .spec-card thead {
+        display: none;
+    }
+
+    .spec-card tbody tr {
+        border-top: 1px solid var(--line);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 14px;
+        padding: 10px 0;
+    }
+
+    .spec-card tbody tr:first-child {
+        border-top: 0;
+        padding-top: 0;
+    }
+
+    .spec-card td {
+        border: 0;
+        font-size: 12.5px;
+        padding: 0;
+    }
+
+    .spec-card td:first-child {
+        flex-basis: 100%;
+    }
+
+    .spec-card td:last-child {
+        text-align: left;
+    }
+
+    .spec-card .table-wrap {
+        overflow: visible;
+    }
+
+    .section-head {
+        margin-bottom: 30px;
+    }
+
+    .demo-form {
+        flex-wrap: wrap;
+    }
+
+    .demo-form input {
+        flex-basis: 100%;
+    }
+
+    .demo-form .button {
+        flex: 1;
+    }
+
+    .code {
+        font-size: 12px;
+        padding: 20px;
+    }
+
+    .footer-inner {
+        flex-direction: column;
+    }
+
+    .footer-base {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .case-points li {
+        grid-template-columns: 84px 1fr;
+    }
+
+    .case-chip {
+        bottom: 42px;
+        right: 4px;
+    }
+
+    .thread {
+        max-height: 340px;
+    }
+}
+
+@media (max-width: 420px) {
+    .bubble {
+        max-width: 94%;
+    }
+
+    .rail-row strong {
+        font-size: 11px;
+    }
+}
+
+/* Package identity overrides */
+h1 {
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.04;
+    text-wrap: normal;
+}
+
+h2 {
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.08;
+}
+
+.stats strong,
+.spec-top h3,
+.vs-value strong,
+.case-lockup span,
+.rail-speed {
+    letter-spacing: -0.01em;
+}
+
+.hero {
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+}
+
+::selection {
+    background: var(--accent-soft);
+}
+
+/* Terminal preview */
+.console-body.terminal {
+    display: block;
+    font: 12.5px/1.65 var(--font-mono);
+}
+
+.term-line {
+    color: var(--text-soft);
+    margin: 0 0 6px;
+}
+
+.term-line:last-child {
+    margin-bottom: 0;
+}
+
+.term-prompt {
+    color: var(--accent);
+    margin-right: 6px;
+}
+
+.term-ok {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.term-row {
+    display: flex;
+    gap: 12px;
+}
+
+.term-row span {
+    color: var(--text-muted);
+    flex: none;
+    min-width: 68px;
+}
+
+.term-row b {
+    color: var(--text);
+    font-weight: 500;
+    overflow-wrap: anywhere;
+}
+
+.term-note {
+    color: var(--text-muted);
+}
+
+/* Demo controls */
+.demo-options {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0 0 18px;
+}
+
+.demo-options label {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    display: grid;
+    font: 600 10.5px/1 var(--font-mono);
+    gap: 8px;
+    letter-spacing: 0.08em;
+    padding: 12px 14px;
+    text-transform: uppercase;
+}
+
+.demo-options select {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    color: var(--text);
+    font: 500 14px/1.4 var(--font-body);
+    padding: 9px 10px;
+    width: 100%;
+}
+
+.demo-options select:focus {
+    border-color: var(--accent);
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+}
+
+.demo-body,
+.demo-term {
+    min-height: 0;
+}
+
+.demo-term {
+    gap: 0;
+}
+
+.demo-term .rail-label {
+    margin-bottom: 8px;
+}
+
+.demo-term .rail-label.spaced {
+    margin-top: 18px;
+}
+
+.cmd-line,
+.term-out {
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font: 12.5px/1.65 var(--font-mono);
+    margin: 0;
+    overflow-wrap: anywhere;
+    padding: 12px 14px;
+    white-space: pre-wrap;
+}
+
+.cmd-line {
+    border-left: 3px solid var(--accent);
+}
+
+.thread-note {
+    color: var(--text-muted);
+    font: 11.5px/1.5 var(--font-mono);
+    margin: 14px 0 0;
+}
+
+.cards .card {
+    display: flex;
+    flex-direction: column;
+}
+
+.cards .card .tags {
+    margin-top: auto;
+    padding-top: 16px;
+}
+
+.spec-grid {
+    align-items: start;
+}
+
+.spec-card table.flags td:last-child,
+.spec-card table.flags th:last-child {
+    text-align: left;
+}
+
+@media (min-width: 721px) {
+    .footer-inner,
+    .footer-base {
+        flex-direction: row;
+    }
+}
+
+
+@media (max-width: 720px) {
+    .demo-options {
+        grid-template-columns: 1fr;
+    }
+
+    .term-row {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .term-row span {
+        min-width: 0;
+    }
+
+    .demo-form {
+        flex-direction: column;
+    }
+
+    .demo-form .button {
+        justify-content: center;
+        width: 100%;
+    }
+}
+
+@media (max-width: 420px) {
+    .demo-term {
+        padding: 16px;
+    }
+
+    .cmd-line,
+    .term-out {
+        font-size: 10.5px;
+        padding: 10px 12px;
+    }
+}
+
+@media (max-width: 340px) {
+    h1 {
+        font-size: 2rem;
+    }
+}
+</style>
+</head>
+<body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="hero" id="top">
+        <div class="shell hero-grid">
+            <div class="hero-copy">
+                <a class="brand hero-brand" href="#top" aria-label="DegreeSign Skills home">
+                    <span class="brand-mark" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="3.5" width="11" height="14" rx="2" fill="var(--surface)"></rect>
+                            <rect x="4" y="6.5" width="11" height="14" rx="2" fill="var(--bg-alt)"></rect>
+                            <path d="M7 11h5M7 14h5M7 17h3"></path>
+                        </svg>
+                    </span>
+                    <span>degreesign skills</span>
+                </a>
+                <p class="eyebrow">
+                    <span class="dot" aria-hidden="true"></span>
+                    Agent Skills &middot; 8 skills
+                </p>
+                <h1>
+                    The syntax is learned.<br>
+                    <span class="grad">The procedure is not.</span>
+                </h1>
+                <p class="lead">
+                    DegreeSign Skills is a set of eight Agent Skills: folder-based
+                    instructions your coding agent loads on demand. Icons, npm
+                    releases, house conventions, web apps, Node backends, backlogs
+                    and llms.txt, each with the checks and templates the job needs.
+                </p>
+                <div class="actions">
+                    <a class="button primary" href="#install">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 3v11m0 0 4-4m-4 4-4-4"></path>
+                            <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"></path>
+                        </svg>
+                        Install
+                    </a>
+                    <a class="button ghost" href="https://github.com/degreesign/skills" target="_blank" rel="noreferrer">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.39-5.25 5.67.41.36.78 1.06.78 2.14 0 1.55-.01 2.79-.01 3.17 0 .31.21.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"></path>
+                        </svg>
+                        GitHub
+                    </a>
+                </div>
+                <p class="hero-note">
+                    MIT &middot; Node &ge; 20.6 &middot; no telemetry
+                    &middot; one registry check per day
+                </p>
+            </div>
+
+            <div class="console reveal" aria-label="Install transcript">
+                <div class="console-top">
+                    <span class="lights" aria-hidden="true">
+                        <i></i><i></i><i></i>
+                    </span>
+                    <span class="console-title">degreesign / install</span>
+                    <span class="live">
+                        <i aria-hidden="true"></i>
+                        ready
+                    </span>
+                </div>
+                <div class="console-body terminal">
+                    <p class="term-line"><span class="term-prompt">$</span> npx @degreesign/skills</p>
+                    <p class="term-line term-ok">Installed @degreesign/skills 2.2.1</p>
+                    <p class="term-line term-row"><span>Method</span><b>copy</b></p>
+                    <p class="term-line term-row"><span>Location</span><b>~/.agents/skills/degreesign</b></p>
+                    <p class="term-line term-row"><span>Skills</span><b>coding, icons, llms, npm, server, todo, webapp</b></p>
+                    <p class="term-line term-note">Start a new agent session to load the skill.<span class="caret" aria-hidden="true"></span></p>
+                </div>
+                <div class="console-chips">
+                    <span>8 skills</span>
+                    <span>1 command</span>
+                    <span>MIT</span>
+                    <span>no account</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="shell stats reveal">
+            <div>
+                <strong>8</strong>
+                <span>skills, one entry point</span>
+            </div>
+            <div>
+                <strong>0</strong>
+                <span>accounts or telemetry</span>
+            </div>
+            <div>
+                <strong>40</strong>
+                <span>files per install</span>
+            </div>
+            <div>
+                <strong>24h</strong>
+                <span>between update checks</span>
+            </div>
+        </div>
+    </header>
+
+    <main id="main">
+        <section class="section band" id="why">
+            <div class="shell">
+                <div class="section-head reveal">
+                    <p class="eyebrow">Why this exists</p>
+                    <h2>Prompts drift. Procedures do not.</h2>
+                    <p class="lead">
+                        A one-off prompt works once. A skill is a checked-in
+                        procedure the agent loads only when the task matches, so
+                        the same job runs the same way next month.
+                    </p>
+                </div>
+                <div class="why-grid">
+                    <article class="why-item reveal">
+                        <span class="why-mark">01</span>
+                        <h3>No context tax.</h3>
+                        <p>
+                            The agent reads a name and a description until a task
+                            matches, then loads one sub-skill. The rest stays out
+                            of the window.
+                        </p>
+                    </article>
+                    <article class="why-item reveal">
+                        <span class="why-mark">02</span>
+                        <h3>Nothing in your app.</h3>
+                        <p>
+                            The package is Markdown, JSON and a few optional Node
+                            scripts. It adds no service, no account and no build step
+                            to the project you are building.
+                        </p>
+                    </article>
+                    <article class="why-item reveal">
+                        <span class="why-mark">03</span>
+                        <h3>Pinned and auditable.</h3>
+                        <p>
+                            Clone a tag, read every instruction and run the map
+                            checker. MIT licensed, no account, no telemetry, no
+                            hidden service.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="demo">
+            <div class="shell">
+                <div class="section-head reveal">
+                    <p class="eyebrow">Live demo</p>
+                    <h2>Build the install command. Read what it will do.</h2>
+                    <p class="lead">
+                        Pick a target, a method and whether to configure agents.
+                        The command and the dry-run report update below. This page
+                        only builds the command; nothing is written here.
+                    </p>
+                </div>
+
+                <ol class="challenge reveal">
+                    <li><span>01</span> Choose a target.</li>
+                    <li><span>02</span> Choose copy or link.</li>
+                    <li><span>03</span> Copy the command.</li>
+                </ol>
+
+                <div class="demo-options reveal">
+                    <label for="demo-target">
+                        Where
+                        <select id="demo-target">
+                            <option value="global">Global (~/.agents/skills)</option>
+                            <option value="project">Project (./.agents/skills)</option>
+                        </select>
+                    </label>
+                    <label for="demo-method">
+                        How
+                        <select id="demo-method">
+                            <option value="copy">Copy the files</option>
+                            <option value="link">Link the package</option>
+                        </select>
+                    </label>
+                    <label for="demo-agents">
+                        Agents
+                        <select id="demo-agents">
+                            <option value="configure">Configure detected agents</option>
+                            <option value="skip">Skip (--no-agents)</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div class="demo-window reveal" id="demo-card">
+                    <div class="demo-bar">
+                        <span class="lights" aria-hidden="true">
+                            <i></i><i></i><i></i>
+                        </span>
+                        <span class="demo-bar-title">
+                            install / <span id="demo-badge">command preview</span>
+                        </span>
+                        <span class="live">
+                            <i aria-hidden="true"></i>
+                            local
+                        </span>
+                    </div>
+                    <div class="demo-body">
+                        <div class="thread demo-term" role="region" aria-label="Command preview">
+                            <p class="rail-label">Command</p>
+                            <pre class="cmd-line"><code id="demo-command">npx @degreesign/skills</code></pre>
+                            <p class="rail-label spaced">Dry run</p>
+                            <pre class="term-out" id="demo-output">Dry run: @degreesign/skills 2.2.1
+  Action    copy &lt;package root&gt;
+  Location  ~/.agents/skills/degreesign
+  Skills    coding, icons, llms, npm, server, todo, webapp</pre>
+                            <p class="thread-note" id="demo-note">The real report adds one line per agent it detects.</p>
+                        </div>
+                        <aside class="demo-rail" aria-label="Command details">
+                            <p class="rail-label">Session</p>
+                            <div class="rail-row">
+                                <span>Target</span>
+                                <strong id="demo-target-out">~/.agents/skills</strong>
+                            </div>
+                            <div class="rail-row">
+                                <span>Method</span>
+                                <strong id="demo-method-out">copy</strong>
+                            </div>
+                            <div class="rail-row">
+                                <span>Agents</span>
+                                <strong id="demo-agents-out">configure</strong>
+                            </div>
+                            <div class="rail-row">
+                                <span>Skills</span>
+                                <strong>7</strong>
+                            </div>
+                            <div class="rail-row">
+                                <span>Writes</span>
+                                <strong>none</strong>
+                            </div>
+                            <p class="rail-label spaced">First run</p>
+                            <p class="rail-speed">40 files</p>
+                            <button class="rail-reset" id="demo-reset" type="button">
+                                Reset demo
+                            </button>
+                        </aside>
+                    </div>
+                    <div class="demo-controls">
+                        <p class="status" id="demo-status" role="status">
+                            Preview only. Nothing is written by this page.
+                        </p>
+                        <div class="demo-form">
+                            <button class="button ink" id="copy-command" type="button">
+                                Copy command
+                            </button>
+                            <a class="button ghost" href="#install">Read the install steps</a>
+                        </div>
+                    </div>
+                </div>
+                <p class="warn">
+                    <strong>The first run copies 40 files (about 420 KB).</strong>
+                    It writes an ownership marker and offers one small settings
+                    change per detected agent. Later runs replace the folder the
+                    installer owns.
+                </p>
+            </div>
+        </section>
+
+        <section class="section band" id="capabilities">
+            <div class="shell">
+                <div class="section-head reveal">
+                    <p class="eyebrow">What is inside</p>
+                    <h2>Eight skills. One entry point.</h2>
+                    <p class="lead">
+                        The entry skill reads the task and loads only the matching
+                        sub-skill. Each sub-skill is self-contained: its own
+                        instructions, references and optional scripts.
+                    </p>
+                </div>
+                <div class="cards">
+                    <article class="card reveal">
+                        <div class="icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="4" y="4" width="16" height="16" rx="3"></rect>
+                                <path d="M8 9h8M8 12h8M8 15h5"></path>
+                            </svg>
+                        </div>
+                        <h3>Entry: route the task.</h3>
+                        <p>
+                            Reads the request, picks one sub-skill and keeps the
+                            rest out of context. Also runs the once-a-day update
+                            check.
+                        </p>
+                        <div class="tags">
+                            <span>SKILL.md</span>
+                            <span>check.mjs</span>
+                        </div>
+                    </article>
+                    <article class="card reveal">
+                        <div class="icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="3"></rect>
+                                <circle cx="12" cy="12" r="4"></circle>
+                            </svg>
+                        </div>
+                        <h3>Icons: find, add, audit.</h3>
+                        <p>
+                            Looks up the real Material Symbols Rounded name,
+                            fetches the official SVG and rasterizes only when a
+                            project needs PNG.
+                        </p>
+                        <div class="tags">
+                            <span>icons.json</span>
+                            <span>svg_to_png</span>
+                        </div>
+                    </article>
+                    <article class="card reveal">
+                        <div class="icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 7h16v13H4zM4 7l4-3h8l4 3"></path>
+                                <path d="M8 11h8M8 15h5"></path>
+                            </svg>
+                        </div>
+                        <h3>npm: release without drift.</h3>
+                        <p>
+                            Naming, versioning, changelog, build artifacts,
+                            publish and tag, plus README SEO, the showcase page
+                            and the architecture map.
+                        </p>
+                        <div class="tags">
+                            <span>templates</span>
+                            <span>map check</span>
+                        </div>
+                    </article>
+                    <article class="card reveal">
+                        <div class="icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m8 6-5 6 5 6M16 6l5 6-5 6"></path>
+                                <path d="m13 4-2 16"></path>
+                            </svg>
+                        </div>
+                        <h3>Coding: keep the house style.</h3>
+                        <p>
+                            TypeScript, CSS, DOM access, i18n, workflow and
+                            changelog rules that sit on top of the project's
+                            own conventions file.
+                        </p>
+                        <div class="tags">
+                            <span>7 references</span>
+                        </div>
+                    </article>
+                    <article class="card reveal">
+                        <div class="icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                                <path d="M3 9h18M7 6.5h.01M10 6.5h.01"></path>
+                            </svg>
+                        </div>
+                        <h3>Webapp: fast and findable.</h3>
+                        <p>
+                            Folder contract, build config, hashing, splitting,
+                            PWA, metadata, sitemap and LLM files for a TypeScript
+                            web app.
+                        </p>
+                        <div class="tags">
+                            <span>@degreesign/webapp</span>
+                        </div>
+                    </article>
+                    <article class="card reveal">
+                        <div class="icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="7" rx="2"></rect>
+                                <rect x="3" y="14" width="18" height="7" rx="2"></rect>
+                                <path d="M7 6.5h.01M7 17.5h.01"></path>
+                            </svg>
+                        </div>
+                        <h3>Server: keep the backend small.</h3>
+                        <p>
+                            Services, listeners, validation, state, security,
+                            build and deploy for a Node service.
+                        </p>
+                        <div class="tags">
+                            <span>@degreesign/server</span>
+                        </div>
+                    </article>
+                    <article class="card reveal">
+                        <div class="icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 6h16M4 12h16M4 18h10"></path>
+                                <path d="m16 16 2 2 3-4"></path>
+                            </svg>
+                        </div>
+                        <h3>Todo: one backlog.</h3>
+                        <p>
+                            Ticket layout, status and category markers, ordering,
+                            detail docs and done work recorded from git history.
+                        </p>
+                        <div class="tags">
+                            <span>ticket file</span>
+                        </div>
+                    </article>
+                    <article class="card reveal">
+                        <div class="icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 5h16v14H4z"></path>
+                                <path d="M8 9h8M8 13h6"></path>
+                                <path d="m16 17 2 2 3-4"></path>
+                            </svg>
+                        </div>
+                        <h3>llms: readable by agents.</h3>
+                        <p>
+                            llms.txt v2, path scopes, link relations, Markdown
+                            versions, headers and the Lighthouse agentic browsing
+                            audit.
+                        </p>
+                        <div class="tags">
+                            <span>llms.txt</span>
+                            <span>audit</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="flow">
+            <div class="shell">
+                <div class="section-head reveal">
+                    <p class="eyebrow">First run</p>
+                    <h2>One command, then ask in plain language.</h2>
+                    <p class="lead">
+                        The installer copies the entry skill and all seven
+                        sub-skills into one folder. The agent does the rest when a
+                        task matches.
+                    </p>
+                </div>
+                <div class="steps">
+                    <article class="step reveal">
+                        <span>01</span>
+                        <h3>Install once.</h3>
+                        <p>
+                            <code>npx @degreesign/skills</code> copies 40 files
+                            into <code>~/.agents/skills/degreesign/</code> and
+                            writes a marker.
+                        </p>
+                    </article>
+                    <article class="step reveal">
+                        <span>02</span>
+                        <h3>Load the entry.</h3>
+                        <p>
+                            Start a new agent session. The agent sees
+                            <code>degreesign</code> and loads a sub-skill only
+                            when the task matches.
+                        </p>
+                    </article>
+                    <article class="step reveal">
+                        <span>03</span>
+                        <h3>Ask for the work.</h3>
+                        <p>
+                            Add a search icon. Cut a minor release. Publish
+                            <code>llms.txt</code>. The skill supplies the
+                            procedure; the agent does the work.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="specs">
+            <div class="shell">
+                <div class="section-head reveal">
+                    <p class="eyebrow">Specs</p>
+                    <h2>Say what it is. Say what it is not.</h2>
+                    <p class="lead">
+                        Two public entry points, one install folder and no
+                        runtime. Everything else is Markdown the agent reads on
+                        demand.
+                    </p>
+                </div>
+                <div class="spec-grid">
+                    <article class="card spec-card reveal">
+                        <div class="spec-top">
+                            <h3>Installer</h3>
+                            <span class="badge soft">default</span>
+                        </div>
+                        <p>
+                            One executable, built from TypeScript, with flags for
+                            the target, the method and the agent setup.
+                        </p>
+                        <div class="table-wrap">
+                            <table class="flags">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Flag</th>
+                                        <th scope="col">Effect</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><code>(none)</code></td>
+                                        <td>Install into <code>~/.agents/skills</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>--project</code></td>
+                                        <td>Install into <code>./.agents/skills</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>--target &lt;dir&gt;</code></td>
+                                        <td>Install into a custom directory</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>--link</code></td>
+                                        <td>Symlink the package instead of copying</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>--force</code></td>
+                                        <td>Replace a folder the installer does not own</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>--dry-run</code></td>
+                                        <td>Print the actions without writing</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>--list</code></td>
+                                        <td>List the bundled sub-skills</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>--no-agents</code></td>
+                                        <td>Skip every agent settings change</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="fine">
+                            The default target is shared by OpenCode, Claude Code,
+                            Cursor, Copilot and other skills-aware agents.
+                        </p>
+                    </article>
+                    <article class="card spec-card reveal">
+                        <div class="spec-top">
+                            <h3>Runtime</h3>
+                            <span class="badge">measured</span>
+                        </div>
+                        <p>
+                            The package needs Node for the installer and the
+                            optional helpers. It adds nothing to your project.
+                        </p>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Item</th>
+                                        <th scope="col">Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Node</td>
+                                        <td>&ge; 20.6.0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Telemetry</td>
+                                        <td>none</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Installed files</td>
+                                        <td>40 (about 420 KB)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Update check</td>
+                                        <td>At most once per 24 h</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Licence</td>
+                                        <td>MIT</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="fine">
+                            The optional icon, map and llms helpers run only when
+                            a skill invokes them.
+                        </p>
+                    </article>
+                </div>
+                <div class="straight reveal">
+                    <h3>Straight talk.</h3>
+                    <p>
+                        This is not an SDK, and it does not run your code. It
+                        gives a compatible agent a procedure to follow; an agent
+                        that does not read skills gets nothing. The installer
+                        edits OpenCode and Claude Code settings only, and only
+                        after you accept. The icon rasterizer may fall back to
+                        downloading <code>sharp-cli</code> when the machine has no
+                        local renderer.
+                    </p>
+                </div>
+                <details class="specs reveal">
+                    <summary>Technical details</summary>
+                    <div class="limits">
+                        <div class="limit-card">
+                            <h3>Limits and budget</h3>
+                            <ul>
+                                <li><span>Skills</span><strong>8 (1 entry + 7 sub-skills)</strong></li>
+                                <li><span>Installed files</span><strong>40</strong></li>
+                                <li><span>Installed size</span><strong>about 420 KB</strong></li>
+                                <li><span>Licence</span><strong>MIT</strong></li>
+                                <li><span>Node</span><strong>&ge; 20.6</strong></li>
+                            </ul>
+                        </div>
+                        <div class="limit-card">
+                            <h3>Network and privacy</h3>
+                            <ul>
+                                <li><span>Registry requests</span><strong>&le; 1 / 24 h</strong></li>
+                                <li><span>Telemetry</span><strong>none</strong></li>
+                                <li><span>Account</span><strong>none</strong></li>
+                                <li><span>Update consent</span><strong>always asked</strong></li>
+                                <li><span>Sources</span><strong>documented per skill</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <section class="section band" id="architecture">
+            <div class="shell arch-grid">
+                <div class="arch-copy reveal">
+                    <p class="eyebrow">Architecture</p>
+                    <h2>No black box. Read the whole map.</h2>
+                    <p class="lead">
+                        The map shows both public entries, the installer's
+                        functions, the shared types, the update check and the
+                        build. One offline HTML file, no network request.
+                    </p>
+                    <ul class="arch-points">
+                        <li><span>01</span> Host boundary and the target folder</li>
+                        <li><span>02</span> Public entry and flag dispatch</li>
+                        <li><span>03</span> Shared types at each boundary</li>
+                        <li><span>04</span> Update check and the 24-hour cache</li>
+                        <li><span>05</span> Build, bundle and manifest</li>
+                    </ul>
+                    <a class="button primary arch-button" href="architecture.html" target="_blank" rel="noreferrer">
+                        Open the full architecture
+                        <span aria-hidden="true">&rarr;</span>
+                    </a>
+                    <p class="arch-note">
+                        Opens in a new tab. One self-contained HTML file.
+                        <a href="https://github.com/degreesign/skills" target="_blank" rel="noreferrer">Browse the source</a>.
+                    </p>
+                </div>
+                <a class="arch-preview reveal" href="architecture.html" target="_blank" rel="noreferrer" aria-label="Open the full architecture in a new tab">
+                    <div class="arch-top">
+                        <span class="arch-dot" aria-hidden="true"></span>
+                        <span>code structure</span>
+                        <span>full map</span>
+                    </div>
+                    <div class="arch-bands">
+                        <div class="arch-band">
+                            <span>Host boundary</span>
+                            <small>agent or shell, registry, skills folder, cache</small>
+                        </div>
+                        <div class="arch-band">
+                            <span>Public entry</span>
+                            <small>bin/install.mjs and flag dispatch</small>
+                        </div>
+                        <div class="arch-band">
+                            <span>Shared types</span>
+                            <small>Options, Marker, Report, Agent</small>
+                        </div>
+                        <div class="arch-band">
+                            <span>Update check</span>
+                            <small>check.mjs and the 24-hour cache</small>
+                        </div>
+                        <div class="arch-band">
+                            <span>Build</span>
+                            <small>webpack, tsconfig, manifest, VERSION</small>
+                        </div>
+                    </div>
+                    <div class="arch-foot">
+                        <span>Open full architecture</span>
+                        <span aria-hidden="true">&rarr;</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section class="section" id="install">
+            <div class="shell install-grid">
+                <div class="reveal">
+                    <p class="eyebrow">Install</p>
+                    <h2>One command to the first result.</h2>
+                    <p class="lead">
+                        Install from the published package or a clone. The
+                        default target is <code>~/.agents/skills</code>, which
+                        skills-aware agents already read.
+                    </p>
+                    <div class="cmd">
+                        <code>npx @degreesign/skills</code>
+                        <button type="button" id="copy-install" data-copy="npx @degreesign/skills">
+                            Copy
+                        </button>
+                    </div>
+                    <p class="fine">
+                        The first run copies 40 files and writes a marker; later
+                        runs replace the folder the installer owns. Add
+                        <code>--no-agents</code> to leave every settings file
+                        alone.
+                    </p>
+                    <div class="tags">
+                        <span>Node &ge; 20.6</span>
+                        <span>npm</span>
+                        <span>npx</span>
+                        <span>Git optional</span>
+                    </div>
+                </div>
+                <pre class="code reveal"><code><span class="tok-key">npx</span> @degreesign/skills
+
+<span class="tok-key">node</span> ~/.agents/skills/degreesign/check.mjs</code></pre>
+            </div>
+        </section>
+
+        <section class="section band" id="faq">
+            <div class="shell">
+                <div class="section-head reveal">
+                    <p class="eyebrow">FAQ</p>
+                    <h2>The questions you are about to ask.</h2>
+                    <p class="lead">
+                        Answer what the page does not already answer. No jargon,
+                        no asterisks and no marketing hedging.
+                    </p>
+                </div>
+                <div class="faq-grid">
+                    <article class="faq-item reveal">
+                        <h3>Which agents can use it?</h3>
+                        <p>
+                            Any agent that discovers skills from a skills
+                            directory such as <code>.agents/skills/</code>,
+                            <code>.claude/skills/</code> or
+                            <code>.opencode/skills/</code>, project or global.
+                            The installer defaults to <code>~/.agents/skills</code>
+                            and only edits OpenCode and Claude Code settings.
+                        </p>
+                    </article>
+                    <article class="faq-item reveal">
+                        <h3>Does it run code or add dependencies?</h3>
+                        <p>
+                            No. The skills are Markdown and JSON, and nothing is
+                            installed into your app. Optional Node helpers
+                            for icon rasterization, the map check and the llms
+                            check run only when a skill invokes them.
+                        </p>
+                    </article>
+                    <article class="faq-item reveal">
+                        <h3>Does it need an account or a server?</h3>
+                        <p>
+                            No account, no server and no telemetry. The only
+                            network calls are the sources a skill documents and
+                            the optional update check, which asks the npm
+                            registry at most once every 24 hours.
+                        </p>
+                    </article>
+                    <article class="faq-item reveal">
+                        <h3>How do I update it?</h3>
+                        <p>
+                            Re-run <code>npx @degreesign/skills</code>. It
+                            replaces the folder it owns. The bundled check
+                            compares the installed marker with the registry once
+                            a day and prints an update command; the agent asks
+                            before updating.
+                        </p>
+                    </article>
+                    <article class="faq-item reveal">
+                        <h3>Can I pin a version?</h3>
+                        <p>
+                            Yes. Clone the <code>v2.2.1</code> tag and run
+                            <code>node bin/install.mjs</code>, or install a pinned
+                            npm version.
+                        </p>
+                    </article>
+                    <article class="faq-item reveal">
+                        <h3>What does it not do?</h3>
+                        <p>
+                            It does not write your app, run your code or guarantee
+                            a result. It gives a compatible agent a procedure; an
+                            agent that does not read skills gets nothing.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section cta" id="start">
+            <div class="shell cta-inner reveal">
+                <p class="eyebrow">Start here</p>
+                <h2>One command. Eight skills.</h2>
+                <p class="lead">
+                    MIT, Node 20.6 or newer, no account and no telemetry. The
+                    update check runs at most once a day and always asks first.
+                </p>
+                <div class="actions">
+                    <a class="button primary" href="#install">Get the install command</a>
+                    <a class="button ghost" href="#demo">Build a command</a>
+                </div>
+                <p class="fine">
+                    MIT &middot; Node &ge; 20.6 &middot; no telemetry
+                    &middot; 40 installed files
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="shell footer-inner">
+            <div>
+                <a class="brand" href="#top">degreesign skills</a>
+                <p>
+                    Eight Agent Skills for repeatable agent work. MIT, no
+                    account, no telemetry.
+                </p>
+            </div>
+            <div class="footer-links">
+                <a href="#demo">Demo</a>
+                <a href="#faq">FAQ</a>
+                <a href="architecture.html" target="_blank" rel="noreferrer">Architecture</a>
+                <a href="https://github.com/degreesign/skills" target="_blank" rel="noreferrer">GitHub</a>
+                <a href="https://www.npmjs.com/package/@degreesign/skills" target="_blank" rel="noreferrer">npm</a>
+                <a href="https://github.com/degreesign/skills/blob/main/LICENSE" target="_blank" rel="noreferrer">License</a>
+            </div>
+        </div>
+        <div class="shell footer-base">
+            <span>v2.2.1</span>
+            <span>MIT &middot; Node &ge; 20.6</span>
+        </div>
+    </footer>
+
+    <nav class="floating-menu" aria-label="Primary">
+        <div class="floating-track">
+            <a class="float-button is-selected" href="#top" data-target="#top" aria-current="page">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="m4 11 8-7 8 7"></path>
+                    <path d="M6 10v9h12v-9"></path>
+                </svg>
+                <span class="float-label">Overview</span>
+            </a>
+            <a class="float-button" href="#why" data-target="#why">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                    <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                    <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                    <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                </svg>
+                <span class="float-label">Why</span>
+            </a>
+            <a class="float-button" href="#demo" data-target="#demo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                    <path d="m7 9 3 3-3 3M13 15h4"></path>
+                </svg>
+                <span class="float-label">Demo</span>
+            </a>
+            <a class="float-button" href="#capabilities" data-target="#capabilities">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M4 7h8M16 7h4M4 17h4M12 17h8"></path>
+                    <circle cx="14" cy="7" r="2"></circle>
+                    <circle cx="10" cy="17" r="2"></circle>
+                </svg>
+                <span class="float-label">Skills</span>
+            </a>
+            <a class="float-button" href="#specs" data-target="#specs">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="m12 3 9 5-9 5-9-5 9-5zM3 12l9 5 9-5"></path>
+                    <path d="m3 16 9 5 9-5"></path>
+                </svg>
+                <span class="float-label">Specs</span>
+            </a>
+            <a class="float-button" href="#architecture" data-target="#architecture">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="4" width="7" height="6" rx="1"></rect>
+                    <rect x="14" y="4" width="7" height="6" rx="1"></rect>
+                    <rect x="8.5" y="15" width="7" height="6" rx="1"></rect>
+                    <path d="M6.5 10v2h11v-2M12 12v3"></path>
+                </svg>
+                <span class="float-label">Architecture</span>
+            </a>
+            <a class="float-button" href="#install" data-target="#install">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 3v11m0 0 4-4m-4 4-4-4"></path>
+                    <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"></path>
+                </svg>
+                <span class="float-label">Install</span>
+            </a>
+        </div>
+    </nav>
+
+    <script type="module">
+        const VERSION = `2.2.1`;
+        const SKILLS = `coding, icons, llms, npm, server, todo, webapp`;
+
+        const targetSel = document.getElementById(`demo-target`);
+        const methodSel = document.getElementById(`demo-method`);
+        const agentsSel = document.getElementById(`demo-agents`);
+        const commandEl = document.getElementById(`demo-command`);
+        const outputEl = document.getElementById(`demo-output`);
+        const noteEl = document.getElementById(`demo-note`);
+        const statusEl = document.getElementById(`demo-status`);
+        const targetOut = document.getElementById(`demo-target-out`);
+        const methodOut = document.getElementById(`demo-method-out`);
+        const agentsOut = document.getElementById(`demo-agents-out`);
+        const copyCommand = document.getElementById(`copy-command`);
+        const reset = document.getElementById(`demo-reset`);
+        const copyInstall = document.getElementById(`copy-install`);
+
+        let lastCommand = `npx @degreesign/skills`;
+
+        const setStatus = (text) => {
+            statusEl.textContent = text;
+        };
+
+        const render = (announce = false) => {
+            const target = targetSel.value;
+            const method = methodSel.value;
+            const agents = agentsSel.value;
+            const parts = [`npx @degreesign/skills`];
+            if (target === `project`) parts.push(`--project`);
+            if (method === `link`) parts.push(`--link`);
+            if (agents === `skip`) parts.push(`--no-agents`);
+            lastCommand = parts.join(` `);
+            commandEl.textContent = lastCommand;
+
+            const location = target === `project`
+                ? `./.agents/skills/degreesign`
+                : `~/.agents/skills/degreesign`;
+            const action = method === `link`
+                ? `link <package root>`
+                : `copy <package root>`;
+            outputEl.textContent = [
+                `Dry run: @degreesign/skills ${VERSION}`,
+                `  Action    ${action}`,
+                `  Location  ${location}`,
+                `  Skills    ${SKILLS}`,
+            ].join(`\n`);
+
+            targetOut.textContent = target === `project`
+                ? `./.agents/skills`
+                : `~/.agents/skills`;
+            methodOut.textContent = method === `link` ? `symlink` : `copy`;
+            agentsOut.textContent = agents === `skip` ? `skipped` : `configure`;
+            noteEl.textContent = agents === `skip`
+                ? `Agent settings are left untouched; the install itself is unchanged.`
+                : `The real report adds one line per agent it detects.`;
+            if (announce) setStatus(`Preview updated. Nothing is written by this page.`);
+        };
+
+        const copyText = async (text) => {
+            try {
+                await navigator.clipboard.writeText(text);
+                return true;
+            } catch {
+                const area = document.createElement(`textarea`);
+                area.value = text;
+                area.setAttribute(`readonly`, ``);
+                area.style.position = `fixed`;
+                area.style.opacity = `0`;
+                document.body.append(area);
+                try {
+                    area.select();
+                    return document.execCommand(`copy`);
+                } catch {
+                    return false;
+                } finally {
+                    area.remove();
+                }
+            }
+        };
+
+        copyCommand.addEventListener(`click`, async () => {
+            const copied = await copyText(lastCommand);
+            copyCommand.textContent = copied ? `Copied` : `Copy failed`;
+            setStatus(copied
+                ? `Command copied to the clipboard.`
+                : `Could not copy. Select the command and copy it by hand.`);
+            setTimeout(() => {
+                copyCommand.textContent = `Copy command`;
+            }, 1600);
+        });
+
+        copyInstall.addEventListener(`click`, async () => {
+            const command = copyInstall.dataset.copy;
+            const copied = await copyText(command);
+            copyInstall.textContent = copied ? `Copied` : `Copy failed`;
+            setTimeout(() => {
+                copyInstall.textContent = `Copy`;
+            }, 1600);
+        });
+
+        reset.addEventListener(`click`, () => {
+            targetSel.value = `global`;
+            methodSel.value = `copy`;
+            agentsSel.value = `configure`;
+            render();
+            setStatus(`Reset. Preview only. Nothing is written by this page.`);
+        });
+
+        targetSel.addEventListener(`change`, () => render(true));
+        methodSel.addEventListener(`change`, () => render(true));
+        agentsSel.addEventListener(`change`, () => render(true));
+
+        /* Scroll spy and auto-centering for the floating menu. */
+        const menuLinks = [...document.querySelectorAll(`.float-button`)];
+        const menu = document.querySelector(`.floating-menu`);
+        const reduceMotion = window.matchMedia(`(prefers-reduced-motion: reduce)`).matches;
+        let activeLink = null;
+
+        const centerMenu = (link) => {
+            if (!menu || !link) return;
+            const menuRect = menu.getBoundingClientRect();
+            const linkRect = link.getBoundingClientRect();
+            menu.scrollTo({
+                left: linkRect.left - menuRect.left + menu.scrollLeft -
+                    (menuRect.width - linkRect.width) / 2,
+                behavior: reduceMotion ? `auto` : `smooth`,
+            });
+        };
+
+        const setActive = (target) => {
+            const link = menuLinks.find((item) => item.dataset.target === target);
+            if (!link || link === activeLink) return;
+            activeLink = link;
+            for (const item of menuLinks) {
+                const active = item === link;
+                item.classList.toggle(`is-selected`, active);
+                if (active) item.setAttribute(`aria-current`, `page`);
+                else item.removeAttribute(`aria-current`);
+            }
+            centerMenu(link);
+        };
+
+        const sections = menuLinks
+            .map((link) => document.querySelector(link.dataset.target))
+            .filter((node) => node && node.id !== `top`);
+
+        const onScroll = () => {
+            const mark = window.scrollY + window.innerHeight * 0.45;
+            let active = `#top`;
+            for (const section of sections) {
+                if (section.offsetTop <= mark) active = `#${section.id}`;
+            }
+            setActive(active);
+        };
+
+        window.addEventListener(`scroll`, onScroll, { passive: true });
+        window.addEventListener(`resize`, () => centerMenu(activeLink));
+        for (const link of menuLinks) {
+            link.addEventListener(`click`, () => setActive(link.dataset.target));
+        }
+        onScroll();
+
+        /* Reveal on scroll, with a no-observer fallback. */
+        const revealItems = document.querySelectorAll(`.reveal`);
+        if (`IntersectionObserver` in window) {
+            const observer = new IntersectionObserver((entries) => {
+                for (const entry of entries) {
+                    if (!entry.isIntersecting) continue;
+                    entry.target.classList.add(`in`);
+                    observer.unobserve(entry.target);
+                }
+            }, { rootMargin: `0px 0px -8% 0px`, threshold: 0.08 });
+            for (const item of revealItems) observer.observe(item);
+        } else {
+            for (const item of revealItems) item.classList.add(`in`);
+        }
+    </script>
+</body>
+</html>

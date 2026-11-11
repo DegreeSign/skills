@@ -18,7 +18,7 @@ One entry skill for the DegreeSign collection. It routes a task to the matching 
 Read the matching file before acting. Resolve each path relative to this `SKILL.md`.
 
 - `skills/icons/SKILL.md`: add, find, audit and rasterize Material Symbols Rounded icons.
-- `skills/npm/SKILL.md`: release and maintain an npm package, including its showcase page and architecture map.
+- `skills/npm/SKILL.md`: release and maintain an npm package, including its full showcase page and architecture map.
 - `skills/coding/SKILL.md`: apply the house coding conventions when editing a repository.
 - `skills/webapp/SKILL.md`: structure or restructure a TypeScript web app.
 - `skills/server/SKILL.md`: structure or restructure a Node backend.

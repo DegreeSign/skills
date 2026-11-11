@@ -6,7 +6,7 @@ MIT-licensed [Agent Skill](https://agentskills.io) that gives AI coding agents o
 [![npm downloads](https://img.shields.io/npm/dm/@degreesign/skills.svg)](https://www.npmjs.com/package/@degreesign/skills)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-6E56CF.svg)](https://agentskills.io)
-[![Version](https://img.shields.io/badge/version-2.2.0-blue.svg)](ChangeLog.md)
+[![Version](https://img.shields.io/badge/version-2.2.1-blue.svg)](ChangeLog.md)
 [![Node](https://img.shields.io/badge/node-%3E%3D20.6-339933.svg)](https://nodejs.org)
 [![Skills](https://img.shields.io/badge/skills-7-2ea44f.svg)](#skills)
 
@@ -14,6 +14,7 @@ MIT-licensed [Agent Skill](https://agentskills.io) that gives AI coding agents o
 
 - [Intro](#intro)
 - [Why DegreeSign Skills](#why-degreesign-skills)
+- [Demo](#demo)
 - [Install](#install)
 - [Quick Start](#quick-start)
 - [Skills](#skills)
@@ -46,9 +47,13 @@ This repository is the source of truth. The root `SKILL.md` is the entry skill a
 - **Repeatable workflows**: turn multi-step tasks (fetch and rasterize an icon, cut a release) into a consistent, auditable procedure.
 - **Tiny context footprint**: progressive disclosure loads a sub-skill only when a task matches it.
 - **Framework-agnostic**: plain Markdown and a `SKILL.md`; works with any skills-compatible agent, in any project language.
-- **Zero runtime dependencies**: the skills are instructions and optional Node helpers; nothing is installed into your app.
+- **Nothing installed into your app**: the skills are instructions and optional Node helpers; no service, account or build step is added.
 - **Version-pinned**: clone a stable tag and install it locally, then upgrade on your schedule.
 - **Open and auditable**: MIT licensed, no account, no telemetry, and no network calls beyond the public sources a skill documents and the optional once-a-day update check.
+
+## Demo
+
+Open the [showcase page](docs/index.html) to build an install command and read the measured package facts, or the [architecture map](docs/architecture.html) to inspect every file and function.
 
 ## Install
 
@@ -110,7 +115,7 @@ npx degreesign-skills
 ### Pin a version
 
 ```bash
-git clone --branch v2.2.0 --depth 1 https://github.com/degreesign/skills
+git clone --branch v2.2.1 --depth 1 https://github.com/degreesign/skills
 node bin/install.mjs
 ```
 
@@ -158,7 +163,7 @@ Trigger the release workflow the same way:
 
 > Cut a minor release, update the changelog and rewrite the README for discoverability.
 
-The `npm` sub-skill walks the agent through versioning, the matching changelog header, build artifacts, the showcase page, `npm pack --dry-run`, publish, and tag.
+The `npm` sub-skill walks the agent through versioning, the matching changelog header, build artifacts, the full showcase page, `npm pack --dry-run`, publish, and tag.
 
 ## Skills
 
@@ -207,7 +212,8 @@ Release and maintain an npm package: naming, semantic versioning, changelog, com
 | `scripts/check_architecture.mjs` | Node CLI | Validates file paths, line counts, node and edge ids, the root, flows and self-containment. |
 | `readme-seo.md` | Prompt | A ready-to-use prompt to rewrite a package README for SEO and AI discoverability. |
 | `webpack.md` | Guide | Choosing browser, Node or dual targets, folder layout, `package.json` entry fields, `tsconfig.json`, and webpack configuration. |
-| `showcase.md` | Guide | The showcase page outline, tiny demo, optional case study, design notes, starter skeleton and verification checks. |
+| `showcase.template.html` | Template | A neutral self-contained scaffold: hero preview, facts, live demo, capabilities, specs, architecture, install, FAQ, footer and floating menu. |
+| `showcase.md` | Guide | The narrative spine, hero and demo contract, honest-copy rules, design system, metadata, template steps and verification checks. |
 
 Capabilities:
 
@@ -219,7 +225,8 @@ Capabilities:
 | Release | Runs the checklist from version bump through `npm pack --dry-run`, publish and `git tag`. |
 | README SEO | Rewrites documentation for search engines and AI agents. |
 | Architecture map | Requires `docs/architecture.html` in every package and keeps it current with the source. |
-| Showcase page | Requires a committed `docs/index.html` with a tiny demo and an optional production case study. |
+| Showcase page | Requires a committed `docs/index.html` that argues the promise end to end, proves it with a live demo and states real limits. |
+| Page template | Provides a full self-contained landing page with a lazy demo, honest specs, metadata and a floating section menu. |
 | Case study | Asks whether a production project uses the package, then uses its real logo, URL and screenshots. |
 | Map check | Validates counts, lines, relations, flows and offline use. |
 
@@ -234,7 +241,7 @@ Apply the house coding conventions when editing a repository: TypeScript, CSS, D
 | `css.md` | Reference | Selectors, naming, placement and values. |
 | `dom.md` | Reference | Element access through `@degreesign/ui`, null safety and events. |
 | `i18n.md` | Reference | Translation source file, key naming, placeholders and hardcoded strings. |
-| `workflow.md` | Reference | Build, deploy, translate and git index rules. |
+| `workflow.md` | Reference | Build, deploy, translate, git index and changelog rules. |
 | `ui-patterns.md` | Reference | Tooltips, the `icons` skill and vendored browser libraries. |
 
 Capabilities:
@@ -245,7 +252,7 @@ Capabilities:
 | CSS | Enforces class-only selectors, naming, placement and token values. |
 | DOM access | Routes all element access through the `@degreesign/ui` helpers. |
 | i18n | Keeps copy in the translation source file with consistent keys. |
-| Workflow | Guards release, deploy, translate and the git index. |
+| Workflow | Guards release, deploy, translate and the git index, and keeps changelog entries short. |
 
 ### `webapp`
 
@@ -359,7 +366,7 @@ Yes. Skills are language-agnostic, and the skill set covers TypeScript-friendly 
 Any agent that discovers skills from a skills directory such as `.agents/skills/`, `.claude/skills/` or `.opencode/skills/`, project or global. The installer writes to the location you choose and defaults to the global `~/.agents/skills`. The skills are framework-agnostic, so they apply to any web or Node project.
 
 **How do I pin a version?**
-Clone the tag and install from the local path: `git clone --branch v2.2.0 --depth 1 https://github.com/degreesign/skills && node bin/install.mjs`.
+Clone the tag and install from the local path: `git clone --branch v2.2.1 --depth 1 https://github.com/degreesign/skills && node bin/install.mjs`.
 
 ## Layout
 
@@ -406,6 +413,7 @@ The root `SKILL.md` is the entry skill; each sub-skill lives in `skills/<name>/`
     │   ├── architecture.template.html
     │   ├── readme-seo.md
     │   ├── showcase.md
+    │   ├── showcase.template.html
     │   ├── webpack.md
     │   └── scripts/
     │       └── check_architecture.mjs
@@ -446,7 +454,7 @@ node skills/npm/scripts/check_architecture.mjs .
 
 ## Versioning
 
-`VERSION` holds the current release. Tag the release (`v2.2.0`) so consumers can pin it by cloning the tag and installing locally. See [ChangeLog.md](ChangeLog.md) for release notes.
+`VERSION` holds the current release. Tag the release (`v2.2.1`) so consumers can pin it by cloning the tag and installing locally. See [ChangeLog.md](ChangeLog.md) for release notes.
 
 ## Keywords
 

@@ -1,49 +1,40 @@
 # ChangeLog
 
+## 2.2.1
+
+- Expand showcase, fix map, shorten entries.
+
 ## 2.2.0
 
-- Add showcase page guidance to the `npm` skill for a committed `docs/index.html` with a tiny demo and an optional production case study.
-- Add the `showcase.md` guide with the page outline, demo rules, case study flow, design notes, starter skeleton and verification checks.
+- Add showcase page and guide.
 
 ## 2.1.1
 
-- The `llms` checker verifies media types, charsets and `Link` relations with `--check-headers`.
-- The `llms` skill documents server directives that keep `Link` header values free of escape characters.
+- Check headers and document escapes.
 
 ## 2.1.0
 
-- Add the `llms` skill for publishing, auditing and fixing `llms.txt` and Markdown page versions.
+- Add the `llms` skill.
 
 ## 2.0.0
 
-- Add optimisation rules to the `coding` skill for collapsing pass-through helpers and consolidating duplicated logic.
+- Add optimisation rules to `coding`.
 
 ## 1.9.0
 
-- The `npm` skill now requires every package to keep `docs/architecture.html` current with the source.
-- Add the architecture map guide, an offline template and a Node checker for lines, relations, flows and self-containment.
+- Add architecture map guide and checker.
 
 ## 1.8.0
 
-- The installer now offers to set up the agents it finds so they can read the skill.
-- OpenCode and Claude Code get a small settings update; all other agents already work.
-- Add `--no-agents` to skip setting up agents.
-- Add `--no-opencode` to skip OpenCode.
-- Add `--no-claude` to skip Claude Code.
-- Add `--no-codex` to skip Codex.
-- Add `--no-cursor` to skip Cursor.
-- Add `--no-copilot` to skip GitHub Copilot.
-- Add `--no-gemini` to skip Gemini CLI.
+- Add agent setup and skip flags.
 
 ## 1.7.0
 
-- Add the `todo` skill and move ticket rules into it from `coding`.
+- Add the `todo` skill.
 
 ## 1.6.0
 
-- Ship the whole collection as one `degreesign` skill with sub-skills.
-- Add the `degreesign-skills` installer, which copies the skill into an agent skills directory and supports `--link`.
-- Add a once-a-day update check that asks before updating.
+- Ship one skill with an installer.
 
 ## 1.4.0
 
@@ -59,8 +50,7 @@
 
 ## 1.1.0
 
-- Add the `npm` skill.
-- Publish the skills as the `@degreesign/skills` npm package.
+- Add the `npm` skill and package.
 
 ## 1.0.0
 

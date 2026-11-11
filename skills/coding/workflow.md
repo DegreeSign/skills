@@ -20,3 +20,8 @@
 ## Commit messages
 
 - Follow the project's commit message convention. When it specifies one, keep messages short and lowercase and match the existing log.
+
+## Changelog
+
+- Write each changelog entry as one sentence of six words or fewer.
+- Keep the changelog to public changes only, one line per change.

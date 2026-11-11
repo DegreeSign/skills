@@ -1,0 +1,3389 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!--
+        Structural scaffold only. Replace the neutral tokens in the style block
+        with the package's own palette, type and shape language before shipping.
+    -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>mylib — one sentence promise</title>
+    <meta name="description" content="Replace with one honest sentence about what the package does, who it is for and what it costs.">
+    <!-- Replace with the package's own primary surface. -->
+    <meta name="theme-color" content="#ffffff">
+    <link rel="canonical" href="https://example.com/mylib/">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <meta property="og:title" content="mylib — one sentence promise">
+    <meta property="og:description" content="Replace with the same promise, short enough for a link preview.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="mylib">
+    <meta name="twitter:card" content="summary">
+    <!--
+        Keep this structured data only when every answer matches the visible FAQ
+        word for word. Remove it when the FAQ changes or the page has no FAQ.
+    -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": "What does mylib do?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Replace with one honest answer, then keep the visible FAQ and this structured data identical."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Does it need a server?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Replace with one honest answer, then keep the visible FAQ and this structured data identical."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "How large is it?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Replace with one honest answer, then keep the visible FAQ and this structured data identical."
+                    }
+                }
+            ]
+        }
+    </script>
+    <script>
+        document.documentElement.classList.add("js");
+    </script>
+    <style>
+/*
+    Neutral showcase scaffold.
+    Replace every token below with the package's own palette, type and shape
+    language before shipping. The layout and interactions are the reusable
+    part; this grayscale styling is only a starting point, not a design.
+*/
+:root {
+    --bg: #ffffff;
+    --bg-alt: #f4f4f4;
+    --surface: #ffffff;
+    --text: #1a1a1a;
+    --text-soft: #4a4a4a;
+    --text-muted: #6b6b6b;
+    --line: #d8d8d8;
+    --line-strong: #b4b4b4;
+    --accent: #1a1a1a;
+    --accent-soft: rgba(26, 26, 26, 0.08);
+    --on-accent: #ffffff;
+    --danger: #a33226;
+    --syntax-key: #7a3e9d;
+    --syntax-string: #2f6b3f;
+    --syntax-variable: #1f4e79;
+    --syntax-function: #7a4b00;
+    --radius: 10px;
+    --radius-sm: 6px;
+    --max: 1120px;
+    --font-display: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 24px;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font: 400 17px/1.65 var(--font-body);
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img,
+svg,
+canvas {
+    display: block;
+    max-width: 100%;
+}
+
+button {
+    font: inherit;
+}
+
+code {
+    font-family: var(--font-mono);
+}
+
+:focus-visible {
+    border-radius: 4px;
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.shell {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-inline: auto;
+    max-width: var(--max);
+    width: 90%;
+}
+
+.sr-only {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+.skip {
+    background: var(--text);
+    border-radius: 0 0 var(--radius-sm) 0;
+    color: var(--on-accent);
+    left: 0;
+    padding: 10px 16px;
+    position: absolute;
+    top: -60px;
+    z-index: 80;
+}
+
+.skip:focus {
+    top: 0;
+}
+
+/* Hero */
+.hero {
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    padding: 72px 0 0;
+}
+
+.hero-grid {
+    align-items: center;
+    display: grid;
+    gap: clamp(32px, 5vw, 64px);
+    grid-template-columns: 1.05fr 0.95fr;
+    padding-bottom: 56px;
+}
+
+.brand {
+    align-items: center;
+    color: var(--text);
+    display: flex;
+    flex: none;
+    font: 600 15px/1 var(--font-mono);
+    gap: 10px;
+    letter-spacing: -0.01em;
+}
+
+.brand-mark {
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    display: grid;
+    height: 30px;
+    place-items: center;
+    width: 30px;
+}
+
+.brand-mark svg {
+    height: 17px;
+    width: 17px;
+}
+
+.hero-brand {
+    margin-bottom: 30px;
+    width: fit-content;
+}
+
+.eyebrow {
+    align-items: center;
+    color: var(--text-muted);
+    display: flex;
+    font: 500 12px/1 var(--font-mono);
+    gap: 9px;
+    letter-spacing: 0.14em;
+    margin: 0 0 18px;
+    text-transform: uppercase;
+}
+
+.eyebrow .dot {
+    background: var(--accent);
+    border-radius: 50%;
+    height: 7px;
+    width: 7px;
+}
+
+h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 5.6vw, 4.2rem);
+    font-weight: 600;
+    letter-spacing: -0.045em;
+    line-height: 1;
+    margin: 0;
+    text-wrap: balance;
+}
+
+/* Optional highlight: use the package's own accent or remove it. */
+.grad {
+    color: var(--accent);
+}
+
+.lead {
+    color: var(--text-soft);
+    font-size: clamp(1rem, 1.4vw, 1.12rem);
+    line-height: 1.65;
+    margin: 22px 0 0;
+    max-width: 56ch;
+}
+
+.hero .lead {
+    max-width: 52ch;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.button {
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    font: 600 14px/1 var(--font-body);
+    gap: 10px;
+    padding: 12px 18px;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.button svg {
+    flex: none;
+    height: 16px;
+    width: 16px;
+}
+
+.button.primary {
+    background: var(--accent);
+    color: var(--on-accent);
+}
+
+.button.primary:hover {
+    background: var(--text-soft);
+}
+
+.button.ghost {
+    background: var(--surface);
+    border-color: var(--line-strong);
+    color: var(--text);
+}
+
+.button.ghost:hover {
+    background: var(--bg-alt);
+    border-color: var(--text-muted);
+}
+
+.button.ink {
+    background: var(--accent);
+    color: var(--on-accent);
+}
+
+.button.ink:hover {
+    background: var(--text-soft);
+}
+
+.button:disabled {
+    cursor: not-allowed;
+    opacity: 0.38;
+}
+
+.hero-note {
+    color: var(--text-muted);
+    font: 500 12px/1.5 var(--font-mono);
+    margin: 24px 0 0;
+}
+
+.hero-proof {
+    align-items: center;
+    color: var(--text-soft);
+    display: inline-flex;
+    font: 500 12px/1.5 var(--font-mono);
+    gap: 8px;
+    margin-top: 18px;
+}
+
+.hero-proof img {
+    height: 18px;
+    width: 18px;
+}
+
+.hero-proof:hover {
+    color: var(--text);
+}
+
+/* Hero preview */
+.console {
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 18px;
+}
+
+.console-top {
+    align-items: center;
+    color: var(--text-muted);
+    display: flex;
+    font: 500 11.5px/1 var(--font-mono);
+    gap: 12px;
+    letter-spacing: 0.02em;
+}
+
+.lights {
+    display: flex;
+    gap: 5px;
+}
+
+.lights i {
+    background: var(--line-strong);
+    border-radius: 50%;
+    height: 7px;
+    width: 7px;
+}
+
+.console-title {
+    flex: 1;
+}
+
+.live {
+    align-items: center;
+    color: var(--text-muted);
+    display: inline-flex;
+    gap: 6px;
+}
+
+.live i {
+    animation: pulse 2s infinite;
+    background: var(--accent);
+    border-radius: 50%;
+    height: 6px;
+    width: 6px;
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 var(--accent-soft);
+        opacity: 1;
+    }
+
+    50% {
+        box-shadow: 0 0 0 5px transparent;
+        opacity: 0.55;
+    }
+}
+
+.console-body {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    display: grid;
+    gap: 10px;
+    margin: 16px 0 14px;
+    padding: 16px;
+}
+
+.console-message {
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    line-height: 1.55;
+    margin: 0;
+    max-width: 88%;
+    padding: 10px 14px;
+}
+
+.console-message.user {
+    align-self: flex-end;
+    background: var(--accent);
+    color: var(--on-accent);
+}
+
+.console-message.bot {
+    align-self: flex-start;
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+    color: var(--text);
+}
+
+.caret {
+    animation: blink 1.1s steps(1) infinite;
+    background: var(--accent);
+    display: inline-block;
+    height: 1em;
+    margin-left: 3px;
+    vertical-align: text-bottom;
+    width: 1px;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+.console-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.console-chips span {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    font: 500 11px/1 var(--font-mono);
+    padding: 6px 10px;
+}
+
+/* Stats */
+.stats {
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding-bottom: 26px;
+}
+
+.stats div {
+    border-right: 1px solid var(--line);
+    padding: 22px 0 4px 22px;
+}
+
+.stats div:first-child {
+    padding-left: 0;
+}
+
+.stats div:last-child {
+    border-right: 0;
+}
+
+.stats strong {
+    color: var(--text);
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(1.7rem, 3vw, 2.4rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1;
+}
+
+.stats span {
+    color: var(--text-muted);
+    display: block;
+    font: 500 11.5px/1 var(--font-mono);
+    letter-spacing: 0.08em;
+    margin-top: 6px;
+    text-transform: uppercase;
+}
+
+/* Sections */
+.section {
+    padding: clamp(64px, 8vw, 96px) 0;
+}
+
+.section.band {
+    background: var(--bg-alt);
+    border-block: 1px solid var(--line);
+}
+
+.section-head {
+    margin-bottom: 42px;
+    max-width: 740px;
+}
+
+.section-head .lead {
+    margin-top: 16px;
+}
+
+h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3.1rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin: 0;
+    text-wrap: balance;
+}
+
+h3 {
+    font: 600 18px/1.25 var(--font-body);
+    letter-spacing: -0.01em;
+    margin: 0 0 8px;
+}
+
+.cards {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    min-width: 0;
+    padding: 24px;
+}
+
+.card p {
+    color: var(--text-soft);
+    font-size: 15.5px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.icon {
+    align-items: center;
+    background: var(--accent-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    display: flex;
+    height: 40px;
+    justify-content: center;
+    margin-bottom: 18px;
+    width: 40px;
+}
+
+.icon svg {
+    height: 20px;
+    width: 20px;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 16px;
+}
+
+.tags span {
+    background: var(--accent-soft);
+    border-radius: var(--radius-sm);
+    color: var(--text-soft);
+    font: 600 11px/1 var(--font-mono);
+    padding: 5px 9px;
+}
+
+.fine {
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.55;
+    margin: 16px 0 0;
+}
+
+.fine code,
+td code {
+    background: var(--accent-soft);
+    border-radius: 4px;
+    padding: 1px 5px;
+}
+
+/* Numbered points and steps */
+.why-grid,
+.steps {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.why-item,
+.step {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 24px;
+}
+
+.why-mark,
+.step > span {
+    color: var(--text-muted);
+    font: 600 11px/1 var(--font-mono);
+    letter-spacing: 0.08em;
+}
+
+.step > span {
+    align-items: center;
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    color: var(--text);
+    display: inline-flex;
+    height: 38px;
+    justify-content: center;
+    letter-spacing: 0;
+    width: 38px;
+}
+
+.why-item h3 {
+    margin: 14px 0 8px;
+}
+
+.step h3 {
+    margin: 18px 0 8px;
+}
+
+.why-item p,
+.step p {
+    color: var(--text-soft);
+    font-size: 15.5px;
+    margin: 0;
+}
+
+/* Demo */
+.challenge {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    list-style: none;
+    margin: 0 0 18px;
+    padding: 0;
+}
+
+.challenge li {
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    color: var(--text-soft);
+    display: flex;
+    font-size: 14px;
+    gap: 10px;
+    padding: 12px 14px;
+}
+
+.challenge span {
+    color: var(--text-muted);
+    font: 600 10.5px/1 var(--font-mono);
+}
+
+.demo-option {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    margin: 0 0 18px;
+    padding: 14px 16px;
+}
+
+.demo-option label {
+    color: var(--text-muted);
+    display: block;
+    font: 600 10.5px/1 var(--font-mono);
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.demo-option textarea {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    display: block;
+    font: 14px/1.5 var(--font-body);
+    min-height: 44px;
+    padding: 10px 12px;
+    resize: vertical;
+    width: 100%;
+}
+
+.demo-option textarea:focus {
+    border-color: var(--accent);
+    outline: none;
+}
+
+.demo-option p {
+    color: var(--text-muted);
+    font-size: 12px;
+    margin: 8px 0 0;
+}
+
+.demo-window {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.demo-bar {
+    align-items: center;
+    background: var(--bg-alt);
+    border-bottom: 1px solid var(--line);
+    color: var(--text-muted);
+    display: flex;
+    font: 500 11.5px/1 var(--font-mono);
+    gap: 12px;
+    padding: 13px 18px;
+}
+
+.demo-bar-title {
+    color: var(--text-soft);
+    flex: 1;
+    letter-spacing: 0.02em;
+}
+
+.demo-bar-title span {
+    color: var(--text);
+}
+
+.demo-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 232px;
+    min-height: 300px;
+}
+
+.thread {
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 380px;
+    min-height: 300px;
+    overflow-y: auto;
+    padding: 22px;
+}
+
+.thread-empty {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin: auto;
+    max-width: 38ch;
+    text-align: center;
+}
+
+.thread-empty svg {
+    color: var(--text-muted);
+    height: 26px;
+    margin: 0 auto 12px;
+    opacity: 0.7;
+    width: 26px;
+}
+
+.bubble {
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    line-height: 1.55;
+    max-width: 86%;
+    padding: 10px 14px;
+}
+
+.bubble-body {
+    margin: 0;
+    overflow-wrap: anywhere;
+    white-space: normal;
+}
+
+.bubble.user .bubble-body {
+    white-space: pre-wrap;
+}
+
+.bubble-body p {
+    margin: 0 0 8px;
+}
+
+.bubble-body > :first-child {
+    margin-top: 0;
+}
+
+.bubble-body > :last-child {
+    margin-bottom: 0;
+}
+
+.bubble-body h1,
+.bubble-body h2,
+.bubble-body h3,
+.bubble-body h4,
+.bubble-body h5,
+.bubble-body h6 {
+    font: 600 15px/1.35 var(--font-body);
+    letter-spacing: -0.01em;
+    margin: 12px 0 6px;
+}
+
+.bubble-body ul,
+.bubble-body ol {
+    margin: 6px 0 8px;
+    padding-left: 18px;
+}
+
+.bubble-body li {
+    margin: 3px 0;
+}
+
+.bubble-body strong {
+    font-weight: 600;
+}
+
+.bubble-body code {
+    background: var(--accent-soft);
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    padding: 1px 5px;
+}
+
+.bubble-body pre {
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    margin: 8px 0;
+    overflow-x: auto;
+    padding: 10px;
+}
+
+.bubble-body pre code {
+    background: none;
+    border-radius: 0;
+    padding: 0;
+}
+
+.bubble-body a {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.bubble-body hr {
+    border: 0;
+    border-top: 1px solid var(--line);
+    margin: 10px 0;
+}
+
+.bubble.user {
+    align-self: flex-end;
+    background: var(--accent);
+    color: var(--on-accent);
+}
+
+.bubble.assistant {
+    align-self: flex-start;
+    background: var(--surface);
+    border: 1px solid var(--line);
+}
+
+.bubble.assistant.streaming .bubble-body > :last-child::after,
+.bubble.assistant.streaming .bubble-body > ul:last-child > li:last-child::after,
+.bubble.assistant.streaming .bubble-body > ol:last-child > li:last-child::after,
+.bubble.assistant.streaming .bubble-body > pre:last-child > code::after {
+    animation: blink 1s steps(1) infinite;
+    background: var(--text);
+    content: "";
+    display: inline-block;
+    height: 1em;
+    margin-left: 2px;
+    vertical-align: text-bottom;
+    width: 1px;
+}
+
+.bubble.assistant.streaming .bubble-body > ul:last-child::after,
+.bubble.assistant.streaming .bubble-body > ol:last-child::after,
+.bubble.assistant.streaming .bubble-body > pre:last-child::after {
+    content: none;
+    display: none;
+}
+
+.demo-rail {
+    background: var(--bg-alt);
+    border-left: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    padding: 22px;
+}
+
+.rail-label {
+    color: var(--text-muted);
+    font: 600 10.5px/1 var(--font-mono);
+    letter-spacing: 0.1em;
+    margin: 0 0 12px;
+    text-transform: uppercase;
+}
+
+.rail-label.spaced {
+    margin-top: 20px;
+}
+
+.rail-row {
+    align-items: baseline;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    padding: 7px 0;
+}
+
+.rail-row span {
+    color: var(--text-muted);
+    font-size: 12.5px;
+}
+
+.rail-row strong {
+    color: var(--text);
+    font: 600 11.5px/1.4 var(--font-mono);
+    text-align: right;
+}
+
+.rail-speed {
+    color: var(--text);
+    font: 600 22px/1 var(--font-display);
+    margin: 0 0 20px;
+    min-height: 24px;
+}
+
+.rail-reset {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    color: var(--text-soft);
+    cursor: pointer;
+    font: 600 11.5px/1 var(--font-body);
+    margin-top: auto;
+    padding: 9px 14px;
+}
+
+.rail-reset:hover {
+    border-color: var(--text-muted);
+}
+
+.demo-controls {
+    border-top: 1px solid var(--line);
+    padding: 18px 22px 22px;
+}
+
+.status {
+    color: var(--text-muted);
+    font: 11.5px/1.5 var(--font-mono);
+    margin: 0 0 10px;
+    min-height: 18px;
+}
+
+.status[data-kind="error"] {
+    color: var(--danger);
+}
+
+progress {
+    accent-color: var(--accent);
+    appearance: none;
+    -webkit-appearance: none;
+    background: var(--bg-alt);
+    border: 0;
+    border-radius: var(--radius-sm);
+    display: block;
+    height: 6px;
+    margin: 0 0 14px;
+    overflow: hidden;
+    width: 100%;
+}
+
+progress::-webkit-progress-bar {
+    background: var(--bg-alt);
+    border-radius: var(--radius-sm);
+}
+
+progress::-webkit-progress-value {
+    background: var(--accent);
+    border-radius: var(--radius-sm);
+}
+
+progress::-moz-progress-bar {
+    background: var(--accent);
+    border-radius: var(--radius-sm);
+}
+
+progress:indeterminate {
+    animation: sweep 1.2s linear infinite;
+    background-image: linear-gradient(
+        90deg,
+        transparent 0,
+        var(--accent) 12%,
+        var(--accent) 88%,
+        transparent 100%
+    );
+    background-repeat: no-repeat;
+    background-size: 30% 100%;
+}
+
+progress:indeterminate::-webkit-progress-bar {
+    background: transparent;
+}
+
+@keyframes sweep {
+    from {
+        background-position: 0% 0;
+    }
+
+    to {
+        background-position: 100% 0;
+    }
+}
+
+.demo-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.demo-form input {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    flex: 1;
+    font: 15px var(--font-body);
+    min-height: 46px;
+    min-width: 0;
+    padding: 10px 14px;
+}
+
+.demo-form input::placeholder {
+    color: var(--text-muted);
+}
+
+.demo-form .button {
+    flex: none;
+    font-size: 13px;
+    padding: 12px 18px;
+}
+
+.demo-form .button.ghost {
+    background: var(--surface);
+    border-color: var(--line);
+    color: var(--text);
+}
+
+.demo-form .button.ghost:hover {
+    background: var(--bg-alt);
+    border-color: var(--text-muted);
+}
+
+.warn {
+    align-self: center;
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius-sm);
+    color: var(--text-soft);
+    font-size: 12px;
+    line-height: 1.55;
+    margin: 54px 0 0;
+    padding: 10px 12px;
+}
+
+.warn strong {
+    color: var(--text);
+}
+
+/* Specs */
+.spec-grid {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.spec-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    max-width: 100%;
+    min-width: 0;
+    padding: 24px;
+}
+
+.spec-top {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.spec-top h3 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    margin: 0;
+}
+
+.badge {
+    background: var(--accent-soft);
+    border-radius: var(--radius-sm);
+    color: var(--text-soft);
+    flex: none;
+    font: 600 10.5px/1 var(--font-mono);
+    letter-spacing: 0.06em;
+    padding: 6px 10px;
+    text-transform: uppercase;
+}
+
+.badge.soft {
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+}
+
+.spec-card > p {
+    color: var(--text-soft);
+    font-size: 14.5px;
+    margin: 0 0 18px;
+}
+
+table {
+    border-collapse: collapse;
+    font-size: 14px;
+    width: 100%;
+}
+
+th {
+    border-bottom: 1px solid var(--line);
+    color: var(--text-muted);
+    font: 600 10.5px/1 var(--font-mono);
+    letter-spacing: 0.08em;
+    padding: 9px 0;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+td {
+    border-bottom: 1px solid var(--line);
+    color: var(--text-soft);
+    padding: 11px 0;
+    vertical-align: top;
+}
+
+td:last-child,
+th:last-child {
+    text-align: right;
+}
+
+tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+td .yes {
+    color: var(--text);
+    font-weight: 600;
+}
+
+td .no {
+    color: var(--text-muted);
+}
+
+.spec-card table {
+    min-width: 340px;
+}
+
+.table-wrap {
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+}
+
+.straight {
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius);
+    margin-top: 18px;
+    padding: 22px 24px;
+}
+
+.straight h3 {
+    margin: 0 0 8px;
+}
+
+.straight p {
+    color: var(--text-soft);
+    font-size: 15px;
+    margin: 0;
+}
+
+.specs {
+    margin-top: 18px;
+}
+
+.specs summary {
+    color: var(--text-muted);
+    cursor: pointer;
+    font: 600 11px/1 var(--font-mono);
+    letter-spacing: 0.08em;
+    padding: 8px 0;
+    text-transform: uppercase;
+}
+
+.limits {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 18px;
+}
+
+.limit-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+}
+
+.limit-card h3 {
+    margin: 0 0 12px;
+}
+
+.limit-card ul {
+    color: var(--text-soft);
+    font-size: 13.5px;
+    line-height: 1.55;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.limit-card li {
+    align-items: baseline;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    gap: 14px;
+    justify-content: space-between;
+    padding: 6px 0;
+}
+
+.limit-card li:last-child {
+    border-bottom: 0;
+}
+
+.limit-card li span {
+    color: var(--text-muted);
+}
+
+.limit-card li strong {
+    color: var(--text);
+    font: 600 11.5px/1.4 var(--font-mono);
+    text-align: right;
+}
+
+/* Architecture */
+.arch-grid {
+    align-items: center;
+    display: grid;
+    gap: clamp(32px, 5vw, 64px);
+    grid-template-columns: 1fr 1fr;
+}
+
+.arch-points {
+    display: grid;
+    gap: 10px;
+    list-style: none;
+    margin: 24px 0 0;
+    padding: 0;
+}
+
+.arch-points li {
+    align-items: baseline;
+    color: var(--text-soft);
+    display: flex;
+    font-size: 14.5px;
+    gap: 12px;
+    line-height: 1.5;
+}
+
+.arch-points span {
+    color: var(--text-muted);
+    font: 600 11px/1 var(--font-mono);
+}
+
+.arch-button {
+    margin-top: 28px;
+}
+
+.arch-note {
+    color: var(--text-muted);
+    font: 500 11.5px/1.5 var(--font-mono);
+    margin: 16px 0 0;
+}
+
+.arch-note a {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.arch-preview {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--text);
+    display: block;
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+}
+
+.arch-preview:hover {
+    border-color: var(--text-muted);
+}
+
+.arch-top {
+    align-items: center;
+    background: var(--bg-alt);
+    border-bottom: 1px solid var(--line);
+    color: var(--text-muted);
+    display: flex;
+    font: 500 11px/1 var(--font-mono);
+    gap: 10px;
+    padding: 12px 16px;
+}
+
+.arch-top span:last-child {
+    color: var(--text-muted);
+    margin-left: auto;
+}
+
+.arch-dot {
+    background: var(--accent);
+    border-radius: 50%;
+    height: 7px;
+    width: 7px;
+}
+
+.arch-bands {
+    display: grid;
+    gap: 8px;
+    padding: 18px;
+}
+
+.arch-band {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 12px;
+}
+
+.arch-band span {
+    color: var(--text);
+    font: 600 12px/1.2 var(--font-body);
+}
+
+.arch-band small {
+    color: var(--text-muted);
+    font: 10.5px/1.3 var(--font-mono);
+}
+
+.arch-foot {
+    align-items: center;
+    border-top: 1px solid var(--line);
+    color: var(--text);
+    display: flex;
+    font: 600 12px/1 var(--font-mono);
+    justify-content: space-between;
+    padding: 12px 16px;
+}
+
+/* Install */
+.install-grid {
+    align-items: start;
+    display: grid;
+    gap: clamp(28px, 5vw, 64px);
+    grid-template-columns: 1fr 1fr;
+}
+
+.install-grid > * {
+    min-width: 0;
+}
+
+.cmd {
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    padding: 14px 16px;
+}
+
+.cmd code {
+    color: var(--text);
+    flex: 1;
+    font: 500 13.5px/1.4 var(--font-mono);
+    overflow-x: auto;
+}
+
+.cmd button {
+    background: var(--accent);
+    border: 0;
+    border-radius: var(--radius-sm);
+    color: var(--on-accent);
+    cursor: pointer;
+    flex: none;
+    font: 600 11.5px/1 var(--font-body);
+    padding: 8px 14px;
+    transition: background 0.2s ease;
+}
+
+.cmd button:hover {
+    background: var(--text-soft);
+}
+
+.code {
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--text);
+    font: 13.5px/1.7 var(--font-mono);
+    margin: 0;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    padding: 24px;
+}
+
+.tok-key {
+    color: var(--syntax-key);
+}
+
+.tok-str {
+    color: var(--syntax-string);
+}
+
+.tok-var {
+    color: var(--syntax-variable);
+}
+
+.tok-fn {
+    color: var(--syntax-function);
+}
+
+/* Case study, optional */
+.case-grid {
+    align-items: center;
+    display: grid;
+    gap: clamp(32px, 5vw, 64px);
+    grid-template-columns: 1fr 1fr;
+}
+
+.case-lockup {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    margin: 0 0 14px;
+}
+
+.case-lockup img {
+    height: 38px;
+    width: 38px;
+}
+
+.case-lockup span {
+    font: 600 18px/1 var(--font-display);
+    letter-spacing: -0.02em;
+}
+
+.case-points {
+    display: grid;
+    gap: 12px;
+    list-style: none;
+    margin: 24px 0 0;
+    padding: 0;
+}
+
+.case-points li {
+    color: var(--text-soft);
+    display: grid;
+    font-size: 14.5px;
+    gap: 10px;
+    grid-template-columns: 96px 1fr;
+    line-height: 1.5;
+}
+
+.case-points span {
+    color: var(--text-muted);
+    font: 600 10.5px/1.6 var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.case-actions {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 28px;
+}
+
+.case-meta,
+.case-note {
+    color: var(--text-muted);
+    font: 500 11.5px/1.5 var(--font-mono);
+}
+
+.case-visual {
+    align-items: flex-end;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.case-shot {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    margin: 0;
+    max-width: 430px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.case-shot img {
+    display: block;
+    height: auto;
+    width: 100%;
+}
+
+.case-shot figcaption {
+    color: var(--text-muted);
+    font: 500 11px/1.5 var(--font-mono);
+    padding: 10px 15px 12px;
+}
+
+.case-chip {
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    bottom: 46px;
+    color: var(--text-soft);
+    display: flex;
+    font: 600 10.5px/1 var(--font-mono);
+    gap: 7px;
+    letter-spacing: 0.04em;
+    padding: 9px 13px;
+    position: absolute;
+    right: -8px;
+    text-transform: uppercase;
+}
+
+.case-chip i {
+    background: var(--accent);
+    border-radius: 50%;
+    height: 6px;
+    width: 6px;
+}
+
+.case-note {
+    margin: 14px 0 0;
+    max-width: 430px;
+    text-align: right;
+}
+
+/* Comparison, optional */
+.vs-stats {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-bottom: 18px;
+}
+
+.vs-stat {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+}
+
+.vs-stat > span,
+.vs-table caption {
+    color: var(--text-muted);
+    font: 600 10.5px/1 var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.vs-stat .vs-value {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 10px 0 0;
+}
+
+.vs-value strong {
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+}
+
+.vs-value del {
+    color: var(--text-muted);
+    font: 500 13px/1.4 var(--font-mono);
+    text-decoration-thickness: 1px;
+}
+
+.vs-stat p {
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 8px 0 0;
+}
+
+.vs-panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 24px;
+}
+
+.vs-table caption {
+    caption-side: top;
+    padding-bottom: 10px;
+    text-align: left;
+}
+
+.vs-table th,
+.vs-table td {
+    padding-right: 18px;
+}
+
+.vs-table th:last-child,
+.vs-table td:last-child {
+    text-align: left;
+}
+
+/* FAQ and final call to action */
+.faq-grid {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.faq-item {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+}
+
+.faq-item h3 {
+    font: 600 17px/1.35 var(--font-body);
+    margin: 0 0 8px;
+}
+
+.faq-item p {
+    color: var(--text-soft);
+    font-size: 15px;
+    margin: 0;
+}
+
+.cta {
+    background: var(--bg-alt);
+    border-block: 1px solid var(--line);
+    color: var(--text);
+}
+
+.cta-inner {
+    margin-inline: auto;
+    max-width: 720px;
+    text-align: center;
+}
+
+.cta .eyebrow {
+    justify-content: center;
+}
+
+.cta .lead {
+    margin-inline: auto;
+}
+
+.cta .actions {
+    justify-content: center;
+}
+
+.cta .fine {
+    margin-top: 22px;
+}
+
+/* Footer */
+.footer {
+    background: var(--bg-alt);
+    border-top: 1px solid var(--line);
+    color: var(--text-soft);
+    padding: 48px 0 120px;
+}
+
+.footer-inner {
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    gap: 32px;
+    justify-content: space-between;
+    padding-bottom: 28px;
+}
+
+.footer .brand {
+    color: var(--text);
+}
+
+.footer p {
+    font-size: 14px;
+    margin: 10px 0 0;
+    max-width: 38ch;
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    font: 500 13px/1.6 var(--font-mono);
+    gap: 18px;
+}
+
+.footer-links a:hover {
+    color: var(--text);
+}
+
+.footer-base {
+    color: var(--text-muted);
+    display: flex;
+    font: 500 11.5px/1.5 var(--font-mono);
+    gap: 16px;
+    justify-content: space-between;
+    padding-top: 20px;
+}
+
+/* Floating section menu */
+.floating-menu {
+    align-items: flex-end;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    justify-content: safe center;
+    left: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    position: fixed;
+    right: 0;
+    scrollbar-width: none;
+    z-index: 71;
+}
+
+.floating-menu::-webkit-scrollbar {
+    display: none;
+}
+
+.floating-track {
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    display: flex;
+    gap: 2px;
+    height: 54px;
+    margin: 16px 24px 24px;
+    max-width: 860px;
+    min-width: max-content;
+    padding: 0 4px;
+}
+
+.float-button {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    border-radius: var(--radius-sm);
+    color: var(--text-soft);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    font: 500 10px/10px var(--font-body);
+    gap: 3px;
+    height: 46px;
+    justify-content: center;
+    min-width: 62px;
+    padding: 0 6px;
+    text-align: center;
+    transition: background 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+}
+
+.float-button:hover {
+    background: var(--bg-alt);
+    color: var(--text);
+}
+
+.float-button svg {
+    height: 20px;
+    width: 20px;
+}
+
+.float-button.is-selected {
+    background: var(--accent-soft);
+    color: var(--text);
+    flex-direction: row;
+    font-size: 13px;
+    font-weight: 600;
+    gap: 8px;
+    line-height: 1;
+    padding: 0 14px;
+}
+
+.float-button.is-selected:hover {
+    background: var(--accent-soft);
+}
+
+.float-button.is-selected svg {
+    height: 18px;
+    width: 18px;
+}
+
+/* Motion */
+.js .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.js .reveal.in {
+    opacity: 1;
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .js .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .live i,
+    .caret,
+    .bubble.assistant.streaming .bubble-body > :last-child::after,
+    .bubble.assistant.streaming .bubble-body > ul:last-child > li:last-child::after,
+    .bubble.assistant.streaming .bubble-body > ol:last-child > li:last-child::after,
+    .bubble.assistant.streaming .bubble-body > pre:last-child > code::after {
+        animation: none;
+    }
+
+    .button,
+    .arch-preview,
+    .float-button {
+        transition: none;
+    }
+}
+
+/* Responsive */
+@media (max-width: 980px) {
+    .hero-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .console {
+        max-width: 620px;
+    }
+
+    .cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .arch-grid,
+    .case-grid,
+    .install-grid,
+    .spec-grid,
+    .vs-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .case-visual {
+        align-items: flex-start;
+    }
+
+    .case-note {
+        text-align: left;
+    }
+
+    .steps,
+    .why-grid,
+    .faq-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .demo-body {
+        grid-template-columns: 1fr;
+    }
+
+    .demo-rail {
+        border-left: 0;
+        border-top: 1px solid var(--line);
+    }
+}
+
+@media (max-width: 720px) {
+    .floating-track {
+        height: 50px;
+        margin: 12px 14px 16px;
+    }
+
+    .float-button {
+        height: 42px;
+        min-width: 54px;
+    }
+
+    .float-button.is-selected {
+        padding: 0 11px;
+    }
+
+    .hero {
+        padding-top: 56px;
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stats div {
+        border-bottom: 1px solid var(--line);
+        padding: 18px 16px;
+    }
+
+    .stats div:nth-child(2n) {
+        border-right: 0;
+    }
+
+    .stats div:nth-child(n + 3) {
+        border-bottom: 0;
+    }
+
+    .cards,
+    .spec-grid,
+    .limits,
+    .challenge {
+        grid-template-columns: 1fr;
+    }
+
+    .spec-card table,
+    .spec-card tbody {
+        display: block;
+        min-width: 0;
+    }
+
+    .spec-card thead {
+        display: none;
+    }
+
+    .spec-card tbody tr {
+        border-top: 1px solid var(--line);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 14px;
+        padding: 10px 0;
+    }
+
+    .spec-card tbody tr:first-child {
+        border-top: 0;
+        padding-top: 0;
+    }
+
+    .spec-card td {
+        border: 0;
+        font-size: 12.5px;
+        padding: 0;
+    }
+
+    .spec-card td:first-child {
+        flex-basis: 100%;
+    }
+
+    .spec-card td:last-child {
+        text-align: left;
+    }
+
+    .spec-card td:nth-child(2)::before {
+        color: var(--text-muted);
+        content: "Included: ";
+    }
+
+    .spec-card td:nth-child(3)::before {
+        color: var(--text-muted);
+        content: "Optional: ";
+    }
+
+    .spec-card td:nth-child(4)::before {
+        color: var(--text-muted);
+        content: "Size: ";
+    }
+
+    .spec-card .table-wrap {
+        overflow: visible;
+    }
+
+    .section-head {
+        margin-bottom: 30px;
+    }
+
+    .demo-form {
+        flex-wrap: wrap;
+    }
+
+    .demo-form input {
+        flex-basis: 100%;
+    }
+
+    .demo-form .button {
+        flex: 1;
+    }
+
+    .code {
+        font-size: 12px;
+        padding: 20px;
+    }
+
+    .footer-inner {
+        flex-direction: column;
+    }
+
+    .footer-base {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .case-points li {
+        grid-template-columns: 84px 1fr;
+    }
+
+    .case-chip {
+        bottom: 42px;
+        right: 4px;
+    }
+
+    .thread {
+        max-height: 340px;
+    }
+}
+
+@media (max-width: 420px) {
+    .bubble {
+        max-width: 94%;
+    }
+
+    .rail-row strong {
+        font-size: 11px;
+    }
+}
+</style>
+</head>
+<body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="hero" id="top">
+        <div class="shell hero-grid">
+            <div class="hero-copy">
+                <a class="brand hero-brand" href="#top" aria-label="mylib home">
+                    <span class="brand-mark" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="3.5" width="11" height="14" rx="2"></rect>
+                            <rect x="4" y="6.5" width="11" height="14" rx="2"></rect>
+                            <path d="M7 11h5M7 14h5M7 17h3"></path>
+                        </svg>
+                    </span>
+                    <span>mylib</span>
+                </a>
+                <p class="eyebrow">
+                    <span class="dot" aria-hidden="true"></span>
+                    One short label &middot; one short proof
+                </p>
+                <h1>
+                    The promise.<br>
+                    <span class="grad">The second line.<br>The payoff.</span>
+                </h1>
+                <p class="lead">
+                    Replace with two or three sentences: the problem, the one
+                    thing the package does about it and what the user never has
+                    to do again. Keep it concrete.
+                </p>
+                <div class="actions">
+                    <a class="button primary" href="#demo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                            <path d="m7 9 3 3-3 3M13 15h4"></path>
+                        </svg>
+                        Try the live demo
+                    </a>
+                    <a class="button ghost" href="#install">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 3v11m0 0 4-4m-4 4-4-4"></path>
+                            <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"></path>
+                        </svg>
+                        Install
+                    </a>
+                    <a class="button ghost" href="https://github.com/owner/mylib" target="_blank" rel="noreferrer">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.39-5.25 5.67.41.36.78 1.06.78 2.14 0 1.55-.01 2.79-.01 3.17 0 .31.21.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"></path>
+                        </svg>
+                        GitHub
+                    </a>
+                </div>
+                <!--
+                    OPTIONAL: remove this proof link unless a real product uses
+                    the package. Never invent a customer.
+                -->
+                <!--
+                <a class="hero-proof" href="#case-study">
+                    <img src="product-logo.svg" alt="" width="18" height="18">
+                    In production at Product
+                </a>
+                -->
+                <p class="hero-note">
+                    Licence &middot; runtime requirement &middot; one real size
+                    or limit &middot; one real constraint
+                </p>
+            </div>
+
+            <div class="console reveal" aria-label="Product preview">
+                <div class="console-top">
+                    <span class="lights" aria-hidden="true">
+                        <i></i><i></i><i></i>
+                    </span>
+                    <span class="console-title">mylib / running locally</span>
+                    <span class="live">
+                        <i aria-hidden="true"></i>
+                        ready
+                    </span>
+                </div>
+                <div class="console-body">
+                    <p class="console-message user">
+                        Replace with the shortest possible real request.
+                    </p>
+                    <p class="console-message bot">
+                        Replace with the result the package returns, in its own
+                        voice. Keep it short enough to read in one glance.
+                        <span class="caret" aria-hidden="true"></span>
+                    </p>
+                </div>
+                <div class="console-chips">
+                    <span>one fact</span>
+                    <span>one fact</span>
+                    <span>one fact</span>
+                    <span>one fact</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="shell stats reveal">
+            <div>
+                <strong>1</strong>
+                <span>one real number</span>
+            </div>
+            <div>
+                <strong>0</strong>
+                <span>another real number</span>
+            </div>
+            <div>
+                <strong>0</strong>
+                <span>a constraint removed</span>
+            </div>
+            <div>
+                <strong>&infin;</strong>
+                <span>the promised outcome</span>
+            </div>
+        </div>
+    </header>
+
+    <main id="main">
+        <section class="section band" id="why">
+            <div class="shell">
+                <div class="section-head reveal">
+                    <p class="eyebrow">Why this exists</p>
+                    <h2>Name the dependency the package removes.</h2>
+                    <p class="lead">
+                        One short paragraph. Explain the status quo and what is
+                        different after the package is installed.
+                    </p>
+                </div>
+                <div class="why-grid">
+                    <article class="why-item reveal">
+                        <span class="why-mark">01</span>
+                        <h3>Removed thing.</h3>
+                        <p>One sentence of consequence.</p>
+                    </article>
+                    <article class="why-item reveal">
+                        <span class="why-mark">02</span>
+                        <h3>Removed thing.</h3>
+                        <p>One sentence of consequence.</p>
+                    </article>
+                    <article class="why-item reveal">
+                        <span class="why-mark">03</span>
+                        <h3>Removed thing.</h3>
+                        <p>One sentence of consequence.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="demo">
+            <div class="shell">
+                <div class="section-head reveal">
+                    <p class="eyebrow">Live demo</p>
+                    <h2>The smallest interaction that proves the promise.</h2>
+                    <p class="lead">
+                        Say what the visitor should try, what happens on the
+                        first run and what stays on their device.
+                    </p>
+                </div>
+
+                <ol class="challenge reveal">
+                    <li><span>01</span> Do one thing.</li>
+                    <li><span>02</span> Change one condition.</li>
+                    <li><span>03</span> See the same result.</li>
+                </ol>
+
+                <!--
+                    OPTIONAL: keep an editable option only when it demonstrably
+                    changes the result. Remove the block when it does not.
+                -->
+                <div class="demo-option reveal">
+                    <label for="demo-option">An option the visitor can change</label>
+                    <textarea id="demo-option" rows="3" maxlength="280" spellcheck="false"></textarea>
+                    <p>Say exactly what this value does to the result.</p>
+                </div>
+
+                <div class="demo-window reveal" id="demo-card">
+                    <div class="demo-bar">
+                        <span class="lights" aria-hidden="true">
+                            <i></i><i></i><i></i>
+                        </span>
+                        <span class="demo-bar-title">
+                            demo / <span id="demo-badge">nothing loaded</span>
+                        </span>
+                        <span class="live">
+                            <i aria-hidden="true"></i>
+                            local
+                        </span>
+                    </div>
+                    <div class="demo-body">
+                        <div class="thread" id="demo-thread" role="log" aria-live="polite" aria-relevant="additions text" aria-label="Demo output">
+                            <p class="thread-empty" id="demo-empty">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                                    <path d="m7 9 3 3-3 3M13 15h4"></path>
+                                </svg>
+                                Say what the first run will do, then invite one
+                                input.
+                            </p>
+                        </div>
+                        <aside class="demo-rail" aria-label="Session details">
+                            <p class="rail-label">Session</p>
+                            <div class="rail-row">
+                                <span>Runtime</span>
+                                <strong id="demo-runtime">auto</strong>
+                            </div>
+                            <div class="rail-row">
+                                <span>Mode</span>
+                                <strong id="demo-mode">auto</strong>
+                            </div>
+                            <div class="rail-row">
+                                <span>Cost</span>
+                                <strong>one run</strong>
+                            </div>
+                            <div class="rail-row">
+                                <span>Limit</span>
+                                <strong>real value</strong>
+                            </div>
+                            <p class="rail-label spaced">Rate</p>
+                            <p class="rail-speed" id="demo-speed">-</p>
+                            <button class="rail-reset" id="demo-reset" type="button">
+                                Reset demo
+                            </button>
+                        </aside>
+                    </div>
+                    <div class="demo-controls">
+                        <p class="status" id="demo-status" role="status" aria-live="polite">
+                            Idle. Nothing loaded.
+                        </p>
+                        <progress id="demo-progress" max="100" value="0" aria-label="Progress" hidden></progress>
+                        <form class="demo-form" id="demo-form">
+                            <label class="sr-only" for="demo-input">Your input</label>
+                            <input id="demo-input" name="input" type="text" value="A useful default" maxlength="280" autocomplete="off" placeholder="Tell me anything">
+                            <button class="button ink" id="demo-send" type="submit">Send</button>
+                            <button class="button ghost" id="demo-stop" type="button" hidden>Stop</button>
+                        </form>
+                    </div>
+                </div>
+                <p class="warn">
+                    <strong>State the first-run cost before the button.</strong>
+                    Include the real size, time or permission. Say what happens
+                    on later runs.
+                </p>
+            </div>
+        </section>
+
+        <section class="section band" id="capabilities">
+            <div class="shell">
+                <div class="section-head reveal">
+                    <p class="eyebrow">What you get</p>
+                    <h2>Everything handled. Nothing extra.</h2>
+                    <p class="lead">
+                        Draw every card from a public export or a measurable
+                        behaviour. If a card cannot name one, remove it.
+                    </p>
+                </div>
+                <div class="cards">
+                    <article class="card reveal">
+                        <div class="icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="4" y="4" width="16" height="16" rx="4"></rect>
+                                <rect x="9" y="9" width="6" height="6" rx="1"></rect>
+                            </svg>
+                        </div>
+                        <h3>A capability with a concrete result.</h3>
+                        <p>One sentence about what the caller writes and what the package handles.</p>
+                        <div class="tags">
+                            <span>real tag</span>
+                            <span>real tag</span>
+                        </div>
+                    </article>
+                    <article class="card reveal">
+                        <div class="icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 3v11m0 0 4-4m-4 4-4-4"></path>
+                                <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"></path>
+                            </svg>
+                        </div>
+                        <h3>A capability with a concrete result.</h3>
+                        <p>One sentence about what the caller writes and what the package handles.</p>
+                        <div class="tags">
+                            <span>real tag</span>
+                            <span>real tag</span>
+                        </div>
+                    </article>
+                    <article class="card reveal">
+                        <div class="icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"></path>
+                                <path d="m9 12 2 2 4-4"></path>
+                            </svg>
+                        </div>
+                        <h3>A capability with a concrete result.</h3>
+                        <p>One sentence about what the caller writes and what the package handles.</p>
+                        <div class="tags">
+                            <span>real tag</span>
+                            <span>real tag</span>
+                        </div>
+                    </article>
+                    <article class="card reveal">
+                        <div class="icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                                <path d="M3 9h18M7 6.5h.01M10 6.5h.01"></path>
+                            </svg>
+                        </div>
+                        <h3>A capability with a concrete result.</h3>
+                        <p>One sentence about what the caller writes and what the package handles.</p>
+                        <div class="tags">
+                            <span>real tag</span>
+                            <span>real tag</span>
+                        </div>
+                    </article>
+                    <article class="card reveal">
+                        <div class="icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                                <circle cx="8.5" cy="10.5" r="1.5"></circle>
+                                <path d="m21 15-5-5L5 19"></path>
+                            </svg>
+                        </div>
+                        <h3>A capability with a concrete result.</h3>
+                        <p>One sentence about what the caller writes and what the package handles.</p>
+                        <div class="tags">
+                            <span>real tag</span>
+                            <span>real tag</span>
+                        </div>
+                    </article>
+                    <article class="card reveal">
+                        <div class="icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 7h8M16 7h4M4 17h4M12 17h8"></path>
+                                <circle cx="14" cy="7" r="2"></circle>
+                                <circle cx="10" cy="17" r="2"></circle>
+                            </svg>
+                        </div>
+                        <h3>A capability with a concrete result.</h3>
+                        <p>One sentence about what the caller writes and what the package handles.</p>
+                        <div class="tags">
+                            <span>real tag</span>
+                            <span>real tag</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="flow">
+            <div class="shell">
+                <div class="section-head reveal">
+                    <p class="eyebrow">First run</p>
+                    <h2>The first run explains itself. The rest are routine.</h2>
+                    <p class="lead">
+                        Walk through the real sequence: what happens once, what
+                        stays cached and what the caller never has to repeat.
+                    </p>
+                </div>
+                <div class="steps">
+                    <article class="step reveal">
+                        <span>01</span>
+                        <h3>Install</h3>
+                        <p>One command, one public entry, no configuration.</p>
+                    </article>
+                    <article class="step reveal">
+                        <span>02</span>
+                        <h3>First run</h3>
+                        <p>The one-time cost, stated as a real number.</p>
+                    </article>
+                    <article class="step reveal">
+                        <span>03</span>
+                        <h3>Use it</h3>
+                        <p>What works afterwards and what the package keeps warm.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!--
+            OPTIONAL: production case study.
+            Keep this block only when the user approved a real product. Replace
+            every placeholder with the real name, URL, logo, screenshots and
+            measured facts. Add a matching link to the floating menu.
+        -->
+        <!--
+        <section class="section band" id="case-study">
+            <div class="shell case-grid">
+                <div class="case-copy reveal">
+                    <p class="eyebrow">Proof</p>
+                    <div class="case-lockup">
+                        <img src="product-logo.svg" alt="Product logo" width="38" height="38">
+                        <span>Product</span>
+                    </div>
+                    <h2>One sentence about what the product ships.</h2>
+                    <p class="lead">
+                        What the product is, who uses it and the one workflow
+                        that depends on the package.
+                    </p>
+                    <ul class="case-points">
+                        <li><span>Use</span> How the product calls the package.</li>
+                        <li><span>Result</span> What the user gets.</li>
+                        <li><span>Ship</span> The real constraint it survives.</li>
+                    </ul>
+                    <div class="case-actions">
+                        <a class="button ink" href="https://product.example/" target="_blank" rel="noreferrer">
+                            See it live
+                            <span aria-hidden="true">&rarr;</span>
+                        </a>
+                        <span class="case-meta">Screenshot from product.example</span>
+                    </div>
+                </div>
+                <div class="case-visual reveal">
+                    <figure class="case-shot">
+                        <img src="product-state.png" width="390" height="285" alt="Product screen using mylib.">
+                        <figcaption>The package inside Product</figcaption>
+                    </figure>
+                    <span class="case-chip">
+                        <i aria-hidden="true"></i>
+                        in production
+                    </span>
+                    <p class="case-note">One real observation from the capture.</p>
+                </div>
+            </div>
+        </section>
+        -->
+
+        <section class="section" id="specs">
+            <div class="shell">
+                <div class="section-head reveal">
+                    <p class="eyebrow">Specs</p>
+                    <h2>Say what it is. Say what it is not.</h2>
+                    <p class="lead">
+                        Use a comparison only when every number is measured.
+                        Otherwise use one plain table and one honest paragraph.
+                    </p>
+                </div>
+                <div class="spec-grid">
+                    <article class="card spec-card reveal">
+                        <div class="spec-top">
+                            <h3>Option A</h3>
+                            <span class="badge soft">default</span>
+                        </div>
+                        <p>What this option is for and when the package picks it.</p>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Variant</th>
+                                        <th scope="col">Included</th>
+                                        <th scope="col">Optional</th>
+                                        <th scope="col">Size</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><code>option_a</code></td>
+                                        <td class="yes">Yes</td>
+                                        <td class="yes">Yes</td>
+                                        <td>real size</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>option_a_lite</code></td>
+                                        <td class="no">No</td>
+                                        <td class="yes">Yes</td>
+                                        <td>real size</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="fine">
+                            One real limit and one consequence for the user.
+                        </p>
+                    </article>
+                    <article class="card spec-card reveal">
+                        <div class="spec-top">
+                            <h3>Option B</h3>
+                            <span class="badge">fallback</span>
+                        </div>
+                        <p>What this option is for and when the package picks it.</p>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Variant</th>
+                                        <th scope="col">Included</th>
+                                        <th scope="col">Optional</th>
+                                        <th scope="col">Size</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><code>option_b</code></td>
+                                        <td class="yes">Yes</td>
+                                        <td class="no">No</td>
+                                        <td>real size</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="fine">
+                            One real limit and one consequence for the user.
+                        </p>
+                    </article>
+                </div>
+                <div class="straight reveal">
+                    <h3>Straight talk.</h3>
+                    <p>
+                        Name the cases the package is excellent at and the cases
+                        where another tool is better. Mention the slow path,
+                        the first-run wait and the worst realistic input.
+                    </p>
+                </div>
+                <details class="specs reveal">
+                    <summary>Technical details</summary>
+                    <div class="limits">
+                        <div class="limit-card">
+                            <h3>Limits and budget</h3>
+                            <ul>
+                                <li><span>A limit</span><strong>real value</strong></li>
+                                <li><span>A limit</span><strong>real value</strong></li>
+                                <li><span>A limit</span><strong>real value</strong></li>
+                            </ul>
+                        </div>
+                        <div class="limit-card">
+                            <h3>Timeouts and transport</h3>
+                            <ul>
+                                <li><span>A timeout</span><strong>real value</strong></li>
+                                <li><span>A timeout</span><strong>real value</strong></li>
+                                <li><span>A timeout</span><strong>real value</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!--
+            OPTIONAL: comparison with an alternative.
+            Keep this block only with measured numbers, a fair table and a
+            verdict that names where the other tool wins. Never invent a
+            competitor's behaviour.
+        -->
+        <!--
+        <section class="section band" id="comparison">
+            <div class="shell">
+                <div class="section-head reveal">
+                    <p class="eyebrow">Compared</p>
+                    <h2>The practical difference, without the asterisks.</h2>
+                    <p class="lead">
+                        State the shared job, then the measured differences that
+                        matter to the person choosing.
+                    </p>
+                </div>
+                <div class="vs-stats">
+                    <article class="vs-stat reveal">
+                        <span>A measured dimension</span>
+                        <p class="vs-value"><strong>real value</strong><del>other real value</del></p>
+                        <p>One sentence explaining the difference.</p>
+                    </article>
+                    <article class="vs-stat reveal">
+                        <span>A measured dimension</span>
+                        <p class="vs-value"><strong>real value</strong><del>other real value</del></p>
+                        <p>One sentence explaining the difference.</p>
+                    </article>
+                    <article class="vs-stat reveal">
+                        <span>A measured dimension</span>
+                        <p class="vs-value"><strong>real value</strong><del>other real value</del></p>
+                        <p>One sentence explaining the difference.</p>
+                    </article>
+                </div>
+                <div class="vs-panel reveal">
+                    <div class="table-wrap">
+                        <table class="vs-table">
+                            <caption>Side by side</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Question</th>
+                                    <th scope="col">mylib</th>
+                                    <th scope="col">alternative</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>A real question</td>
+                                    <td><span class="yes">measured answer</span></td>
+                                    <td>measured answer</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <p class="warn reveal">
+                    <strong>The honest verdict.</strong>
+                    Name the person who should choose the package and the person
+                    who should choose the alternative.
+                </p>
+            </div>
+        </section>
+        -->
+
+        <section class="section band" id="architecture">
+            <div class="shell arch-grid">
+                <div class="arch-copy reveal">
+                    <p class="eyebrow">Architecture</p>
+                    <h2>No black box.</h2>
+                    <p class="lead">
+                        Every function is on one offline HTML page: the entry,
+                        the core modules, the platform boundary and the stores.
+                        Read it before you ship it.
+                    </p>
+                    <ul class="arch-points">
+                        <li><span>01</span> Public entry and typed API</li>
+                        <li><span>02</span> Core service and state</li>
+                        <li><span>03</span> Platform boundary and adapters</li>
+                        <li><span>04</span> Build, assets and runtime</li>
+                        <li><span>05</span> Stores and types</li>
+                    </ul>
+                    <a class="button primary arch-button" href="architecture.html" target="_blank" rel="noreferrer">
+                        Open the full architecture
+                        <span aria-hidden="true">&rarr;</span>
+                    </a>
+                    <p class="arch-note">
+                        Opens in a new tab. One self-contained HTML file.
+                        <a href="https://github.com/owner/mylib" target="_blank" rel="noreferrer">Browse the source</a>.
+                    </p>
+                </div>
+                <a class="arch-preview reveal" href="architecture.html" target="_blank" rel="noreferrer" aria-label="Open the full architecture in a new tab">
+                    <div class="arch-top">
+                        <span class="arch-dot" aria-hidden="true"></span>
+                        <span>code structure</span>
+                        <span>full map</span>
+                    </div>
+                    <div class="arch-bands">
+                        <div class="arch-band">
+                            <span>Public entry</span>
+                            <small>the exported functions</small>
+                        </div>
+                        <div class="arch-band">
+                            <span>Core service</span>
+                            <small>the main pipeline</small>
+                        </div>
+                        <div class="arch-band">
+                            <span>Platform and adapters</span>
+                            <small>the outside boundary</small>
+                        </div>
+                        <div class="arch-band">
+                            <span>Tools and assets</span>
+                            <small>build output and runtime files</small>
+                        </div>
+                        <div class="arch-band">
+                            <span>Stores and types</span>
+                            <small>state, caches and enums</small>
+                        </div>
+                    </div>
+                    <div class="arch-foot">
+                        <span>Open full architecture</span>
+                        <span aria-hidden="true">&rarr;</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section class="section" id="install">
+            <div class="shell install-grid">
+                <div class="reveal">
+                    <p class="eyebrow">Install</p>
+                    <h2>One command to the first result.</h2>
+                    <p class="lead">
+                        One package manager command, one public entry and one
+                        minimal sample. Mention the runtimes the package really
+                        supports.
+                    </p>
+                    <div class="cmd">
+                        <code>npm install @scope/mylib</code>
+                        <button type="button" id="copy-install" data-copy="npm install @scope/mylib">
+                            Copy
+                        </button>
+                    </div>
+                    <p class="fine">
+                        One sentence about the first call and what it does that
+                        later calls skip.
+                    </p>
+                    <div class="tags">
+                        <span>real runtime</span>
+                        <span>real integration</span>
+                        <span>real runtime</span>
+                    </div>
+                </div>
+                <pre class="code reveal"><code><span class="tok-key">import</span> { <span class="tok-var">run</span> } <span class="tok-key">from</span> <span class="tok-str">"@scope/mylib"</span>;
+
+<span class="tok-key">const</span> stop = <span class="tok-fn">run</span>({
+    input: <span class="tok-str">"One real example"</span>,
+    onResult: (value) =&gt; <span class="tok-fn">render</span>(value),
+    onStatus: (state) =&gt; <span class="tok-fn">show</span>(state),
+});
+
+<span class="tok-fn">stop</span>();</code></pre>
+            </div>
+        </section>
+
+        <section class="section band" id="faq">
+            <div class="shell">
+                <div class="section-head reveal">
+                    <p class="eyebrow">FAQ</p>
+                    <h2>The questions you are about to ask.</h2>
+                    <p class="lead">
+                        Answer what the page does not already answer. No
+                        jargon, no asterisks and no marketing hedging.
+                    </p>
+                </div>
+                <div class="faq-grid">
+                    <article class="faq-item reveal">
+                        <h3>What does mylib do?</h3>
+                        <p>Replace with one honest answer, then keep the visible FAQ and this structured data identical.</p>
+                    </article>
+                    <article class="faq-item reveal">
+                        <h3>Does it need a server?</h3>
+                        <p>Replace with one honest answer, then keep the visible FAQ and this structured data identical.</p>
+                    </article>
+                    <article class="faq-item reveal">
+                        <h3>How large is it?</h3>
+                        <p>Replace with one honest answer, then keep the visible FAQ and this structured data identical.</p>
+                    </article>
+                    <article class="faq-item reveal">
+                        <h3>What happens when it fails?</h3>
+                        <p>Name the failure mode and what the caller can do.</p>
+                    </article>
+                    <article class="faq-item reveal">
+                        <h3>How is it maintained?</h3>
+                        <p>State the licence, support path and release cadence honestly.</p>
+                    </article>
+                    <article class="faq-item reveal">
+                        <h3>What does it not do?</h3>
+                        <p>Name the limit that will disappoint the wrong user early.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section cta" id="start">
+            <div class="shell cta-inner reveal">
+                <p class="eyebrow">Start here</p>
+                <h2>One command. One result.</h2>
+                <p class="lead">
+                    Restate the promise in one short line, using the same facts
+                    as the hero.
+                </p>
+                <div class="actions">
+                    <a class="button primary" href="#install">Get the install command</a>
+                    <a class="button ghost" href="#demo">Try the demo</a>
+                </div>
+                <p class="fine">
+                    Licence &middot; runtime &middot; the same real size or limit
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="shell footer-inner">
+            <div>
+                <a class="brand" href="#top">mylib</a>
+                <p>One sentence about the package, matching the hero promise.</p>
+            </div>
+            <div class="footer-links">
+                <a href="#demo">Demo</a>
+                <a href="#faq">FAQ</a>
+                <a href="architecture.html" target="_blank" rel="noreferrer">Architecture</a>
+                <a href="https://github.com/owner/mylib" target="_blank" rel="noreferrer">GitHub</a>
+                <a href="https://www.npmjs.com/package/@scope/mylib" target="_blank" rel="noreferrer">npm</a>
+                <a href="https://github.com/owner/mylib/blob/main/LICENSE" target="_blank" rel="noreferrer">License</a>
+            </div>
+        </div>
+        <div class="shell footer-base">
+            <span>v1.0.0</span>
+            <span>Licence &middot; runtime requirement</span>
+        </div>
+    </footer>
+
+    <nav class="floating-menu" aria-label="Primary">
+        <div class="floating-track">
+            <a class="float-button is-selected" href="#top" data-target="#top" aria-current="page">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="m4 11 8-7 8 7"></path>
+                    <path d="M6 10v9h12v-9"></path>
+                </svg>
+                <span class="float-label">Overview</span>
+            </a>
+            <a class="float-button" href="#why" data-target="#why">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                    <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                    <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                    <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                </svg>
+                <span class="float-label">Why</span>
+            </a>
+            <a class="float-button" href="#demo" data-target="#demo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                    <path d="m7 9 3 3-3 3M13 15h4"></path>
+                </svg>
+                <span class="float-label">Demo</span>
+            </a>
+            <a class="float-button" href="#capabilities" data-target="#capabilities">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M4 7h8M16 7h4M4 17h4M12 17h8"></path>
+                    <circle cx="14" cy="7" r="2"></circle>
+                    <circle cx="10" cy="17" r="2"></circle>
+                </svg>
+                <span class="float-label">What you get</span>
+            </a>
+            <a class="float-button" href="#specs" data-target="#specs">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="m12 3 9 5-9 5-9-5 9-5zM3 12l9 5 9-5"></path>
+                    <path d="m3 16 9 5 9-5"></path>
+                </svg>
+                <span class="float-label">Specs</span>
+            </a>
+            <a class="float-button" href="#architecture" data-target="#architecture">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="4" width="7" height="6" rx="1"></rect>
+                    <rect x="14" y="4" width="7" height="6" rx="1"></rect>
+                    <rect x="8.5" y="15" width="7" height="6" rx="1"></rect>
+                    <path d="M6.5 10v2h11v-2M12 12v3"></path>
+                </svg>
+                <span class="float-label">Architecture</span>
+            </a>
+            <a class="float-button" href="#install" data-target="#install">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 3v11m0 0 4-4m-4 4-4-4"></path>
+                    <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"></path>
+                </svg>
+                <span class="float-label">Install</span>
+            </a>
+        </div>
+    </nav>
+
+    <script type="module">
+        /*
+            Point this at the package's real browser bundle. Keep the version
+            pinned. The demo must reuse the public API, not internal modules.
+        */
+        const CDN = `https://cdn.example.com/mylib/1.0.0/mylib.min.mjs`;
+        const OUTPUT_FORMAT = `text`;
+
+        const card = document.getElementById(`demo-card`);
+        const thread = document.getElementById(`demo-thread`);
+        const empty = document.getElementById(`demo-empty`);
+        const statusEl = document.getElementById(`demo-status`);
+        const speedEl = document.getElementById(`demo-speed`);
+        const badge = document.getElementById(`demo-badge`);
+        const runtimeEl = document.getElementById(`demo-runtime`);
+        const modeEl = document.getElementById(`demo-mode`);
+        const progress = document.getElementById(`demo-progress`);
+        const optionEl = document.getElementById(`demo-option`);
+        const form = document.getElementById(`demo-form`);
+        const input = document.getElementById(`demo-input`);
+        const send = document.getElementById(`demo-send`);
+        const stop = document.getElementById(`demo-stop`);
+        const reset = document.getElementById(`demo-reset`);
+        const copy = document.getElementById(`copy-install`);
+
+        let bundlePromise = null;
+        let cancelRun = null;
+        let busy = false;
+        let output = ``;
+        let assistantBubble = null;
+        let userBubble = null;
+        let lastInput = ``;
+        let runId = 0;
+
+        /* Safe rendering: escape first, then add a small Markdown subset. */
+        const escapeHtml = (value) => value
+            .replace(/&/g, `&amp;`)
+            .replace(/</g, `&lt;`)
+            .replace(/>/g, `&gt;`)
+            .replace(/"/g, `&quot;`);
+
+        const inlineMarkdown = (value) => {
+            const pieces = [];
+            const code = /`([^`]+)`/g;
+            let last = 0;
+            let match;
+            while ((match = code.exec(value))) {
+                pieces.push({ text: value.slice(last, match.index), code: false });
+                pieces.push({ text: match[1], code: true });
+                last = match.index + match[0].length;
+            }
+            pieces.push({ text: value.slice(last), code: false });
+            return pieces.map((piece) => {
+                const text = escapeHtml(piece.text);
+                if (piece.code) return `<code>${text}</code>`;
+                return text
+                    .replace(/\*\*([^*]+)\*\*/g, `<strong>$1</strong>`)
+                    .replace(/(^|[^*])\*([^*]+)\*/g, `$1<em>$2</em>`)
+                    .replace(
+                        /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
+                        `<a href="$2" target="_blank" rel="noreferrer">$1</a>`,
+                    );
+            }).join(``);
+        };
+
+        const renderMarkdown = (value) => {
+            const lines = value.replace(/\r\n/g, `\n`).split(`\n`);
+            const html = [];
+            let paragraph = [];
+            let list = null;
+            let listTag = ``;
+            let fence = null;
+            let codeLines = [];
+
+            const flushParagraph = () => {
+                if (!paragraph.length) return;
+                html.push(`<p>${inlineMarkdown(paragraph.join(` `))}</p>`);
+                paragraph = [];
+            };
+            const flushList = () => {
+                if (!list) return;
+                html.push(`<${listTag}>${list.join(``)}</${listTag}>`);
+                list = null;
+                listTag = ``;
+            };
+            const flushCode = () => {
+                if (fence === null) return;
+                html.push(`<pre><code>${escapeHtml(codeLines.join(`\n`))}</code></pre>`);
+                fence = null;
+                codeLines = [];
+            };
+
+            for (const line of lines) {
+                const fenceLine = line.match(/^```(.*)$/);
+                if (fenceLine) {
+                    if (fence === null) {
+                        flushParagraph();
+                        flushList();
+                        fence = fenceLine[1];
+                    } else {
+                        flushCode();
+                    }
+                    continue;
+                }
+                if (fence !== null) {
+                    codeLines.push(line);
+                    continue;
+                }
+                if (!line.trim()) {
+                    flushParagraph();
+                    flushList();
+                    continue;
+                }
+                const heading = line.match(/^(#{1,6})\s+(.*)$/);
+                if (heading) {
+                    flushParagraph();
+                    flushList();
+                    const level = heading[1].length;
+                    html.push(`<h${level}>${inlineMarkdown(heading[2])}</h${level}>`);
+                    continue;
+                }
+                if (/^\s*[-*+]\s+/.test(line)) {
+                    flushParagraph();
+                    if (listTag !== `ul`) {
+                        flushList();
+                        listTag = `ul`;
+                        list = [];
+                    }
+                    list.push(`<li>${inlineMarkdown(line.replace(/^\s*[-*+]\s+/, ``))}</li>`);
+                    continue;
+                }
+                if (/^\s*\d+\.\s+/.test(line)) {
+                    flushParagraph();
+                    if (listTag !== `ol`) {
+                        flushList();
+                        listTag = `ol`;
+                        list = [];
+                    }
+                    list.push(`<li>${inlineMarkdown(line.replace(/^\s*\d+\.\s+/, ``))}</li>`);
+                    continue;
+                }
+                if (/^\s*(---|\*\*\*|___)\s*$/.test(line)) {
+                    flushParagraph();
+                    flushList();
+                    html.push(`<hr>`);
+                    continue;
+                }
+                if (list) {
+                    const index = list.length - 1;
+                    list[index] = list[index].replace(
+                        /<\/li>$/,
+                        ` ${inlineMarkdown(line.trim())}</li>`,
+                    );
+                    continue;
+                }
+                paragraph.push(line.trim());
+            }
+            flushParagraph();
+            flushList();
+            flushCode();
+            if (!html.length) html.push(`<p></p>`);
+            return html.join(``);
+        };
+
+        const setStatus = (text, kind = ``) => {
+            statusEl.textContent = text;
+            statusEl.dataset.kind = kind;
+        };
+
+        const setBusy = (value) => {
+            busy = value;
+            send.disabled = value;
+            stop.hidden = !value;
+            card.setAttribute(`aria-busy`, String(value));
+        };
+
+        const loadBundle = () => {
+            if (!bundlePromise) bundlePromise = import(CDN);
+            return bundlePromise;
+        };
+
+        const addBubble = (role, text) => {
+            const node = document.createElement(`div`);
+            const body = document.createElement(`div`);
+            node.className = `bubble ${role}`;
+            body.className = `bubble-body`;
+            body.textContent = text;
+            node.append(body);
+            thread.append(node);
+            empty.hidden = true;
+            thread.scrollTop = thread.scrollHeight;
+            return node;
+        };
+
+        const paint = (value) => {
+            if (!assistantBubble) return;
+            const body = assistantBubble.firstElementChild;
+            if (OUTPUT_FORMAT === `markdown`) body.innerHTML = renderMarkdown(value);
+            else body.textContent = value;
+            thread.scrollTop = thread.scrollHeight;
+        };
+
+        const finish = (message = ``) => {
+            if (!busy) return;
+            setBusy(false);
+            progress.hidden = true;
+            progress.value = 0;
+            assistantBubble?.classList.remove(`streaming`);
+            if (!output.trim()) {
+                assistantBubble?.remove();
+                userBubble?.remove();
+                assistantBubble = null;
+                userBubble = null;
+                if (!thread.querySelector(`.bubble`)) empty.hidden = false;
+                if (!input.value.trim()) input.value = lastInput;
+            }
+            cancelRun = null;
+            if (message) setStatus(message);
+        };
+
+        const fail = (message) => {
+            if (!busy) return;
+            finish();
+            setStatus(message, `error`);
+            badge.textContent = `error`;
+        };
+
+        /*
+            Wire this one function to the package's public API. It receives the
+            input and callbacks, and returns a function that stops the run.
+            Delete the placeholder body and keep the same contract.
+        */
+        const startRun = async ({ value, option, onChunk, onProgress, onDone, onError }) => {
+            const module = await loadBundle();
+            const call = module.run({
+                input: value,
+                option,
+                onResult: onChunk,
+                onProgress: (percent) => onProgress(percent),
+                onStatus: (state) => {
+                    if (state?.runtime) runtimeEl.textContent = state.runtime;
+                    if (state?.mode) modeEl.textContent = state.mode;
+                    if (state?.speed) speedEl.textContent = `${Math.round(state.speed)} ops/s`;
+                },
+                onError: (error) => onError(error?.message || String(error)),
+            });
+            if (call?.then) {
+                call.then(onDone, (error) => onError(error?.message || String(error)));
+            }
+            return () => call?.cancel?.();
+        };
+
+        const submit = async (event) => {
+            event.preventDefault();
+            const value = input.value.trim();
+            if (!value || busy) return;
+            const id = ++runId;
+            output = ``;
+            lastInput = value;
+            setBusy(true);
+            input.value = ``;
+            setStatus(`Loading the package bundle...`);
+            progress.hidden = true;
+            speedEl.textContent = `-`;
+            userBubble = addBubble(`user`, value);
+            assistantBubble = addBubble(`assistant`, ``);
+            assistantBubble.classList.add(`streaming`);
+
+            let stopRun;
+            try {
+                stopRun = await startRun({
+                    value,
+                    option: optionEl?.value.trim() ?? ``,
+                    onChunk: (chunk) => {
+                        if (id !== runId) return;
+                        output = typeof chunk === `string` ? chunk : String(chunk ?? ``);
+                        paint(output);
+                    },
+                    onProgress: (percent) => {
+                        if (id !== runId) return;
+                        progress.hidden = false;
+                        if (typeof percent === `number` && Number.isFinite(percent)) {
+                            progress.value = Math.max(0, Math.min(100, percent));
+                            setStatus(`Working / ${Math.round(percent)}%`);
+                        } else {
+                            progress.removeAttribute(`value`);
+                            setStatus(`Working`);
+                        }
+                    },
+                    onDone: () => {
+                        if (id !== runId) return;
+                        finish(`Finished. The result stays in memory.`);
+                    },
+                    onError: (message) => {
+                        if (id !== runId) return;
+                        fail(message || `The run failed.`);
+                    },
+                });
+            } catch (error) {
+                if (id !== runId) return;
+                bundlePromise = null;
+                assistantBubble?.remove();
+                assistantBubble = null;
+                userBubble?.remove();
+                userBubble = null;
+                input.value = value;
+                if (!thread.querySelector(`.bubble`)) empty.hidden = false;
+                setBusy(false);
+                progress.hidden = true;
+                badge.textContent = `error`;
+                setStatus(
+                    `Could not start the demo. Check the bundle URL and the API wiring.`,
+                    `error`,
+                );
+                return;
+            }
+
+            if (id !== runId || !busy) {
+                if (!busy) stopRun?.();
+                return;
+            }
+            cancelRun = stopRun || null;
+        };
+
+        const stopRun = () => {
+            runId += 1;
+            const call = cancelRun;
+            cancelRun = null;
+            finish(`Stopped.`);
+            call?.();
+        };
+
+        const resetDemo = () => {
+            runId += 1;
+            const call = cancelRun;
+            cancelRun = null;
+            setBusy(false);
+            output = ``;
+            assistantBubble = null;
+            userBubble = null;
+            lastInput = ``;
+            thread.replaceChildren(empty);
+            empty.hidden = false;
+            progress.hidden = true;
+            progress.value = 0;
+            speedEl.textContent = `-`;
+            badge.textContent = `nothing loaded`;
+            runtimeEl.textContent = `auto`;
+            modeEl.textContent = `auto`;
+            setStatus(`Idle. Nothing loaded.`);
+            call?.();
+        };
+
+        form.addEventListener(`submit`, submit);
+        stop.addEventListener(`click`, stopRun);
+        reset.addEventListener(`click`, resetDemo);
+
+        copy.addEventListener(`click`, async () => {
+            const command = copy.dataset.copy;
+            let copied = false;
+            try {
+                await navigator.clipboard.writeText(command);
+                copied = true;
+            } catch {
+                const area = document.createElement(`textarea`);
+                area.value = command;
+                area.setAttribute(`readonly`, ``);
+                area.style.position = `fixed`;
+                area.style.opacity = `0`;
+                document.body.append(area);
+                area.select();
+                copied = document.execCommand(`copy`);
+                area.remove();
+            }
+            copy.textContent = copied ? `Copied` : `Copy failed`;
+            setTimeout(() => {
+                copy.textContent = `Copy`;
+            }, 1600);
+        });
+
+        /* Scroll spy and auto-centering for the floating menu. */
+        const menuLinks = [...document.querySelectorAll(`.float-button`)];
+        const menu = document.querySelector(`.floating-menu`);
+        const reduceMotion = window.matchMedia(`(prefers-reduced-motion: reduce)`).matches;
+        let activeLink = null;
+
+        const centerMenu = (link) => {
+            if (!menu || !link) return;
+            const menuRect = menu.getBoundingClientRect();
+            const linkRect = link.getBoundingClientRect();
+            menu.scrollTo({
+                left: linkRect.left - menuRect.left + menu.scrollLeft -
+                    (menuRect.width - linkRect.width) / 2,
+                behavior: reduceMotion ? `auto` : `smooth`,
+            });
+        };
+
+        const setActive = (target) => {
+            const link = menuLinks.find((item) => item.dataset.target === target);
+            if (!link || link === activeLink) return;
+            activeLink = link;
+            for (const item of menuLinks) {
+                const active = item === link;
+                item.classList.toggle(`is-selected`, active);
+                if (active) item.setAttribute(`aria-current`, `page`);
+                else item.removeAttribute(`aria-current`);
+            }
+            centerMenu(link);
+        };
+
+        const sections = menuLinks
+            .map((link) => document.querySelector(link.dataset.target))
+            .filter((node) => node && node.id !== `top`);
+
+        const onScroll = () => {
+            const mark = window.scrollY + window.innerHeight * 0.45;
+            let active = `#top`;
+            for (const section of sections) {
+                if (section.offsetTop <= mark) active = `#${section.id}`;
+            }
+            setActive(active);
+        };
+
+        window.addEventListener(`scroll`, onScroll, { passive: true });
+        window.addEventListener(`resize`, () => centerMenu(activeLink));
+        for (const link of menuLinks) {
+            link.addEventListener(`click`, () => setActive(link.dataset.target));
+        }
+        onScroll();
+
+        /* Reveal on scroll, with a no-observer fallback. */
+        const revealItems = document.querySelectorAll(`.reveal`);
+        if (`IntersectionObserver` in window) {
+            const observer = new IntersectionObserver((entries) => {
+                for (const entry of entries) {
+                    if (!entry.isIntersecting) continue;
+                    entry.target.classList.add(`in`);
+                    observer.unobserve(entry.target);
+                }
+            }, { rootMargin: `0px 0px -8% 0px`, threshold: 0.08 });
+            for (const item of revealItems) observer.observe(item);
+        } else {
+            for (const item of revealItems) item.classList.add(`in`);
+        }
+    </script>
+</body>
+</html>

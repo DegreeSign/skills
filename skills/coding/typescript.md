@@ -42,7 +42,7 @@
 
 - Place every export at the end of the file.
 - Exports inside an export object each go on their own line.
-- Chain related `const` declarations into a single statement separated by commas.
+- Chain `const` declarations into a single statement separated by commas, even when blank lines or comments separate them.
 - Keep comments to three or four words. Add one only when the code is not clear on its own. Never remove an existing comment.
 - Never invent abbreviations. Drop letters from a word only when the short form is universally known (for example `msg`, `max`, `min`); otherwise spell the word out.
 
